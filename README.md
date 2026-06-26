@@ -15,7 +15,7 @@ A interface foi projetada seguindo as melhores práticas de design moderno, foca
 *   **Painel de Controle Financeiro (Tema Escuro/FinTech)**: Design moderno com cores corporativas do ecossistema BDMG, micro-animações de transição e responsividade completa.
 *   **Operações CRUD de Fornecedores**:
     *   **Cadastro (Create)**: Formulário com máscara de CNPJ automática e validações de preenchimento.
-    *   **Consulta (Read)**: Cards interativos contendo dados cadastrais, nota interna atribuída pelo BDMG e badges de reputação.
+    *   **Consulta (Read)**: Cards interativos contendo dados cadastrais, nota interna atribuída pelo BDMG, badges de reputação e o **Parecer Técnico com responsividade completa** (com quebra dinâmica de linha, limite de 2 linhas via line-clamp CSS e elipse).
     *   **Edição (Update)**: Permite alterar a categoria do serviço, pareceres técnicos e avaliações.
     *   **Remoção (Delete)**: Exclusão com caixa de diálogo de confirmação.
 *   **Simulador de API do ReclameAqui**:

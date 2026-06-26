@@ -427,3 +427,82 @@ header {
     margin-bottom: 1rem;
     color: rgba(255, 255, 255, 0.1);
 }
+
+/* Captcha Styling */
+.captcha-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-color);
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+}
+
+.captcha-checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.captcha-checkbox {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--text-secondary);
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+    background-color: transparent;
+}
+
+.captcha-checkbox:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 8px rgba(0, 230, 255, 0.2);
+}
+
+.captcha-checkbox.loading {
+    border-color: var(--accent);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: captchaSpin 1s linear infinite;
+    cursor: wait;
+}
+
+.captcha-checkbox.verified {
+    background-color: var(--success);
+    border-color: var(--success);
+    cursor: default;
+}
+
+.captcha-checkbox.verified::after {
+    content: "\f00c";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    color: #080c14;
+    font-size: 0.85rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.captcha-label {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    user-select: none;
+}
+
+.captcha-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@keyframes captchaSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+

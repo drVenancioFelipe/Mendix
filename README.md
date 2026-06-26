@@ -23,6 +23,11 @@ A interface foi projetada seguindo as melhores práticas de design moderno, foca
 *   **Filtros & Busca Avançada**:
     *   Barra de pesquisa instantânea para busca por CNPJ, Nome Fantasia ou Categoria.
     *   Dropdown de filtragem rápida pelo status de reputação do ReclameAqui.
+*   **Segurança (Captcha "I am human")**:
+    *   Interceptador inteligente que bloqueia ações de busca e filtragem até que o usuário resolva o Captcha.
+    *   Estilo visual moderno (estilo reCAPTCHA/hCaptcha) com feedback visual de carregamento e sucesso.
+    *   **Persistência via Cookie**: O estado verificado é salvo em cookie do navegador por 24 horas, evitando interrupções em acessos recorrentes durante a mesma sessão de trabalho.
+
 
 ---
 

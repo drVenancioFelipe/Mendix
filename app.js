@@ -157,13 +157,13 @@ function renderSuppliers() {
                                 <strong>Avaliação BDMG:</strong> ${stars}
                             </p>
                             <div class="reputation-details">
-                                <div class="rep-stat">
+                                <div class="rep-stat score-stat">
                                     <span class="rep-label">ReclameAqui</span>
                                     <span class="rep-value score">${sup.raScore || 'N/A'}</span>
                                 </div>
-                                <div class="rep-stat">
+                                <div class="rep-stat desc-stat">
                                     <span class="rep-label">Parecer</span>
-                                    <span class="rep-value" style="font-size: 0.75rem; font-weight: normal; max-height: 40px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                    <span class="rep-desc-text">
                                         ${sup.description || 'Sem observações.'}
                                     </span>
                                 </div>

@@ -1,0 +1,16 @@
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Mendix specific files (if they download/import models here later)
+*.mpr.lock
+deployment/
+build/
+.mendix-cache/
+theme/styles/web/sass/.sass-cache/
+theme/styles/native/.sass-cache/
+
+# Local Dev
+node_modules/
+dist/
+.env

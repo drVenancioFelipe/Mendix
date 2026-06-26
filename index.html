@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reputação de Fornecedores - BDMG</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo-section">
+                <h1>BDMG low-code</h1>
+                <p>Módulo de Análise & Reputação de Fornecedores (Integração ReclameAqui)</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-secondary" id="btn-load-mock">
+                    <i class="fa-solid fa-cloud-arrow-down"></i> Carregar Fornecedores Iniciais
+                </button>
+                <button class="btn btn-primary" id="btn-add-supplier">
+                    <i class="fa-solid fa-plus"></i> Novo Fornecedor
+                </button>
+            </div>
+        </header>
+
+        <!-- Controls Dashboard -->
+        <div class="controls-card">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="search-input" placeholder="Pesquisar fornecedores cadastrados por Nome, CNPJ ou Categoria...">
+            </div>
+            <div>
+                <select id="filter-status" class="btn btn-secondary" style="padding: 0.75rem 1rem;">
+                    <option value="all">Todas as Reputações</option>
+                    <option value="ra1000">RA1000</option>
+                    <option value="otimo">Ótimo</option>
+                    <option value="bom">Bom</option>
+                    <option value="regular">Regular</option>
+                    <option value="ruim">Ruim</option>
+                    <option value="naorecomendado">Não Recomendado</option>
+                    <option value="semdados">Sem Dados</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Main Supplier Grid -->
+        <main>
+            <div class="supplier-grid" id="supplier-grid">
+                <!-- Cards dynamically loaded via JS -->
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-state" id="empty-state" style="display: none;">
+                <i class="fa-solid fa-folder-open"></i>
+                <h3>Nenhum fornecedor encontrado</h3>
+                <p>Tente ajustar a sua busca ou cadastre um novo fornecedor para começar.</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Form (Create & Update) -->
+    <div class="modal-overlay" id="supplier-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Cadastrar Fornecedor</h2>
+                <button class="modal-close" id="modal-close">&times;</button>
+            </div>
+            <form id="supplier-form">
+                <input type="hidden" id="supplier-id">
+                
+                <div class="form-group">
+                    <label for="cnpj">CNPJ do Fornecedor</label>
+                    <div class="form-row" style="grid-template-columns: 1fr auto; gap: 0.5rem; align-items: start;">
+                        <input type="text" id="cnpj" placeholder="00.000.000/0000-00" required>
+                        <button type="button" class="btn btn-secondary" id="btn-fetch-ra" style="padding: 0.75rem;">
+                            <i class="fa-solid fa-arrows-rotate"></i> Consultar ReclameAqui
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Razão Social / Nome Fantasia</label>
+                    <input type="text" id="name" placeholder="Ex: Stefanini Brasil" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="category">Categoria do Serviço</label>
+                        <select id="category">
+                            <option value="Tecnologia">Tecnologia/TI</option>
+                            <option value="Segurança">Segurança</option>
+                            <option value="Limpeza & Conservação">Limpeza & Conservação</option>
+                            <option value="Consultoria">Consultoria</option>
+                            <option value="Construção Civil">Construção Civil</option>
+                            <option value="Outros">Outros</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="rating-internal">Avaliação Interna BDMG (1-5)</label>
+                        <select id="rating-internal">
+                            <option value="5">⭐⭐⭐⭐⭐ (Excelente)</option>
+                            <option value="4">⭐⭐⭐⭐ (Muito Bom)</option>
+                            <option value="3">⭐⭐⭐ (Regular)</option>
+                            <option value="2">⭐⭐ (Insatisfatório)</option>
+                            <option value="1">⭐ (Crítico)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="ra-status">Status ReclameAqui</label>
+                        <select id="ra-status">
+                            <option value="semdados">Sem Dados / Não Encontrado</option>
+                            <option value="ra1000">Selo RA1000</option>
+                            <option value="otimo">Ótimo</option>
+                            <option value="bom">Bom</option>
+                            <option value="regular">Regular</option>
+                            <option value="ruim">Ruim</option>
+                            <option value="naorecomendado">Não Recomendado</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="ra-score">Nota ReclameAqui (0.0 - 10.0)</label>
+                        <input type="number" id="ra-score" step="0.1" min="0" max="10" placeholder="Ex: 8.5">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Observações / Parecer Técnico</label>
+                    <textarea id="description" rows="3" placeholder="Insira pareceres adicionais sobre as certidões e histórico do fornecedor..."></textarea>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem;">
+                    <button type="button" class="btn btn-secondary" id="btn-cancel">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar Fornecedor</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

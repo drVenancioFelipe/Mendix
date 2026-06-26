@@ -326,9 +326,79 @@ window.deleteSupplier = function(id) {
     }
 };
 
-// Search & Filter Listeners
-searchInput.addEventListener('input', renderSuppliers);
-filterStatus.addEventListener('change', renderSuppliers);
+// Cookie Helpers
+function getCookie(name) {
+    let matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+    ));
+    return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
+function setCookie(name, value, options = {}) {
+    options = {
+        path: '/',
+        ...options
+    };
+    if (options.expires instanceof Date) {
+        options.expires = options.expires.toUTCString();
+    }
+    let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+    for (let optionKey in options) {
+        updatedCookie += "; " + optionKey;
+        let optionValue = options[optionKey];
+        if (optionValue !== true) {
+            updatedCookie += "=" + optionValue;
+        }
+    }
+    document.cookie = updatedCookie;
+}
+
+// Captcha Security Feature
+const captchaModal = document.getElementById('captcha-modal');
+const captchaCheckbox = document.getElementById('captcha-checkbox');
+
+function isCaptchaVerified() {
+    return getCookie('bdmg_captcha_verified') === 'true';
+}
+
+function handleSearchAndFilter() {
+    if (!isCaptchaVerified()) {
+        // Intercept search, blur input to prevent typing during verification
+        searchInput.blur();
+        captchaModal.classList.add('active');
+        return;
+    }
+    renderSuppliers();
+}
+
+// Captcha Checkbox Click Event
+captchaCheckbox.addEventListener('click', () => {
+    if (captchaCheckbox.classList.contains('loading') || captchaCheckbox.classList.contains('verified')) {
+        return;
+    }
+    
+    captchaCheckbox.classList.add('loading');
+    
+    setTimeout(() => {
+        captchaCheckbox.classList.remove('loading');
+        captchaCheckbox.classList.add('verified');
+        
+        // Save cookie for 1 day (86400 seconds)
+        setCookie('bdmg_captcha_verified', 'true', { 'max-age': 86400 });
+        
+        showToast('Identidade verificada! Pesquisa desbloqueada.', 'success');
+        
+        setTimeout(() => {
+            captchaModal.classList.remove('active');
+            renderSuppliers();
+            searchInput.focus();
+        }, 800);
+    }, 1500);
+});
+
+// Search & Filter Listeners (Intercepted by Captcha)
+searchInput.addEventListener('input', handleSearchAndFilter);
+filterStatus.addEventListener('change', handleSearchAndFilter);
 
 // Initialize Render
 renderSuppliers();
@@ -337,3 +407,4 @@ if (suppliers.length === 0) {
     suppliers = [...initialSuppliers];
     saveSuppliers();
 }
+

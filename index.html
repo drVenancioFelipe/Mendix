@@ -143,6 +143,30 @@
         </div>
     </div>
 
+    <!-- Captcha Security Modal -->
+    <div class="modal-overlay" id="captcha-modal">
+        <div class="modal-content" style="max-width: 380px; text-align: center; padding: 2rem;">
+            <div style="margin-bottom: 1.5rem;">
+                <i class="fa-solid fa-user-shield" style="color: var(--accent); font-size: 2.5rem; margin-bottom: 0.75rem; display: inline-block;"></i>
+                <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">Verificação de Segurança</h3>
+                <p style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.4;">
+                    Por favor, confirme que você é humano para realizar pesquisas no banco de dados do BDMG.
+                </p>
+            </div>
+            
+            <div class="captcha-box">
+                <div class="captcha-checkbox-wrapper">
+                    <div class="captcha-checkbox" id="captcha-checkbox"></div>
+                    <span class="captcha-label">Sou humano</span>
+                </div>
+                <div class="captcha-logo">
+                    <i class="fa-solid fa-shield-halved" style="font-size: 1.5rem; color: var(--accent); opacity: 0.8;"></i>
+                    <span style="font-size: 0.55rem; color: var(--text-secondary); margin-top: 0.25rem; font-weight: bold; letter-spacing: 0.5px;">reCAPTCHA</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Toast Notifications -->
     <div class="toast-container" id="toast-container"></div>
 

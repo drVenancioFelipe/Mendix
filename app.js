@@ -49,6 +49,16 @@ const initialSuppliers = [
 // App State Management
 let suppliers = JSON.parse(localStorage.getItem('bdmg_suppliers')) || [];
 
+const defaultBannerSettings = {
+    visible: true,
+    title: "BDMG Financiamento Verde 2026",
+    desc: "Linhas de crédito especiais para projetos de sustentabilidade e transição energética em Minas Gerais. Taxas a partir de 0.5% a.m.",
+    btnText: "Simular Agora",
+    btnLink: "https://www.bdmg.mg.gov.br",
+    theme: "banner-theme-bdmg"
+};
+let bannerSettings = JSON.parse(localStorage.getItem('bdmg_banner_settings')) || defaultBannerSettings;
+
 // DOM Elements
 const supplierGrid = document.getElementById('supplier-grid');
 const emptyState = document.getElementById('empty-state');
@@ -63,6 +73,13 @@ const supplierForm = document.getElementById('supplier-form');
 const btnFetchRa = document.getElementById('btn-fetch-ra');
 const toastContainer = document.getElementById('toast-container');
 
+const promoBannerContainer = document.getElementById('promo-banner-container');
+const btnAdminPanel = document.getElementById('btn-admin-panel');
+const adminModal = document.getElementById('admin-modal');
+const adminModalClose = document.getElementById('admin-modal-close');
+const btnAdminCancel = document.getElementById('btn-admin-cancel');
+const adminForm = document.getElementById('admin-form');
+
 // Form Inputs
 const inputId = document.getElementById('supplier-id');
 const inputCnpj = document.getElementById('cnpj');
@@ -72,6 +89,13 @@ const inputRatingInternal = document.getElementById('rating-internal');
 const inputRaStatus = document.getElementById('ra-status');
 const inputRaScore = document.getElementById('ra-score');
 const inputDescription = document.getElementById('description');
+
+const inputBannerVisible = document.getElementById('banner-visible');
+const inputBannerTitle = document.getElementById('banner-title');
+const inputBannerDesc = document.getElementById('banner-desc');
+const inputBannerBtnText = document.getElementById('banner-btn-text');
+const inputBannerBtnLink = document.getElementById('banner-btn-link');
+const inputBannerStyle = document.getElementById('banner-style');
 
 // Toast Notification Helper
 function showToast(message, type = 'info') {
@@ -407,4 +431,76 @@ if (suppliers.length === 0) {
     suppliers = [...initialSuppliers];
     saveSuppliers();
 }
+
+// ==========================================
+// Banner Management & Admin Logic
+// ==========================================
+function renderBanner() {
+    if (!bannerSettings.visible) {
+        promoBannerContainer.innerHTML = '';
+        return;
+    }
+    
+    promoBannerContainer.innerHTML = `
+        <div class="promo-banner ${bannerSettings.theme}" id="promo-banner">
+            <button class="promo-banner-close" id="promo-banner-close-btn">&times;</button>
+            <div class="promo-banner-content">
+                <h2>${bannerSettings.title}</h2>
+                <p>${bannerSettings.desc}</p>
+            </div>
+            <div class="promo-banner-actions">
+                <a href="${bannerSettings.btnLink}" target="_blank" class="promo-banner-btn">${bannerSettings.btnText}</a>
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('promo-banner-close-btn').addEventListener('click', () => {
+        const banner = document.getElementById('promo-banner');
+        banner.style.opacity = '0';
+        banner.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => banner.remove(), 300);
+    });
+}
+
+function openAdminModal() {
+    inputBannerVisible.checked = bannerSettings.visible;
+    inputBannerTitle.value = bannerSettings.title;
+    inputBannerDesc.value = bannerSettings.desc;
+    inputBannerBtnText.value = bannerSettings.btnText;
+    inputBannerBtnLink.value = bannerSettings.btnLink;
+    inputBannerStyle.value = bannerSettings.theme;
+    
+    adminModal.classList.add('active');
+}
+
+function closeAdminModal() {
+    adminModal.classList.remove('active');
+}
+
+// Event Listeners for Admin panel
+btnAdminPanel.addEventListener('click', openAdminModal);
+adminModalClose.addEventListener('click', closeAdminModal);
+btnAdminCancel.addEventListener('click', closeAdminModal);
+
+adminForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    bannerSettings = {
+        visible: inputBannerVisible.checked,
+        title: inputBannerTitle.value.trim(),
+        desc: inputBannerDesc.value.trim(),
+        btnText: inputBannerBtnText.value.trim(),
+        btnLink: inputBannerBtnLink.value.trim(),
+        theme: inputBannerStyle.value
+    };
+    
+    localStorage.setItem('bdmg_banner_settings', JSON.stringify(bannerSettings));
+    renderBanner();
+    closeAdminModal();
+    showToast('Configurações de publicidade atualizadas com sucesso!', 'success');
+});
+
+// Render the banner initially on page load
+renderBanner();
+
 

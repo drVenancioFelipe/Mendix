@@ -529,3 +529,143 @@ header {
     100% { transform: rotate(360deg); }
 }
 
+/* Banner Styling */
+.promo-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    position: relative;
+    border: 1px solid var(--border-color);
+    gap: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+.promo-banner-content {
+    flex: 1;
+}
+
+.promo-banner-content h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+    color: white;
+}
+
+.promo-banner-content p {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.4;
+}
+
+.promo-banner-actions {
+    flex-shrink: 0;
+}
+
+.promo-banner-btn {
+    display: inline-block;
+    padding: 0.7rem 1.4rem;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.promo-banner-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+}
+
+.promo-banner-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.75rem;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.promo-banner-close:hover {
+    color: white;
+}
+
+/* Banner Themes */
+.banner-theme-bdmg {
+    background: linear-gradient(135deg, #091e36, #16365c);
+    border-color: rgba(245, 158, 11, 0.3);
+}
+.banner-theme-bdmg .promo-banner-btn {
+    background-color: var(--warning);
+    color: #000;
+}
+.banner-theme-bdmg .promo-banner-btn:hover {
+    background-color: #fbbf24;
+}
+
+.banner-theme-mint {
+    background: linear-gradient(135deg, #064e3b, #047857);
+    border-color: rgba(16, 185, 129, 0.3);
+}
+.banner-theme-mint .promo-banner-btn {
+    background-color: #34d399;
+    color: #042f2e;
+}
+.banner-theme-mint .promo-banner-btn:hover {
+    background-color: #6ee7b7;
+}
+
+.banner-theme-cosmic {
+    background: linear-gradient(135deg, #311042, #581c77);
+    border-color: rgba(168, 85, 247, 0.3);
+}
+.banner-theme-cosmic .promo-banner-btn {
+    background-color: #c084fc;
+    color: #1e0033;
+}
+.banner-theme-cosmic .promo-banner-btn:hover {
+    background-color: #d8b4fe;
+}
+
+.banner-theme-dark {
+    background: linear-gradient(135deg, #1f2937, #111827);
+    border-color: var(--border-color);
+}
+.banner-theme-dark .promo-banner-btn {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid var(--border-color);
+}
+.banner-theme-dark .promo-banner-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Responsive Banner */
+@media (max-width: 768px) {
+    .promo-banner {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1.5rem;
+    }
+    
+    .promo-banner-actions {
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+    
+    .promo-banner-btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+

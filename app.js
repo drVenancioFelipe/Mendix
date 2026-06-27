@@ -145,10 +145,13 @@ function renderSuppliers() {
     const filter = filterStatus.value;
     
     const filtered = suppliers.filter(sup => {
+        const cleanQuery = query.trim().toLowerCase();
+        const cleanNumQuery = query.replace(/\D/g, '');
+        
         const matchesQuery = 
-            sup.name.toLowerCase().includes(query) || 
-            sup.cnpj.replace(/\D/g, '').includes(query.replace(/\D/g, '')) || 
-            sup.category.toLowerCase().includes(query);
+            (sup.name && sup.name.toLowerCase().includes(cleanQuery)) || 
+            (cleanNumQuery !== '' && sup.cnpj && sup.cnpj.replace(/\D/g, '').includes(cleanNumQuery)) || 
+            (sup.category && sup.category.toLowerCase().includes(cleanQuery));
             
         const matchesFilter = filter === 'all' || sup.raStatus === filter;
         

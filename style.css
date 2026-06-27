@@ -668,4 +668,61 @@ header {
     }
 }
 
+/* Admin Modal Tabs Styling */
+.admin-tabs-nav {
+    display: flex;
+    gap: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.25rem;
+}
+
+.admin-tab-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 6px 6px 0 0;
+    transition: all 0.25s ease;
+    border-bottom: 2px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.admin-tab-btn:hover {
+    color: var(--text-primary);
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+.admin-tab-btn.active {
+    color: var(--warning);
+    border-bottom-color: var(--warning);
+    background-color: rgba(245, 158, 11, 0.05);
+}
+
+.admin-tab-panel {
+    display: none;
+    animation: tabFadeIn 0.3s ease forwards;
+}
+
+.admin-tab-panel.active {
+    display: block;
+}
+
+@keyframes tabFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
 

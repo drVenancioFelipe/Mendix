@@ -18,14 +18,8 @@
                 <p>Módulo de Análise & Reputação de Fornecedores (Integração ReclameAqui)</p>
             </div>
             <div class="header-actions">
-                <button class="btn btn-secondary" id="btn-load-mock">
-                    <i class="fa-solid fa-cloud-arrow-down"></i> Carregar Fornecedores Iniciais
-                </button>
                 <button class="btn btn-secondary" id="btn-admin-panel" style="border-color: var(--warning); color: var(--warning); background-color: rgba(245, 158, 11, 0.05);">
                     <i class="fa-solid fa-gear"></i> Painel Admin
-                </button>
-                <button class="btn btn-primary" id="btn-add-supplier">
-                    <i class="fa-solid fa-plus"></i> Novo Fornecedor
                 </button>
             </div>
         </header>
@@ -149,57 +143,107 @@
         </div>
     </div>
 
-    <!-- Admin Settings Modal (Banner Management) -->
+    <!-- Admin Settings Modal (Banner Management & CRUD actions) -->
     <div class="modal-overlay" id="admin-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Gerenciador de Banner (Admin)</h2>
+        <div class="modal-content" style="max-width: 550px;">
+            <div class="modal-header" style="border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; margin-bottom: 1rem;">
+                <h2>Painel do Administrador BDMG</h2>
                 <button class="modal-close" id="admin-modal-close">&times;</button>
             </div>
-            <form id="admin-form">
-                <div class="form-group">
-                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; text-transform: none; color: var(--text-primary); font-size: 0.9rem;">
-                        <input type="checkbox" id="banner-visible" style="width: auto; margin-right: 0.5rem;">
-                        Exibir Banner de Publicidade
-                    </label>
+            
+            <!-- Navigation Tabs -->
+            <div class="admin-tabs-nav">
+                <button type="button" class="admin-tab-btn active" data-target="tab-banner">
+                    <i class="fa-solid fa-rectangle-ad"></i> Publicidade & Banner
+                </button>
+                <button type="button" class="admin-tab-btn" data-target="tab-suppliers">
+                    <i class="fa-solid fa-database"></i> Banco de Dados
+                </button>
+            </div>
+            
+            <!-- Tab Panel 1: Banner -->
+            <div class="admin-tab-panel active" id="tab-banner">
+                <form id="admin-form">
+                    <div class="form-group">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; text-transform: none; color: var(--text-primary); font-size: 0.9rem;">
+                            <input type="checkbox" id="banner-visible" style="width: auto; margin-right: 0.5rem;">
+                            Exibir Banner de Publicidade
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="banner-title">Título do Banner</label>
+                        <input type="text" id="banner-title" placeholder="Ex: BDMG Financiamento Sustentável" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="banner-desc">Descrição do Banner</label>
+                        <textarea id="banner-desc" rows="2" placeholder="Descreva a promoção ou aviso..." required></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="banner-btn-text">Texto do Botão CTA</label>
+                            <input type="text" id="banner-btn-text" placeholder="Ex: Simular Crédito" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="banner-btn-link">URL do Link CTA</label>
+                            <input type="text" id="banner-btn-link" placeholder="Ex: https://..." required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="banner-style">Estilo Visual (Tema)</label>
+                        <select id="banner-style">
+                            <option value="banner-theme-bdmg">BDMG Azul & Ouro (Padrão)</option>
+                            <option value="banner-theme-mint">Verde Mint & Teal (Sustentável)</option>
+                            <option value="banner-theme-cosmic">Cosmic Indigo & Pink (Inovação)</option>
+                            <option value="banner-theme-dark">Dark Minimalist</option>
+                        </select>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem;">
+                        <button type="button" class="btn btn-secondary btn-admin-cancel-btn">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" style="background-color: var(--warning); color: #000; font-weight: bold;">Salvar Parâmetros</button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Tab Panel 2: Suppliers Database -->
+            <div class="admin-tab-panel" id="tab-suppliers" style="display: none;">
+                <div style="padding: 0.5rem 0;">
+                    <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-primary);">Ações Globais de Fornecedores</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.4; margin-bottom: 1.5rem;">
+                        Controles avançados para carregar a base fictícia padrão ou inserir registros manualmente na esteira de reputação do BDMG.
+                    </p>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div style="background-color: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
+                            <div style="flex: 1;">
+                                <h4 style="font-size: 0.9rem; font-weight: 600; margin-bottom: 0.25rem; color: var(--text-primary);">Carga Inicial de Demonstração</h4>
+                                <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.15rem;">Popula o grid com fornecedores pré-cadastrados (Cemig, Totvs, Copasa) para testes rápidos.</p>
+                            </div>
+                            <button class="btn btn-secondary" id="btn-load-mock" style="flex-shrink: 0;">
+                                <i class="fa-solid fa-cloud-arrow-down"></i> Resetar & Carregar
+                            </button>
+                        </div>
+                        
+                        <div style="background-color: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
+                            <div style="flex: 1;">
+                                <h4 style="font-size: 0.9rem; font-weight: 600; margin-bottom: 0.25rem; color: var(--text-primary);">Novo Registro de Fornecedor</h4>
+                                <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.15rem;">Abre o formulário de cadastro para adicionar um fornecedor manualmente.</p>
+                            </div>
+                            <button class="btn btn-primary" id="btn-add-supplier" style="flex-shrink: 0;">
+                                <i class="fa-solid fa-plus"></i> Novo Fornecedor
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="banner-title">Título do Banner</label>
-                    <input type="text" id="banner-title" placeholder="Ex: BDMG Financiamento Sustentável" required>
+                <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
+                    <button type="button" class="btn btn-secondary btn-admin-cancel-btn">Fechar Painel</button>
                 </div>
-
-                <div class="form-group">
-                    <label for="banner-desc">Descrição do Banner</label>
-                    <textarea id="banner-desc" rows="2" placeholder="Descreva a promoção ou aviso..." required></textarea>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="banner-btn-text">Texto do Botão CTA</label>
-                        <input type="text" id="banner-btn-text" placeholder="Ex: Simular Crédito" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="banner-btn-link">URL do Link CTA</label>
-                        <input type="text" id="banner-btn-link" placeholder="Ex: https://..." required>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="banner-style">Estilo Visual (Tema)</label>
-                    <select id="banner-style">
-                        <option value="banner-theme-bdmg">BDMG Azul & Ouro (Padrão)</option>
-                        <option value="banner-theme-mint">Verde Mint & Teal (Sustentável)</option>
-                        <option value="banner-theme-cosmic">Cosmic Indigo & Pink (Inovação)</option>
-                        <option value="banner-theme-dark">Dark Minimalist</option>
-                    </select>
-                </div>
-
-                <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem;">
-                    <button type="button" class="btn btn-secondary" id="btn-admin-cancel">Cancelar</button>
-                    <button type="submit" class="btn btn-primary" style="background-color: var(--warning); color: #000; font-weight: bold;">Salvar Parâmetros</button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 

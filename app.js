@@ -77,7 +77,6 @@ const promoBannerContainer = document.getElementById('promo-banner-container');
 const btnAdminPanel = document.getElementById('btn-admin-panel');
 const adminModal = document.getElementById('admin-modal');
 const adminModalClose = document.getElementById('admin-modal-close');
-const btnAdminCancel = document.getElementById('btn-admin-cancel');
 const adminForm = document.getElementById('admin-form');
 
 const loginModal = document.getElementById('login-modal');
@@ -255,7 +254,10 @@ function closeModal() {
     supplierModal.classList.remove('active');
 }
 
-btnAddSupplier.addEventListener('click', () => openModal('Cadastrar Fornecedor'));
+btnAddSupplier.addEventListener('click', () => {
+    closeAdminModal();
+    openModal('Cadastrar Fornecedor');
+});
 modalClose.addEventListener('click', closeModal);
 btnCancel.addEventListener('click', closeModal);
 
@@ -469,6 +471,19 @@ function renderBanner() {
 }
 
 function openAdminModal() {
+    // Reset to the first tab (Banner)
+    const tabButtons = document.querySelectorAll('.admin-tab-btn');
+    const tabPanels = document.querySelectorAll('.admin-tab-panel');
+    
+    tabButtons.forEach(b => b.classList.remove('active'));
+    tabButtons[0].classList.add('active');
+    tabPanels.forEach(p => {
+        p.style.display = 'none';
+        p.classList.remove('active');
+    });
+    tabPanels[0].style.display = 'block';
+    tabPanels[0].classList.add('active');
+
     inputBannerVisible.checked = bannerSettings.visible;
     inputBannerTitle.value = bannerSettings.title;
     inputBannerDesc.value = bannerSettings.desc;
@@ -518,10 +533,35 @@ btnLoginCancel.addEventListener('click', () => {
     loginModal.classList.remove('active');
 });
 
+// Admin Panel Tab Navigation Logic
+const tabButtons = document.querySelectorAll('.admin-tab-btn');
+const tabPanels = document.querySelectorAll('.admin-tab-panel');
+
+tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-target');
+        
+        tabButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        tabPanels.forEach(panel => {
+            if (panel.id === targetId) {
+                panel.style.display = 'block';
+                panel.classList.add('active');
+            } else {
+                panel.style.display = 'none';
+                panel.classList.remove('active');
+            }
+        });
+    });
+});
+
 // Event Listeners for Admin panel
 btnAdminPanel.addEventListener('click', openAdminPanelFlow);
 adminModalClose.addEventListener('click', closeAdminModal);
-btnAdminCancel.addEventListener('click', closeAdminModal);
+document.querySelectorAll('.btn-admin-cancel-btn').forEach(btn => {
+    btn.addEventListener('click', closeAdminModal);
+});
 
 adminForm.addEventListener('submit', (e) => {
     e.preventDefault();

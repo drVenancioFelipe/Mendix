@@ -28,11 +28,16 @@ A interface foi projetada seguindo as melhores práticas de design moderno, foca
     *   **Persistência via Cookie**: O estado verificado é salvo em cookie do navegador por 24 horas, evitando interrupções em acessos recorrentes durante a mesma sessão de trabalho.
 *   **Painel de Administração por Abas (Admin)**:
     *   **Painel Administrativo Autenticado**: Acesso restrito ao painel de configurações via formulário modal de **Login e Senha** (Credenciais padrões: `admin` / `admin`).
-    *   **Navegação por Abas**: Organização das ferramentas administrativas em duas abas principais:
+    *   **Navegação por Abas**: Organização das ferramentas administrativas em três abas principais:
         *   **Publicidade & Banner**: Onde se configura a visibilidade, conteúdos e presets visuais (BDMG Padrão, Mint, Cosmic ou Dark) do banner destacado.
         *   **Banco de Dados**: Onde ficam concentrados os botões protegidos de **Carga Inicial** e **Novo Fornecedor**.
+        *   **WhatsApp**: Onde o administrador configura e valida o número de celular que receberá as indicações (salvo no `localStorage`).
     *   **Sessão Temporária**: Utilização de `sessionStorage` para manter o administrador autenticado durante o uso, evitando solicitações repetitivas de credenciais.
-    *   **Área de Exibição**: Banner horizontal responsivo no topo da interface principal com botão de fechamento temporário, salvando as definições administrativas no `localStorage`.
+    *   **Área de Exibição**: Banner horizontal responsivo no topo da interface principal com botão de fechamento temporário.
+*   **Indicação via WhatsApp**:
+    *   **Botão Flutuante (FAB)**: Botão verde circular com o ícone do WhatsApp no canto inferior direito com animação de pulso.
+    *   **Modal de Captura**: Solicita o Nome e o WhatsApp com máscara/DDD do usuário antes de abrir a conversa.
+    *   **Redirecionamento via API**: Abre uma nova aba redirecionando para `api.whatsapp.com/send` contendo o número configurado do admin e a mensagem pré-formatada: `"Gostaria de indicar o cadastro de um fornecedor. Nome: [Nome], Contato: [WhatsApp]"`.
 
 
 

@@ -159,6 +159,9 @@
                 <button type="button" class="admin-tab-btn" data-target="tab-suppliers">
                     <i class="fa-solid fa-database"></i> Banco de Dados
                 </button>
+                <button type="button" class="admin-tab-btn" data-target="tab-whatsapp">
+                    <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                </button>
             </div>
             
             <!-- Tab Panel 1: Banner -->
@@ -244,6 +247,31 @@
                     <button type="button" class="btn btn-secondary btn-admin-cancel-btn">Fechar Painel</button>
                 </div>
             </div>
+
+            <!-- Tab Panel 3: WhatsApp Settings -->
+            <div class="admin-tab-panel" id="tab-whatsapp" style="display: none;">
+                <form id="admin-whatsapp-form">
+                    <div style="padding: 0.5rem 0;">
+                        <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-primary);">Configuração do WhatsApp de Contato</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.4; margin-bottom: 1.5rem;">
+                            Defina o número de telefone (com código do país e DDD) que receberá as indicações de fornecedores enviadas pelos usuários da plataforma.
+                        </p>
+                        
+                        <div class="form-group">
+                            <label for="admin-whatsapp-number">Número do WhatsApp Destinatário</label>
+                            <input type="text" id="admin-whatsapp-number" placeholder="Ex: 5531999999999" required>
+                            <small style="display: block; color: var(--text-secondary); margin-top: 0.25rem; font-size: 0.75rem;">
+                                Digite apenas números contendo: Código do País (ex: 55) + DDD (ex: 31) + Número.
+                            </small>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
+                        <button type="button" class="btn btn-secondary btn-admin-cancel-btn">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" style="background-color: var(--warning); color: #000; font-weight: bold;">Salvar WhatsApp</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -298,6 +326,39 @@
                     <span style="font-size: 0.55rem; color: var(--text-secondary); margin-top: 0.25rem; font-weight: bold; letter-spacing: 0.5px;">reCAPTCHA</span>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- WhatsApp Floating Action Button (FAB) -->
+    <button class="whatsapp-fab" id="whatsapp-fab" title="Falar pelo WhatsApp">
+        <i class="fa-brands fa-whatsapp"></i>
+    </button>
+
+    <!-- WhatsApp Lead Capture Modal -->
+    <div class="modal-overlay" id="whatsapp-modal">
+        <div class="modal-content" style="max-width: 380px; padding: 2rem;">
+            <div class="modal-header" style="justify-content: center; flex-direction: column; text-align: center; gap: 0.5rem; margin-bottom: 1.5rem;">
+                <i class="fa-brands fa-whatsapp" style="color: var(--success); font-size: 2.8rem; display: block;"></i>
+                <h2 style="font-size: 1.3rem; font-weight: 700;">Falar pelo WhatsApp</h2>
+                <p style="color: var(--text-secondary); font-size: 0.85rem; margin: 0;">Indique um fornecedor enviando uma mensagem direta ao administrador do BDMG.</p>
+            </div>
+            <form id="whatsapp-form">
+                <div class="form-group">
+                    <label for="whatsapp-name">Seu Nome</label>
+                    <input type="text" id="whatsapp-name" placeholder="Digite seu nome completo..." required>
+                </div>
+                <div class="form-group">
+                    <label for="whatsapp-user-phone">Seu WhatsApp (com DDD)</label>
+                    <input type="text" id="whatsapp-user-phone" placeholder="Ex: (31) 99999-9999" required>
+                </div>
+                
+                <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem;">
+                    <button type="button" class="btn btn-secondary" id="btn-whatsapp-cancel">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" style="background-color: var(--success); color: white; font-weight: bold; border: none;">
+                        <i class="fa-brands fa-whatsapp"></i> Enviar Mensagem
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 

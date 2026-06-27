@@ -203,6 +203,36 @@
         </div>
     </div>
 
+    <!-- Admin Login Modal -->
+    <div class="modal-overlay" id="login-modal">
+        <div class="modal-content" style="max-width: 380px; padding: 2rem;">
+            <div class="modal-header" style="justify-content: center; flex-direction: column; text-align: center; gap: 0.5rem; margin-bottom: 1.5rem;">
+                <i class="fa-solid fa-lock" style="color: var(--warning); font-size: 2rem; display: block;"></i>
+                <h2 style="font-size: 1.3rem; font-weight: 700;">Acesso Administrativo</h2>
+                <p style="color: var(--text-secondary); font-size: 0.85rem; margin: 0;">Insira as credenciais de administrador BDMG.</p>
+            </div>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-user">Usuário</label>
+                    <input type="text" id="login-user" placeholder="Digite seu usuário..." required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="login-pass">Senha</label>
+                    <input type="password" id="login-pass" placeholder="Digite sua senha..." required autocomplete="current-password">
+                </div>
+                
+                <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 1.25rem; text-align: center; background-color: rgba(255, 255, 255, 0.03); padding: 0.5rem; border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.05);">
+                    <i class="fa-solid fa-circle-info"></i> Dica: Use <strong>admin</strong> / <strong>admin</strong>
+                </p>
+
+                <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+                    <button type="button" class="btn btn-secondary" id="btn-login-cancel">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" style="background-color: var(--warning); color: #000; font-weight: bold;">Entrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Captcha Security Modal -->
     <div class="modal-overlay" id="captcha-modal">
         <div class="modal-content" style="max-width: 380px; text-align: center; padding: 2rem;">

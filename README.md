@@ -28,9 +28,11 @@ A interface foi projetada seguindo as melhores práticas de design moderno, foca
     *   Estilo visual moderno (estilo reCAPTCHA/hCaptcha) com feedback visual de carregamento e sucesso.
     *   **Persistência via Cookie**: O estado verificado é salvo em cookie do navegador por 24 horas, evitando interrupções em acessos recorrentes durante a mesma sessão de trabalho.
 *   **Gerenciamento de Banner de Publicidade (Admin)**:
-    *   **Painel Administrativo**: Painel modal dedicado para configurar dinamicamente a visibilidade e o conteúdo de avisos ou anúncios promocionais.
+    *   **Painel Administrativo Autenticado**: Acesso restrito ao painel de configurações via formulário modal de **Login e Senha** (Credenciais padrões: `admin` / `admin`).
+    *   **Sessão Temporária**: Utilização de `sessionStorage` para manter o administrador autenticado durante o uso, evitando solicitações repetitivas de credenciais.
     *   **Customização Completa**: Parâmetros configuráveis de Título, Descrição, Texto de CTA (Ação), Link de Destino e Presets Visuais (BDMG Padrão, Mint Sustentável, Cosmic Inovação ou Dark).
     *   **Área de Exibição**: Banner horizontal responsivo no topo da interface principal com botão de fechamento temporário, salvando as definições administrativas no `localStorage`.
+
 
 
 

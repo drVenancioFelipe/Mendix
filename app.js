@@ -80,6 +80,12 @@ const adminModalClose = document.getElementById('admin-modal-close');
 const btnAdminCancel = document.getElementById('btn-admin-cancel');
 const adminForm = document.getElementById('admin-form');
 
+const loginModal = document.getElementById('login-modal');
+const loginForm = document.getElementById('login-form');
+const btnLoginCancel = document.getElementById('btn-login-cancel');
+const inputLoginUser = document.getElementById('login-user');
+const inputLoginPass = document.getElementById('login-pass');
+
 // Form Inputs
 const inputId = document.getElementById('supplier-id');
 const inputCnpj = document.getElementById('cnpj');
@@ -477,8 +483,43 @@ function closeAdminModal() {
     adminModal.classList.remove('active');
 }
 
+// Authentication Logic for Admin Panel
+function checkAdminAuth() {
+    return sessionStorage.getItem('bdmg_admin_logged') === 'true';
+}
+
+function openAdminPanelFlow() {
+    if (checkAdminAuth()) {
+        openAdminModal();
+    } else {
+        loginForm.reset();
+        loginModal.classList.add('active');
+    }
+}
+
+// Login Form Submit Event
+loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const user = inputLoginUser.value.trim();
+    const pass = inputLoginPass.value.trim();
+    
+    if (user === 'admin' && pass === 'admin') {
+        sessionStorage.setItem('bdmg_admin_logged', 'true');
+        loginModal.classList.remove('active');
+        showToast('Login efetuado com sucesso!', 'success');
+        setTimeout(openAdminModal, 300);
+    } else {
+        showToast('Usuário ou senha incorretos!', 'danger');
+    }
+});
+
+// Cancel Login
+btnLoginCancel.addEventListener('click', () => {
+    loginModal.classList.remove('active');
+});
+
 // Event Listeners for Admin panel
-btnAdminPanel.addEventListener('click', openAdminModal);
+btnAdminPanel.addEventListener('click', openAdminPanelFlow);
 adminModalClose.addEventListener('click', closeAdminModal);
 btnAdminCancel.addEventListener('click', closeAdminModal);
 

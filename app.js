@@ -59,6 +59,9 @@ const defaultBannerSettings = {
 };
 let bannerSettings = JSON.parse(localStorage.getItem('bdmg_banner_settings')) || defaultBannerSettings;
 
+const defaultWhatsappSettings = { number: "5531999999999" };
+let whatsappSettings = JSON.parse(localStorage.getItem('bdmg_whatsapp_settings')) || defaultWhatsappSettings;
+
 // DOM Elements
 const supplierGrid = document.getElementById('supplier-grid');
 const emptyState = document.getElementById('empty-state');
@@ -85,6 +88,11 @@ const btnLoginCancel = document.getElementById('btn-login-cancel');
 const inputLoginUser = document.getElementById('login-user');
 const inputLoginPass = document.getElementById('login-pass');
 
+const whatsappFab = document.getElementById('whatsapp-fab');
+const whatsappModal = document.getElementById('whatsapp-modal');
+const btnWhatsappCancel = document.getElementById('btn-whatsapp-cancel');
+const whatsappForm = document.getElementById('whatsapp-form');
+
 // Form Inputs
 const inputId = document.getElementById('supplier-id');
 const inputCnpj = document.getElementById('cnpj');
@@ -101,6 +109,12 @@ const inputBannerDesc = document.getElementById('banner-desc');
 const inputBannerBtnText = document.getElementById('banner-btn-text');
 const inputBannerBtnLink = document.getElementById('banner-btn-link');
 const inputBannerStyle = document.getElementById('banner-style');
+
+const inputWhatsappName = document.getElementById('whatsapp-name');
+const inputWhatsappUserPhone = document.getElementById('whatsapp-user-phone');
+
+const adminWhatsappForm = document.getElementById('admin-whatsapp-form');
+const inputAdminWhatsappNumber = document.getElementById('admin-whatsapp-number');
 
 // Toast Notification Helper
 function showToast(message, type = 'info') {
@@ -491,6 +505,8 @@ function openAdminModal() {
     inputBannerBtnLink.value = bannerSettings.btnLink;
     inputBannerStyle.value = bannerSettings.theme;
     
+    inputAdminWhatsappNumber.value = whatsappSettings.number;
+    
     adminModal.classList.add('active');
 }
 
@@ -581,7 +597,66 @@ adminForm.addEventListener('submit', (e) => {
     showToast('Configurações de publicidade atualizadas com sucesso!', 'success');
 });
 
+// Admin WhatsApp Form Submit Event
+adminWhatsappForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const cleanNumber = inputAdminWhatsappNumber.value.replace(/\D/g, '');
+    
+    if (cleanNumber.length < 10) {
+        showToast('Por favor, insira um número de WhatsApp válido (ex: 5531999999999).', 'danger');
+        return;
+    }
+    
+    whatsappSettings = { number: cleanNumber };
+    localStorage.setItem('bdmg_whatsapp_settings', JSON.stringify(whatsappSettings));
+    
+    closeAdminModal();
+    showToast('Configurações do WhatsApp salvas com sucesso!', 'success');
+});
+
+// WhatsApp Lead Capture Interactions
+whatsappFab.addEventListener('click', () => {
+    whatsappForm.reset();
+    whatsappModal.classList.add('active');
+});
+
+btnWhatsappCancel.addEventListener('click', () => {
+    whatsappModal.classList.remove('active');
+});
+
+// Format User Phone Input dynamically
+inputWhatsappUserPhone.addEventListener('input', (e) => {
+    let value = e.target.value.replace(/\D/g, '');
+    if (value.length > 11) value = value.substring(0, 11);
+    
+    if (value.length > 6) {
+        value = value.replace(/^(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+    } else if (value.length > 2) {
+        value = value.replace(/^(\d{2})(\d{0,5})/, "($1) $2");
+    }
+    e.target.value = value;
+});
+
+// Submit Lead and Redirect to WhatsApp
+whatsappForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = inputWhatsappName.value.trim();
+    const phone = inputWhatsappUserPhone.value.trim();
+    
+    const preConfiguredText = `Gostaria de indicar o cadastro de um fornecedor. Nome: ${name}, Contato: ${phone}`;
+    const encodedText = encodeURIComponent(preConfiguredText);
+    
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=${whatsappSettings.number}&text=${encodedText}`;
+    
+    // Open in a new tab
+    window.open(whatsappUrl, '_blank');
+    
+    whatsappModal.classList.remove('active');
+    showToast('Redirecionando para o WhatsApp...', 'success');
+});
+
 // Render the banner initially on page load
 renderBanner();
+
 
 

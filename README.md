@@ -14,10 +14,9 @@ A interface foi projetada seguindo as melhores práticas de design moderno, foca
 
 *   **Painel de Controle Financeiro (Tema Escuro/FinTech)**: Design moderno com cores corporativas do ecossistema BDMG, micro-animações de transição e responsividade completa.
 *   **Operações CRUD de Fornecedores**:
-    *   **Cadastro (Create)**: Formulário com máscara de CNPJ automática e validações de preenchimento.
-    *   **Consulta (Read)**: Cards interativos contendo dados cadastrais, nota interna atribuída pelo BDMG, badges de reputação e o **Parecer Técnico com responsividade completa** (com quebra dinâmica de linha, limite de 2 linhas via line-clamp CSS e elipse).
-    *   **Edição (Update)**: Permite alterar a categoria do serviço, pareceres técnicos e avaliações.
-    *   **Remoção (Delete)**: Exclusão com caixa de diálogo de confirmação.
+    *   **Cadastro (Create) / Carga Inicial**: Acessíveis de forma segura **dentro do Painel Admin** (aba Banco de Dados). Formulário com máscara de CNPJ e validações.
+    *   **Consulta (Read)**: Aberta ao público. Cards interativos contendo dados cadastrais, nota BDMG, reputações do ReclameAqui e o **Parecer Técnico com responsividade completa** (com quebra dinâmica e line-clamp CSS).
+    *   **Edição (Update) / Remoção (Delete)**: Ações rápidas nos cards da listagem (Edição/Deleção de registros).
 *   **Simulador de API do ReclameAqui**:
     *   Mecanismo de busca assíncrona que simula o consumo de API Rest em tempo real para CNPJs/Nomes de empresas conhecidas no cenário brasileiro (ex: *Cemig, Copasa, Totvs, Stefanini, Localiza*), retornando a nota atual e o status de reputação corporativa (RA1000, Ótimo, Regular, etc.).
 *   **Filtros & Busca Avançada**:
@@ -27,10 +26,12 @@ A interface foi projetada seguindo as melhores práticas de design moderno, foca
     *   Interceptador inteligente que bloqueia ações de busca e filtragem até que o usuário resolva o Captcha.
     *   Estilo visual moderno (estilo reCAPTCHA/hCaptcha) com feedback visual de carregamento e sucesso.
     *   **Persistência via Cookie**: O estado verificado é salvo em cookie do navegador por 24 horas, evitando interrupções em acessos recorrentes durante a mesma sessão de trabalho.
-*   **Gerenciamento de Banner de Publicidade (Admin)**:
+*   **Painel de Administração por Abas (Admin)**:
     *   **Painel Administrativo Autenticado**: Acesso restrito ao painel de configurações via formulário modal de **Login e Senha** (Credenciais padrões: `admin` / `admin`).
+    *   **Navegação por Abas**: Organização das ferramentas administrativas em duas abas principais:
+        *   **Publicidade & Banner**: Onde se configura a visibilidade, conteúdos e presets visuais (BDMG Padrão, Mint, Cosmic ou Dark) do banner destacado.
+        *   **Banco de Dados**: Onde ficam concentrados os botões protegidos de **Carga Inicial** e **Novo Fornecedor**.
     *   **Sessão Temporária**: Utilização de `sessionStorage` para manter o administrador autenticado durante o uso, evitando solicitações repetitivas de credenciais.
-    *   **Customização Completa**: Parâmetros configuráveis de Título, Descrição, Texto de CTA (Ação), Link de Destino e Presets Visuais (BDMG Padrão, Mint Sustentável, Cosmic Inovação ou Dark).
     *   **Área de Exibição**: Banner horizontal responsivo no topo da interface principal com botão de fechamento temporário, salvando as definições administrativas no `localStorage`.
 
 

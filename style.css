@@ -764,6 +764,76 @@ header {
     }
 }
 
+/* Carousel Banner styles */
+.promo-banner-carousel {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color);
+}
+
+.carousel-slide {
+    display: flex;
+    transition: background 0.3s ease;
+}
+
+/* Dots navigation indicators */
+.carousel-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    padding: 0;
+}
+
+.carousel-dot:hover {
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+.carousel-dot.active {
+    background-color: white;
+    width: 24px;
+    border-radius: 5px;
+}
+
+/* Admin Carousel Layout splits */
+.admin-carousel-layout {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 1.25rem;
+    margin-top: 0.5rem;
+}
+
+.carousel-list-container {
+    max-height: 380px;
+    overflow-y: auto;
+}
+
+.draggable-ad-item {
+    cursor: grab;
+}
+
+.draggable-ad-item:active {
+    cursor: grabbing;
+}
+
+.draggable-ad-item.active {
+    background-color: rgba(245, 158, 11, 0.08) !important;
+}
+
+.draggable-ad-item:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+}
+
+/* Responsive adjustment */
+@media (max-width: 576px) {
+    .admin-carousel-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+
 
 
 

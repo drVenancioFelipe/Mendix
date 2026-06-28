@@ -29,11 +29,11 @@ A interface foi projetada seguindo as melhores práticas de design moderno, foca
 *   **Painel de Administração por Abas (Admin)**:
     *   **Painel Administrativo Autenticado**: Acesso restrito ao painel de configurações via formulário modal de **Login e Senha** (Credenciais padrões: `admin` / `admin`).
     *   **Navegação por Abas**: Organização das ferramentas administrativas em três abas principais:
-        *   **Publicidade & Banner**: Onde se configura a visibilidade, conteúdos e presets visuais (BDMG Padrão, Mint, Cosmic ou Dark) do banner destacado.
+        *   **Publicidade & Banner**: Onde se configura a visibilidade e os conteúdos do **Carrossel de Banners** (5 anúncios). Possui uma interface interativa dividida em colunas que permite editar cada slide e **reordenar os assuntos arrastando os itens com o mouse (Drag and Drop)** com atualização em tempo real.
         *   **Banco de Dados**: Onde ficam concentrados os botões protegidos de **Carga Inicial** e **Novo Fornecedor**.
         *   **WhatsApp**: Onde o administrador configura e valida o número de celular que receberá as indicações (salvo no `localStorage`).
     *   **Sessão Temporária**: Utilização de `sessionStorage` para manter o administrador autenticado durante o uso, evitando solicitações repetitivas de credenciais.
-    *   **Área de Exibição**: Banner horizontal responsivo no topo da interface principal com botão de fechamento temporário.
+    *   **Área de Exibição (Carrossel Dinâmico)**: Carrossel horizontal responsivo no topo da interface principal contendo 5 slides com transições automáticas a cada 5 segundos, indicadores de navegação (dots) interativos e botão de fechamento temporário.
 *   **Indicação via WhatsApp**:
     *   **Botão Flutuante (FAB)**: Botão verde circular com o ícone do WhatsApp no canto inferior direito com animação de pulso.
     *   **Modal de Captura**: Solicita o Nome e o WhatsApp com máscara/DDD do usuário antes de abrir a conversa.

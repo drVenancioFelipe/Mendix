@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reputação de Fornecedores - BDMG</title>
+    <title>Reputação de Fornecedores - Síndicos e Fornecedores</title>
     <link rel="stylesheet" href="style.css">
     <!-- FontAwesome for Premium Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -14,7 +14,7 @@
         <!-- Header -->
         <header>
             <div class="logo-section">
-                <h1>BDMG low-code</h1>
+                <h1>Síndicos e Fornecedores</h1>
                 <p>Módulo de Análise & Reputação de Fornecedores (Integração ReclameAqui)</p>
             </div>
             <div class="header-actions">
@@ -100,7 +100,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="rating-internal">Avaliação Interna BDMG (1-5)</label>
+                        <label for="rating-internal">Avaliação Interna (1-5)</label>
                         <select id="rating-internal">
                             <option value="5">⭐⭐⭐⭐⭐ (Excelente)</option>
                             <option value="4">⭐⭐⭐⭐ (Muito Bom)</option>
@@ -147,7 +147,7 @@
     <div class="modal-overlay" id="admin-modal">
         <div class="modal-content" style="max-width: 550px;">
             <div class="modal-header" style="border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; margin-bottom: 1rem;">
-                <h2>Painel do Administrador BDMG</h2>
+                <h2>Painel do Administrador</h2>
                 <button class="modal-close" id="admin-modal-close">&times;</button>
             </div>
             
@@ -191,7 +191,7 @@
                                 
                                 <div class="form-group">
                                     <label for="banner-title" style="font-size: 0.75rem;">Título do Slide</label>
-                                    <input type="text" id="banner-title" placeholder="Ex: BDMG Proger" required>
+                                    <input type="text" id="banner-title" placeholder="Ex: Síndicos e Fornecedores Proger" required>
                                 </div>
 
                                 <div class="form-group">
@@ -213,7 +213,7 @@
                                 <div class="form-group" style="margin-bottom: 0;">
                                     <label for="banner-style" style="font-size: 0.75rem;">Estilo Visual (Tema)</label>
                                     <select id="banner-style">
-                                        <option value="banner-theme-bdmg">BDMG Azul & Ouro</option>
+                                        <option value="banner-theme-sf">Síndicos e Fornecedores Azul & Ouro</option>
                                         <option value="banner-theme-mint">Verde Mint & Teal</option>
                                         <option value="banner-theme-cosmic">Cosmic Indigo & Pink</option>
                                         <option value="banner-theme-dark">Dark Minimalist</option>
@@ -235,7 +235,7 @@
                 <div style="padding: 0.5rem 0;">
                     <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-primary);">Ações Globais de Fornecedores</h3>
                     <p style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.4; margin-bottom: 1.5rem;">
-                        Controles avançados para carregar a base fictícia padrão ou inserir registros manualmente na esteira de reputação do BDMG.
+                        Controles avançados para carregar a base fictícia padrão ou inserir registros manualmente na esteira de reputação do Síndicos e Fornecedores.
                     </p>
                     
                     <div style="display: flex; flex-direction: column; gap: 1rem;">
@@ -299,7 +299,7 @@
             <div class="modal-header" style="justify-content: center; flex-direction: column; text-align: center; gap: 0.5rem; margin-bottom: 1.5rem;">
                 <i class="fa-solid fa-lock" style="color: var(--warning); font-size: 2rem; display: block;"></i>
                 <h2 style="font-size: 1.3rem; font-weight: 700;">Acesso Administrativo</h2>
-                <p style="color: var(--text-secondary); font-size: 0.85rem; margin: 0;">Insira as credenciais de administrador BDMG.</p>
+                <p style="color: var(--text-secondary); font-size: 0.85rem; margin: 0;">Insira as credenciais de administrador.</p>
             </div>
             <form id="login-form">
                 <div class="form-group">
@@ -330,7 +330,7 @@
                 <i class="fa-solid fa-user-shield" style="color: var(--accent); font-size: 2.5rem; margin-bottom: 0.75rem; display: inline-block;"></i>
                 <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">Verificação de Segurança</h3>
                 <p style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.4;">
-                    Por favor, confirme que você é humano para realizar pesquisas no banco de dados do BDMG.
+                    Por favor, confirme que você é humano para realizar pesquisas no banco de dados do Síndicos e Fornecedores.
                 </p>
             </div>
             
@@ -358,7 +358,7 @@
             <div class="modal-header" style="justify-content: center; flex-direction: column; text-align: center; gap: 0.5rem; margin-bottom: 1.5rem;">
                 <i class="fa-brands fa-whatsapp" style="color: var(--success); font-size: 2.8rem; display: block;"></i>
                 <h2 style="font-size: 1.3rem; font-weight: 700;">Falar pelo WhatsApp</h2>
-                <p style="color: var(--text-secondary); font-size: 0.85rem; margin: 0;">Indique um fornecedor enviando uma mensagem direta ao administrador do BDMG.</p>
+                <p style="color: var(--text-secondary); font-size: 0.85rem; margin: 0;">Indique um fornecedor enviando uma mensagem direta ao administrador do Síndicos e Fornecedores.</p>
             </div>
             <form id="whatsapp-form">
                 <div class="form-group">

@@ -600,15 +600,15 @@ header {
 }
 
 /* Banner Themes */
-.banner-theme-bdmg {
+.banner-theme-sf {
     background: linear-gradient(135deg, #091e36, #16365c);
     border-color: rgba(245, 158, 11, 0.3);
 }
-.banner-theme-bdmg .promo-banner-btn {
+.banner-theme-sf .promo-banner-btn {
     background-color: var(--warning);
     color: #000;
 }
-.banner-theme-bdmg .promo-banner-btn:hover {
+.banner-theme-sf .promo-banner-btn:hover {
     background-color: #fbbf24;
 }
 

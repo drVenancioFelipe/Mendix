@@ -1,6 +1,6 @@
-# 🏦 BDMG Low-Code - Sistema de Avaliação de Fornecedores
+# 🏢 Síndicos e Fornecedores - Sistema de Avaliação de Fornecedores
 
-Este repositório contém a especificação técnica e um protótipo funcional do **Sistema de Gestão e Reputação de Fornecedores**, desenvolvido em alinhamento com a iniciativa de contratação de plataforma low-code (Mendix) pelo **BDMG (Banco de Desenvolvimento de Minas Gerais)** no ecossistema **Microsoft Azure**.
+Este repositório contém a especificação técnica e um protótipo funcional do **Sistema de Gestão e Reputação de Fornecedores**, denominado **Síndicos e Fornecedores**, desenvolvido em alinhamento com a iniciativa de contratação de plataforma low-code (Mendix) no ecossistema **Microsoft Azure**.
 
 Como o Mendix é uma plataforma low-code com IDE gráfica proprietária e arquivos de modelo binários (`.mpr`), este repositório serve como base técnica híbrida contendo:
 1.  **Protótipo Frontend Interativo (`HTML5/CSS3/VanillaJS`)**: Demonstração de UX/UI ágil de alta fidelidade e simulação de consumo da API do ReclameAqui.
@@ -12,10 +12,10 @@ Como o Mendix é uma plataforma low-code com IDE gráfica proprietária e arquiv
 
 A interface foi projetada seguindo as melhores práticas de design moderno, focando em simplicidade, agilidade e objetividade:
 
-*   **Painel de Controle Financeiro (Tema Escuro/FinTech)**: Design moderno com cores corporativas do ecossistema BDMG, micro-animações de transição e responsividade completa.
+*   **Painel de Controle Financeiro (Tema Escuro/FinTech)**: Design moderno com cores corporativas da plataforma, micro-animações de transição e responsividade completa.
 *   **Operações CRUD de Fornecedores**:
     *   **Cadastro (Create) / Carga Inicial**: Acessíveis de forma segura **dentro do Painel Admin** (aba Banco de Dados). Formulário com máscara de CNPJ e validações.
-    *   **Consulta (Read)**: Aberta ao público. Cards interativos contendo dados cadastrais, nota BDMG, reputações do ReclameAqui e o **Parecer Técnico com responsividade completa** (com quebra dinâmica e line-clamp CSS).
+    *   **Consulta (Read)**: Aberta ao público. Cards interativos contendo dados cadastrais, nota interna, reputações do ReclameAqui e o **Parecer Técnico com responsividade completa** (com quebra dinâmica e line-clamp CSS).
     *   **Edição (Update) / Remoção (Delete)**: Ações rápidas nos cards da listagem (Edição/Deleção de registros).
 *   **Simulador de API do ReclameAqui**:
     *   Mecanismo de busca assíncrona que simula o consumo de API Rest em tempo real para CNPJs/Nomes de empresas conhecidas no cenário brasileiro (ex: *Cemig, Copasa, Totvs, Stefanini, Localiza*), retornando a nota atual e o status de reputação corporativa (RA1000, Ótimo, Regular, etc.).

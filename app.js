@@ -32,7 +32,7 @@ const initialSuppliers = [
         ratingInternal: "3",
         raStatus: "regular",
         raScore: "6.5",
-        description: "Fornecimento de água e saneamento para as agências de fomento regional do BDMG."
+        description: "Fornecimento de água e saneamento."
     },
     {
         id: "3",
@@ -47,42 +47,42 @@ const initialSuppliers = [
 ];
 
 // App State Management
-let suppliers = JSON.parse(localStorage.getItem('bdmg_suppliers')) || [];
+let suppliers = JSON.parse(localStorage.getItem('sf_suppliers')) || [];
 
 const defaultCarouselBanners = [
     {
-        title: "BDMG Financiamento Verde 2026",
-        desc: "Linhas de crédito especiais para projetos de sustentabilidade e transição energética em Minas Gerais. Taxas a partir de 0.5% a.m.",
-        btnText: "Simular Agora",
-        btnLink: "https://www.bdmg.mg.gov.br",
-        theme: "banner-theme-bdmg"
+        title: "Sustentabilidade em Foco",
+        desc: "Soluções especiais para projetos de sustentabilidade, energia solar e transição energética nos condomínios.",
+        btnText: "Saiba Mais",
+        btnLink: "#",
+        theme: "banner-theme-sf"
     },
     {
-        title: "BDMG Municípios",
-        desc: "Financiamento para projetos de infraestrutura urbana, saneamento e mobilidade para prefeituras de todas as regiões de Minas Gerais.",
+        title: "Gestão de Condomínios",
+        desc: "Apoio completo para projetos de infraestrutura, reformas, saneamento e melhoria urbana em condomínios residenciais.",
         btnText: "Ver Edital",
-        btnLink: "https://www.bdmg.mg.gov.br",
+        btnLink: "#",
         theme: "banner-theme-mint"
     },
     {
-        title: "BDMG Inovação Digital",
-        desc: "Crédito ágil para micro e pequenas empresas investirem em transformação digital, software e automação comercial.",
-        btnText: "Saiba Mais",
-        btnLink: "https://www.bdmg.mg.gov.br",
+        title: "Inovação & Tecnologia",
+        desc: "Sistemas ágeis para portaria inteligente, monitoramento por câmeras, controle de acesso e automação condominial.",
+        btnText: "Ver Detalhes",
+        btnLink: "#",
         theme: "banner-theme-cosmic"
     },
     {
-        title: "BDMG Financiamento Agro",
-        desc: "Recursos exclusivos para produtores rurais e cooperativas modernizarem frotas, silos e investirem na safra atual.",
-        btnText: "Solicitar Crédito",
-        btnLink: "https://www.bdmg.mg.gov.br",
-        theme: "banner-theme-bdmg"
+        title: "Manutenção Preventiva",
+        desc: "Facilidades para contratar manutenção de elevadores, pintura de fachadas, reformas estruturais e segurança contra incêndios.",
+        btnText: "Solicitar Orçamento",
+        btnLink: "#",
+        theme: "banner-theme-sf"
     },
     {
-        title: "BDMG Capital de Giro",
-        desc: "Reforce o caixa da sua empresa com as linhas de giro flexíveis BDMG. Carência estendida e prazos de pagamento de até 36 meses.",
-        btnText: "Simular Giro",
-        btnLink: "https://www.bdmg.mg.gov.br",
+        title: "Crédito Condominial",
+        desc: "Reforce o caixa do seu condomínio com linhas de crédito flexíveis, taxas reduzidas e prazos de pagamento estendidos.",
+        btnText: "Simular Crédito",
+        btnLink: "#",
         theme: "banner-theme-dark"
     }
 ];
@@ -91,11 +91,11 @@ const defaultBannerSettings = {
     visible: true
 };
 
-let bannerSettings = JSON.parse(localStorage.getItem('bdmg_banner_settings')) || defaultBannerSettings;
-let carouselBanners = JSON.parse(localStorage.getItem('bdmg_carousel_banners')) || defaultCarouselBanners;
+let bannerSettings = JSON.parse(localStorage.getItem('sf_banner_settings')) || defaultBannerSettings;
+let carouselBanners = JSON.parse(localStorage.getItem('sf_carousel_banners')) || defaultCarouselBanners;
 
 const defaultWhatsappSettings = { number: "5531999999999" };
-let whatsappSettings = JSON.parse(localStorage.getItem('bdmg_whatsapp_settings')) || defaultWhatsappSettings;
+let whatsappSettings = JSON.parse(localStorage.getItem('sf_whatsapp_settings')) || defaultWhatsappSettings;
 
 // DOM Elements
 const supplierGrid = document.getElementById('supplier-grid');
@@ -238,7 +238,7 @@ function renderSuppliers() {
                                 <strong>Categoria:</strong> ${sup.category}
                             </p>
                             <p style="font-size: 0.85rem; color: var(--text-secondary);">
-                                <strong>Avaliação BDMG:</strong> ${stars}
+                                <strong>Avaliação Interna:</strong> ${stars}
                             </p>
                             <div class="reputation-details">
                                 <div class="rep-stat score-stat">
@@ -270,14 +270,14 @@ function renderSuppliers() {
 
 // Save to LocalStorage
 function saveSuppliers() {
-    localStorage.setItem('bdmg_suppliers', JSON.stringify(suppliers));
+    localStorage.setItem('sf_suppliers', JSON.stringify(suppliers));
     renderSuppliers();
 }
 
 // Load Mock Initial Data
 btnLoadMock.addEventListener('click', () => {
     if (suppliers.length > 0) {
-        if (!confirm('Deseja sobrescrever a lista atual com os fornecedores padrão do BDMG?')) return;
+        if (!confirm('Deseja sobrescrever a lista atual com os fornecedores padrão?')) return;
     }
     suppliers = [...initialSuppliers];
     saveSuppliers();
@@ -406,7 +406,7 @@ window.editSupplier = function(id) {
 
 // Delete supplier handler
 window.deleteSupplier = function(id) {
-    if (confirm('Tem certeza que deseja excluir permanentemente este fornecedor de sua base BDMG?')) {
+    if (confirm('Tem certeza que deseja excluir permanentemente este fornecedor?')) {
         suppliers = suppliers.filter(s => s.id !== id);
         saveSuppliers();
         showToast('Fornecedor removido com sucesso.', 'success');
@@ -445,7 +445,7 @@ const captchaModal = document.getElementById('captcha-modal');
 const captchaCheckbox = document.getElementById('captcha-checkbox');
 
 function isCaptchaVerified() {
-    return getCookie('bdmg_captcha_verified') === 'true';
+    return getCookie('sf_captcha_verified') === 'true';
 }
 
 function handleSearchAndFilter() {
@@ -471,7 +471,7 @@ captchaCheckbox.addEventListener('click', () => {
         captchaCheckbox.classList.add('verified');
         
         // Save cookie for 1 day (86400 seconds)
-        setCookie('bdmg_captcha_verified', 'true', { 'max-age': 86400 });
+        setCookie('sf_captcha_verified', 'true', { 'max-age': 86400 });
         
         showToast('Identidade verificada! Pesquisa desbloqueada.', 'success');
         
@@ -748,7 +748,7 @@ function closeAdminModal() {
 
 // Authentication Logic for Admin Panel
 function checkAdminAuth() {
-    return sessionStorage.getItem('bdmg_admin_logged') === 'true';
+    return sessionStorage.getItem('sf_admin_logged') === 'true';
 }
 
 function openAdminPanelFlow() {
@@ -767,7 +767,7 @@ loginForm.addEventListener('submit', (e) => {
     const pass = inputLoginPass.value.trim();
     
     if (user === 'admin' && pass === 'admin') {
-        sessionStorage.setItem('bdmg_admin_logged', 'true');
+        sessionStorage.setItem('sf_admin_logged', 'true');
         loginModal.classList.remove('active');
         showToast('Login efetuado com sucesso!', 'success');
         setTimeout(openAdminModal, 300);
@@ -819,13 +819,13 @@ adminForm.addEventListener('submit', (e) => {
     
     // Commit temp list to actual state
     carouselBanners = JSON.parse(JSON.stringify(tempCarouselBanners));
-    localStorage.setItem('bdmg_carousel_banners', JSON.stringify(carouselBanners));
+    localStorage.setItem('sf_carousel_banners', JSON.stringify(carouselBanners));
     
     // Save banner visibility
     bannerSettings = {
         visible: inputBannerVisible.checked
     };
-    localStorage.setItem('bdmg_banner_settings', JSON.stringify(bannerSettings));
+    localStorage.setItem('sf_banner_settings', JSON.stringify(bannerSettings));
     
     renderBanner();
     closeAdminModal();
@@ -851,7 +851,7 @@ adminWhatsappForm.addEventListener('submit', (e) => {
     }
     
     whatsappSettings = { number: cleanNumber };
-    localStorage.setItem('bdmg_whatsapp_settings', JSON.stringify(whatsappSettings));
+    localStorage.setItem('sf_whatsapp_settings', JSON.stringify(whatsappSettings));
     
     closeAdminModal();
     showToast('Configurações do WhatsApp salvas com sucesso!', 'success');
@@ -901,8 +901,8 @@ whatsappForm.addEventListener('submit', (e) => {
 // Render the banner initially on page load
 renderBanner();
 
-if (!localStorage.getItem('bdmg_carousel_banners')) {
-    localStorage.setItem('bdmg_carousel_banners', JSON.stringify(carouselBanners));
+if (!localStorage.getItem('sf_carousel_banners')) {
+    localStorage.setItem('sf_carousel_banners', JSON.stringify(carouselBanners));
 }
 
 

@@ -615,7 +615,7 @@ function renderAdminAdList() {
             <div style="display: flex; align-items: center; gap: 0.5rem; pointer-events: none;">
                 <i class="fa-solid fa-grip-lines" style="color: var(--text-secondary);"></i>
                 <span style="font-size: 0.85rem; font-weight: 500; color: ${index === activeEditIndex ? 'var(--warning)' : 'var(--text-primary)'}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px;">
-                    ${ad.title || \`Slide \${index + 1}\`}
+                    ${ad.title || 'Slide ' + (index + 1)}
                 </span>
             </div>
             <button type="button" class="btn-edit-ad" onclick="selectAdToEdit(${index})" style="background: none; border: none; color: var(--accent); cursor: pointer; padding: 0.25rem;">

@@ -49,15 +49,50 @@ const initialSuppliers = [
 // App State Management
 let suppliers = JSON.parse(localStorage.getItem('bdmg_suppliers')) || [];
 
+const defaultCarouselBanners = [
+    {
+        title: "BDMG Financiamento Verde 2026",
+        desc: "Linhas de crédito especiais para projetos de sustentabilidade e transição energética em Minas Gerais. Taxas a partir de 0.5% a.m.",
+        btnText: "Simular Agora",
+        btnLink: "https://www.bdmg.mg.gov.br",
+        theme: "banner-theme-bdmg"
+    },
+    {
+        title: "BDMG Municípios",
+        desc: "Financiamento para projetos de infraestrutura urbana, saneamento e mobilidade para prefeituras de todas as regiões de Minas Gerais.",
+        btnText: "Ver Edital",
+        btnLink: "https://www.bdmg.mg.gov.br",
+        theme: "banner-theme-mint"
+    },
+    {
+        title: "BDMG Inovação Digital",
+        desc: "Crédito ágil para micro e pequenas empresas investirem em transformação digital, software e automação comercial.",
+        btnText: "Saiba Mais",
+        btnLink: "https://www.bdmg.mg.gov.br",
+        theme: "banner-theme-cosmic"
+    },
+    {
+        title: "BDMG Financiamento Agro",
+        desc: "Recursos exclusivos para produtores rurais e cooperativas modernizarem frotas, silos e investirem na safra atual.",
+        btnText: "Solicitar Crédito",
+        btnLink: "https://www.bdmg.mg.gov.br",
+        theme: "banner-theme-bdmg"
+    },
+    {
+        title: "BDMG Capital de Giro",
+        desc: "Reforce o caixa da sua empresa com as linhas de giro flexíveis BDMG. Carência estendida e prazos de pagamento de até 36 meses.",
+        btnText: "Simular Giro",
+        btnLink: "https://www.bdmg.mg.gov.br",
+        theme: "banner-theme-dark"
+    }
+];
+
 const defaultBannerSettings = {
-    visible: true,
-    title: "BDMG Financiamento Verde 2026",
-    desc: "Linhas de crédito especiais para projetos de sustentabilidade e transição energética em Minas Gerais. Taxas a partir de 0.5% a.m.",
-    btnText: "Simular Agora",
-    btnLink: "https://www.bdmg.mg.gov.br",
-    theme: "banner-theme-bdmg"
+    visible: true
 };
+
 let bannerSettings = JSON.parse(localStorage.getItem('bdmg_banner_settings')) || defaultBannerSettings;
+let carouselBanners = JSON.parse(localStorage.getItem('bdmg_carousel_banners')) || defaultCarouselBanners;
 
 const defaultWhatsappSettings = { number: "5531999999999" };
 let whatsappSettings = JSON.parse(localStorage.getItem('bdmg_whatsapp_settings')) || defaultWhatsappSettings;
@@ -109,6 +144,9 @@ const inputBannerDesc = document.getElementById('banner-desc');
 const inputBannerBtnText = document.getElementById('banner-btn-text');
 const inputBannerBtnLink = document.getElementById('banner-btn-link');
 const inputBannerStyle = document.getElementById('banner-style');
+
+const draggableAdList = document.getElementById('draggable-ad-list');
+const editAdIndex = document.getElementById('edit-ad-index');
 
 const inputWhatsappName = document.getElementById('whatsapp-name');
 const inputWhatsappUserPhone = document.getElementById('whatsapp-user-phone');
@@ -460,21 +498,53 @@ if (suppliers.length === 0) {
 // ==========================================
 // Banner Management & Admin Logic
 // ==========================================
+let carouselIntervalId = null;
+let currentSlideIndex = 0;
+
 function renderBanner() {
-    if (!bannerSettings.visible) {
+    if (carouselIntervalId) {
+        clearInterval(carouselIntervalId);
+        carouselIntervalId = null;
+    }
+    
+    if (!bannerSettings.visible || carouselBanners.length === 0) {
         promoBannerContainer.innerHTML = '';
         return;
     }
     
+    let slidesHtml = '';
+    let dotsHtml = '';
+    
+    carouselBanners.forEach((banner, index) => {
+        slidesHtml += `
+            <li class="carousel-slide ${banner.theme}" style="min-width: 100%; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; padding: 1rem 3.5rem 1.25rem 2rem; position: relative;">
+                <div class="promo-banner-content">
+                    <h2>${banner.title}</h2>
+                    <p>${banner.desc}</p>
+                </div>
+                <div class="promo-banner-actions">
+                    <a href="${banner.btnLink}" target="_blank" class="promo-banner-btn">${banner.btnText}</a>
+                </div>
+            </li>
+        `;
+        
+        dotsHtml += `
+            <button type="button" class="carousel-dot ${index === 0 ? 'active' : ''}" data-slide="${index}" aria-label="Slide ${index + 1}"></button>
+        `;
+    });
+    
     promoBannerContainer.innerHTML = `
-        <div class="promo-banner ${bannerSettings.theme}" id="promo-banner">
-            <button class="promo-banner-close" id="promo-banner-close-btn">&times;</button>
-            <div class="promo-banner-content">
-                <h2>${bannerSettings.title}</h2>
-                <p>${bannerSettings.desc}</p>
+        <div class="promo-banner-carousel" id="promo-banner" style="position: relative; overflow: hidden; width: 100%; border-radius: 12px; margin-bottom: 2rem;">
+            <button class="promo-banner-close" id="promo-banner-close-btn" style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); z-index: 10; background: none; border: none; font-size: 1.5rem; color: rgba(255,255,255,0.7); cursor: pointer;">&times;</button>
+            
+            <div class="carousel-track-container" style="width: 100%; overflow: hidden;">
+                <ul class="carousel-track" id="carousel-track" style="display: flex; list-style: none; margin: 0; padding: 0; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); width: 100%;">
+                    ${slidesHtml}
+                </ul>
             </div>
-            <div class="promo-banner-actions">
-                <a href="${bannerSettings.btnLink}" target="_blank" class="promo-banner-btn">${bannerSettings.btnText}</a>
+            
+            <div class="carousel-nav" id="carousel-nav-dots" style="position: absolute; bottom: 0.5rem; left: 50%; transform: translateX(-50%); display: flex; gap: 0.5rem; z-index: 10;">
+                ${dotsHtml}
             </div>
         </div>
     `;
@@ -483,12 +553,170 @@ function renderBanner() {
         const banner = document.getElementById('promo-banner');
         banner.style.opacity = '0';
         banner.style.transition = 'opacity 0.3s ease';
+        if (carouselIntervalId) {
+            clearInterval(carouselIntervalId);
+            carouselIntervalId = null;
+        }
         setTimeout(() => banner.remove(), 300);
+    });
+    
+    const dots = document.querySelectorAll('.carousel-dot');
+    const track = document.getElementById('carousel-track');
+    
+    currentSlideIndex = 0;
+    
+    function goToSlide(index) {
+        if (index < 0 || index >= carouselBanners.length) return;
+        currentSlideIndex = index;
+        
+        track.style.transform = `translateX(-${index * 100}%)`;
+        
+        dots.forEach((dot, idx) => {
+            if (idx === index) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+    }
+    
+    dots.forEach(dot => {
+        dot.addEventListener('click', () => {
+            const slideIndex = parseInt(dot.getAttribute('data-slide'));
+            goToSlide(slideIndex);
+            resetCarouselTimer();
+        });
+    });
+    
+    function nextSlide() {
+        const nextIdx = (currentSlideIndex + 1) % carouselBanners.length;
+        goToSlide(nextIdx);
+    }
+    
+    function resetCarouselTimer() {
+        if (carouselIntervalId) {
+            clearInterval(carouselIntervalId);
+        }
+        carouselIntervalId = setInterval(nextSlide, 5000);
+    }
+    
+    resetCarouselTimer();
+}
+
+let tempCarouselBanners = [];
+let activeEditIndex = 0;
+
+function renderAdminAdList() {
+    draggableAdList.innerHTML = tempCarouselBanners.map((ad, index) => `
+        <div class="draggable-ad-item ${index === activeEditIndex ? 'active' : ''}" 
+             draggable="true" 
+             data-index="${index}"
+             style="display: flex; align-items: center; justify-content: space-between; padding: 0.6rem 0.8rem; background-color: rgba(255,255,255,0.03); border: 1px solid ${index === activeEditIndex ? 'var(--warning)' : 'rgba(255,255,255,0.08)'}; border-radius: 6px; margin-bottom: 0.5rem; cursor: grab; transition: all 0.2s ease;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; pointer-events: none;">
+                <i class="fa-solid fa-grip-lines" style="color: var(--text-secondary);"></i>
+                <span style="font-size: 0.85rem; font-weight: 500; color: ${index === activeEditIndex ? 'var(--warning)' : 'var(--text-primary)'}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px;">
+                    ${ad.title || \`Slide \${index + 1}\`}
+                </span>
+            </div>
+            <button type="button" class="btn-edit-ad" onclick="selectAdToEdit(${index})" style="background: none; border: none; color: var(--accent); cursor: pointer; padding: 0.25rem;">
+                <i class="fa-solid fa-pen-to-square"></i>
+            </button>
+        </div>
+    `).join('');
+    
+    bindDragAndDropEvents();
+}
+
+function saveActiveAdFieldsToTemp() {
+    if (activeEditIndex >= 0 && activeEditIndex < tempCarouselBanners.length) {
+        tempCarouselBanners[activeEditIndex] = {
+            title: inputBannerTitle.value.trim(),
+            desc: inputBannerDesc.value.trim(),
+            btnText: inputBannerBtnText.value.trim(),
+            btnLink: inputBannerBtnLink.value.trim(),
+            theme: inputBannerStyle.value
+        };
+    }
+}
+
+function loadAdFieldsIntoEditor(index) {
+    const ad = tempCarouselBanners[index];
+    if (ad) {
+        editAdIndex.value = index;
+        inputBannerTitle.value = ad.title;
+        inputBannerDesc.value = ad.desc;
+        inputBannerBtnText.value = ad.btnText;
+        inputBannerBtnLink.value = ad.btnLink;
+        inputBannerStyle.value = ad.theme;
+    }
+}
+
+window.selectAdToEdit = function(index) {
+    saveActiveAdFieldsToTemp();
+    activeEditIndex = index;
+    renderAdminAdList();
+    loadAdFieldsIntoEditor(index);
+};
+
+let dragSrcEl = null;
+
+function bindDragAndDropEvents() {
+    const items = draggableAdList.querySelectorAll('.draggable-ad-item');
+    items.forEach(item => {
+        item.addEventListener('dragstart', handleDragStart);
+        item.addEventListener('dragover', handleDragOver);
+        item.addEventListener('drop', handleDrop);
+        item.addEventListener('dragend', handleDragEnd);
     });
 }
 
+function handleDragStart(e) {
+    this.style.opacity = '0.4';
+    dragSrcEl = this;
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', this.getAttribute('data-index'));
+}
+
+function handleDragOver(e) {
+    if (e.preventDefault) {
+        e.preventDefault();
+    }
+    e.dataTransfer.dropEffect = 'move';
+    return false;
+}
+
+function handleDrop(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    
+    if (dragSrcEl !== this) {
+        const fromIndex = parseInt(dragSrcEl.getAttribute('data-index'));
+        const toIndex = parseInt(this.getAttribute('data-index'));
+        
+        saveActiveAdFieldsToTemp();
+        
+        const movedItem = tempCarouselBanners.splice(fromIndex, 1)[0];
+        tempCarouselBanners.splice(toIndex, 0, movedItem);
+        
+        if (activeEditIndex === fromIndex) {
+            activeEditIndex = toIndex;
+        } else if (fromIndex < activeEditIndex && toIndex >= activeEditIndex) {
+            activeEditIndex--;
+        } else if (fromIndex > activeEditIndex && toIndex <= activeEditIndex) {
+            activeEditIndex++;
+        }
+        
+        renderAdminAdList();
+        loadAdFieldsIntoEditor(activeEditIndex);
+    }
+    return false;
+}
+
+function handleDragEnd(e) {
+    this.style.opacity = '1';
+}
+
 function openAdminModal() {
-    // Reset to the first tab (Banner)
     const tabButtons = document.querySelectorAll('.admin-tab-btn');
     const tabPanels = document.querySelectorAll('.admin-tab-panel');
     
@@ -502,11 +730,12 @@ function openAdminModal() {
     tabPanels[0].classList.add('active');
 
     inputBannerVisible.checked = bannerSettings.visible;
-    inputBannerTitle.value = bannerSettings.title;
-    inputBannerDesc.value = bannerSettings.desc;
-    inputBannerBtnText.value = bannerSettings.btnText;
-    inputBannerBtnLink.value = bannerSettings.btnLink;
-    inputBannerStyle.value = bannerSettings.theme;
+    
+    tempCarouselBanners = JSON.parse(JSON.stringify(carouselBanners));
+    activeEditIndex = 0;
+    
+    renderAdminAdList();
+    loadAdFieldsIntoEditor(0);
     
     inputAdminWhatsappNumber.value = whatsappSettings.number;
     
@@ -585,19 +814,30 @@ document.querySelectorAll('.btn-admin-cancel-btn').forEach(btn => {
 adminForm.addEventListener('submit', (e) => {
     e.preventDefault();
     
-    bannerSettings = {
-        visible: inputBannerVisible.checked,
-        title: inputBannerTitle.value.trim(),
-        desc: inputBannerDesc.value.trim(),
-        btnText: inputBannerBtnText.value.trim(),
-        btnLink: inputBannerBtnLink.value.trim(),
-        theme: inputBannerStyle.value
-    };
+    // Save current active editing fields to temp array first
+    saveActiveAdFieldsToTemp();
     
+    // Commit temp list to actual state
+    carouselBanners = JSON.parse(JSON.stringify(tempCarouselBanners));
+    localStorage.setItem('bdmg_carousel_banners', JSON.stringify(carouselBanners));
+    
+    // Save banner visibility
+    bannerSettings = {
+        visible: inputBannerVisible.checked
+    };
     localStorage.setItem('bdmg_banner_settings', JSON.stringify(bannerSettings));
+    
     renderBanner();
     closeAdminModal();
     showToast('Configurações de publicidade atualizadas com sucesso!', 'success');
+});
+
+// Real-time title update in Admin draggable list
+inputBannerTitle.addEventListener('input', (e) => {
+    const activeItemText = draggableAdList.querySelector(`.draggable-ad-item[data-index="${activeEditIndex}"] span`);
+    if (activeItemText) {
+        activeItemText.textContent = e.target.value.trim() || `Slide ${activeEditIndex + 1}`;
+    }
 });
 
 // Admin WhatsApp Form Submit Event
@@ -660,6 +900,10 @@ whatsappForm.addEventListener('submit', (e) => {
 
 // Render the banner initially on page load
 renderBanner();
+
+if (!localStorage.getItem('bdmg_carousel_banners')) {
+    localStorage.setItem('bdmg_carousel_banners', JSON.stringify(carouselBanners));
+}
 
 
 

@@ -167,45 +167,63 @@
             <!-- Tab Panel 1: Banner -->
             <div class="admin-tab-panel active" id="tab-banner">
                 <form id="admin-form">
-                    <div class="form-group">
-                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; text-transform: none; color: var(--text-primary); font-size: 0.9rem;">
+                    <div class="form-group" style="margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; text-transform: none; color: var(--text-primary); font-size: 0.95rem; font-weight: bold;">
                             <input type="checkbox" id="banner-visible" style="width: auto; margin-right: 0.5rem;">
-                            Exibir Banner de Publicidade
+                            Exibir Carrossel de Publicidade (5 Slides - Auto-transição)
                         </label>
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="banner-title">Título do Banner</label>
-                        <input type="text" id="banner-title" placeholder="Ex: BDMG Financiamento Sustentável" required>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="banner-desc">Descrição do Banner</label>
-                        <textarea id="banner-desc" rows="2" placeholder="Descreva a promoção ou aviso..." required></textarea>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="banner-btn-text">Texto do Botão CTA</label>
-                            <input type="text" id="banner-btn-text" placeholder="Ex: Simular Crédito" required>
+                    <div class="admin-carousel-layout">
+                        <!-- Left Column: List Reordering -->
+                        <div class="carousel-list-container">
+                            <label class="form-group-label" style="display: block; font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.5rem; text-transform: uppercase;">Ordem dos Banners (Arraste para ordenar)</label>
+                            <div class="draggable-list" id="draggable-ad-list">
+                                <!-- Populated dynamically in app.js -->
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="banner-btn-link">URL do Link CTA</label>
-                            <input type="text" id="banner-btn-link" placeholder="Ex: https://..." required>
+
+                        <!-- Right Column: Editing details -->
+                        <div class="carousel-edit-container">
+                            <label class="form-group-label" style="display: block; font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.5rem; text-transform: uppercase;">Editar Banner Selecionado</label>
+                            <div id="active-ad-editor" class="ad-editor-box" style="background-color: rgba(0, 0, 0, 0.15); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
+                                <input type="hidden" id="edit-ad-index" value="0">
+                                
+                                <div class="form-group">
+                                    <label for="banner-title" style="font-size: 0.75rem;">Título do Slide</label>
+                                    <input type="text" id="banner-title" placeholder="Ex: BDMG Proger" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="banner-desc" style="font-size: 0.75rem;">Descrição / Conteúdo</label>
+                                    <textarea id="banner-desc" rows="2" placeholder="Descreva a promoção..." required></textarea>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="banner-btn-text" style="font-size: 0.75rem;">Texto do Botão</label>
+                                        <input type="text" id="banner-btn-text" placeholder="Ex: Simular" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="banner-btn-link" style="font-size: 0.75rem;">URL de Destino</label>
+                                        <input type="text" id="banner-btn-link" placeholder="Ex: https://..." required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label for="banner-style" style="font-size: 0.75rem;">Estilo Visual (Tema)</label>
+                                    <select id="banner-style">
+                                        <option value="banner-theme-bdmg">BDMG Azul & Ouro</option>
+                                        <option value="banner-theme-mint">Verde Mint & Teal</option>
+                                        <option value="banner-theme-cosmic">Cosmic Indigo & Pink</option>
+                                        <option value="banner-theme-dark">Dark Minimalist</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="banner-style">Estilo Visual (Tema)</label>
-                        <select id="banner-style">
-                            <option value="banner-theme-bdmg">BDMG Azul & Ouro (Padrão)</option>
-                            <option value="banner-theme-mint">Verde Mint & Teal (Sustentável)</option>
-                            <option value="banner-theme-cosmic">Cosmic Indigo & Pink (Inovação)</option>
-                            <option value="banner-theme-dark">Dark Minimalist</option>
-                        </select>
-                    </div>
-
-                    <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem;">
+                    <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
                         <button type="button" class="btn btn-secondary btn-admin-cancel-btn">Cancelar</button>
                         <button type="submit" class="btn btn-primary" style="background-color: var(--warning); color: #000; font-weight: bold;">Salvar Parâmetros</button>
                     </div>

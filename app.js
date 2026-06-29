@@ -154,6 +154,9 @@ const inputWhatsappUserPhone = document.getElementById('whatsapp-user-phone');
 const adminWhatsappForm = document.getElementById('admin-whatsapp-form');
 const inputAdminWhatsappNumber = document.getElementById('admin-whatsapp-number');
 
+const adminSuppliersList = document.getElementById('admin-suppliers-list');
+const btnDeleteSupplierModal = document.getElementById('btn-delete-supplier-modal');
+
 // Toast Notification Helper
 function showToast(message, type = 'info') {
     const toast = document.createElement('div');
@@ -254,14 +257,6 @@ function renderSuppliers() {
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer">
-                        <button class="btn btn-secondary btn-sm" onclick="editSupplier('${sup.id}')" style="padding: 0.4rem 0.8rem; font-size: 0.75rem;">
-                            <i class="fa-solid fa-pen-to-square"></i> Editar
-                        </button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteSupplier('${sup.id}')" style="padding: 0.4rem 0.8rem; font-size: 0.75rem;">
-                            <i class="fa-solid fa-trash-can"></i> Excluir
-                        </button>
-                    </div>
                 </div>
             `;
         }).join('');
@@ -272,6 +267,7 @@ function renderSuppliers() {
 function saveSuppliers() {
     localStorage.setItem('sf_suppliers', JSON.stringify(suppliers));
     renderSuppliers();
+    renderAdminSuppliersList();
 }
 
 // Load Mock Initial Data
@@ -283,6 +279,32 @@ btnLoadMock.addEventListener('click', () => {
     saveSuppliers();
     showToast('Fornecedores de demonstração carregados com sucesso!', 'success');
 });
+
+// Admin Panel Suppliers List Renderer
+function renderAdminSuppliersList() {
+    if (!adminSuppliersList) return;
+    
+    if (suppliers.length === 0) {
+        adminSuppliersList.innerHTML = `
+            <div style="text-align: center; color: var(--text-secondary); font-size: 0.85rem; padding: 1.5rem 0;">
+                Nenhum fornecedor cadastrado.
+            </div>
+        `;
+        return;
+    }
+    
+    adminSuppliersList.innerHTML = suppliers.map(sup => `
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.6rem 0.8rem; background-color: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 6px; gap: 0.75rem;">
+            <div style="display: flex; flex-direction: column; overflow: hidden; text-align: left;">
+                <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-primary); text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">${sup.name}</span>
+                <span style="font-size: 0.75rem; color: var(--text-secondary);">CNPJ: ${sup.cnpj}</span>
+            </div>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="editSupplier('${sup.id}')" style="padding: 0.35rem 0.7rem; font-size: 0.75rem; flex-shrink: 0; border-color: var(--accent); color: var(--accent); background-color: rgba(6, 182, 212, 0.05);">
+                <i class="fa-solid fa-pen-to-square"></i> Editar
+            </button>
+        </div>
+    `).join('');
+}
 
 // Modal Controls
 function openModal(title = 'Cadastrar Fornecedor', supplier = null) {
@@ -298,8 +320,20 @@ function openModal(title = 'Cadastrar Fornecedor', supplier = null) {
         inputRaStatus.value = supplier.raStatus;
         inputRaScore.value = supplier.raScore;
         inputDescription.value = supplier.description;
+        
+        btnDeleteSupplierModal.style.display = 'block';
+        btnDeleteSupplierModal.onclick = () => {
+            if (confirm('Tem certeza que deseja excluir permanentemente este fornecedor?')) {
+                suppliers = suppliers.filter(s => s.id !== supplier.id);
+                saveSuppliers();
+                closeModal();
+                showToast('Fornecedor removido com sucesso.', 'success');
+            }
+        };
     } else {
         inputId.value = '';
+        btnDeleteSupplierModal.style.display = 'none';
+        btnDeleteSupplierModal.onclick = null;
     }
     
     supplierModal.classList.add('active');
@@ -307,6 +341,7 @@ function openModal(title = 'Cadastrar Fornecedor', supplier = null) {
 
 function closeModal() {
     supplierModal.classList.remove('active');
+    openAdminModal('tab-suppliers');
 }
 
 btnAddSupplier.addEventListener('click', () => {
@@ -400,16 +435,8 @@ supplierForm.addEventListener('submit', (e) => {
 window.editSupplier = function(id) {
     const supplier = suppliers.find(s => s.id === id);
     if (supplier) {
+        closeAdminModal();
         openModal('Editar Fornecedor', supplier);
-    }
-};
-
-// Delete supplier handler
-window.deleteSupplier = function(id) {
-    if (confirm('Tem certeza que deseja excluir permanentemente este fornecedor?')) {
-        suppliers = suppliers.filter(s => s.id !== id);
-        saveSuppliers();
-        showToast('Fornecedor removido com sucesso.', 'success');
     }
 };
 
@@ -716,18 +743,27 @@ function handleDragEnd(e) {
     this.style.opacity = '1';
 }
 
-function openAdminModal() {
+function openAdminModal(defaultTabId = 'tab-banner') {
     const tabButtons = document.querySelectorAll('.admin-tab-btn');
     const tabPanels = document.querySelectorAll('.admin-tab-panel');
     
-    tabButtons.forEach(b => b.classList.remove('active'));
-    tabButtons[0].classList.add('active');
-    tabPanels.forEach(p => {
-        p.style.display = 'none';
-        p.classList.remove('active');
+    tabButtons.forEach(b => {
+        if (b.getAttribute('data-target') === defaultTabId) {
+            b.classList.add('active');
+        } else {
+            b.classList.remove('active');
+        }
     });
-    tabPanels[0].style.display = 'block';
-    tabPanels[0].classList.add('active');
+    
+    tabPanels.forEach(p => {
+        if (p.id === defaultTabId) {
+            p.style.display = 'block';
+            p.classList.add('active');
+        } else {
+            p.style.display = 'none';
+            p.classList.remove('active');
+        }
+    });
 
     inputBannerVisible.checked = bannerSettings.visible;
     
@@ -736,6 +772,8 @@ function openAdminModal() {
     
     renderAdminAdList();
     loadAdFieldsIntoEditor(0);
+    
+    renderAdminSuppliersList();
     
     inputAdminWhatsappNumber.value = whatsappSettings.number;
     

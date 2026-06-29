@@ -136,6 +136,7 @@
                 </div>
 
                 <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem;">
+                    <button type="button" class="btn btn-danger" id="btn-delete-supplier-modal" style="margin-right: auto; display: none;">Excluir Fornecedor</button>
                     <button type="button" class="btn btn-secondary" id="btn-cancel">Cancelar</button>
                     <button type="submit" class="btn btn-primary">Salvar Fornecedor</button>
                 </div>
@@ -257,6 +258,14 @@
                             <button class="btn btn-primary" id="btn-add-supplier" style="flex-shrink: 0;">
                                 <i class="fa-solid fa-plus"></i> Novo Fornecedor
                             </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Admin suppliers list -->
+                    <div style="margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
+                        <h4 style="font-size: 0.9rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--text-primary);">Lista de Fornecedores Cadastrados</h4>
+                        <div id="admin-suppliers-list" style="max-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.5rem; padding-right: 0.25rem;">
+                            <!-- Populated dynamically in app.js -->
                         </div>
                     </div>
                 </div>

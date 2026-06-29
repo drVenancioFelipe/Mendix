@@ -16,7 +16,7 @@ A interface foi projetada seguindo as melhores práticas de design moderno, foca
 *   **Operações CRUD de Fornecedores**:
     *   **Cadastro (Create) / Carga Inicial**: Acessíveis de forma segura **dentro do Painel Admin** (aba Banco de Dados). Formulário com máscara de CNPJ e validações.
     *   **Consulta (Read)**: Aberta ao público. Cards interativos contendo dados cadastrais, nota interna, reputações do ReclameAqui e o **Parecer Técnico com responsividade completa** (com quebra dinâmica e line-clamp CSS).
-    *   **Edição (Update) / Remoção (Delete)**: Ações rápidas nos cards da listagem (Edição/Deleção de registros).
+    *   **Edição (Update) / Remoção (Delete)**: Ações administrativas movidas de forma segura para dentro do Painel Admin (aba Banco de Dados), acessíveis na listagem de fornecedores e executadas de forma centralizada dentro do próprio modal de Cadastro/Edição.
 *   **Simulador de API do ReclameAqui**:
     *   Mecanismo de busca assíncrona que simula o consumo de API Rest em tempo real para CNPJs/Nomes de empresas conhecidas no cenário brasileiro (ex: *Cemig, Copasa, Totvs, Stefanini, Localiza*), retornando a nota atual e o status de reputação corporativa (RA1000, Ótimo, Regular, etc.).
 *   **Filtros & Busca Avançada**:

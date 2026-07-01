@@ -17,8 +17,10 @@ A interface foi projetada seguindo as melhores práticas de design moderno, foca
     *   **Cadastro (Create) / Carga Inicial**: Acessíveis de forma segura **dentro do Painel Admin** (aba Banco de Dados). Formulário com máscara de CNPJ e validações.
     *   **Consulta (Read)**: Aberta ao público. Cards interativos contendo dados cadastrais, nota interna, reputações do ReclameAqui e o **Parecer Técnico com responsividade completa** (com quebra dinâmica e line-clamp CSS).
     *   **Edição (Update) / Remoção (Delete)**: Ações administrativas movidas de forma segura para dentro do Painel Admin (aba Banco de Dados), acessíveis na listagem de fornecedores e executadas de forma centralizada dentro do próprio modal de Cadastro/Edição.
-*   **Simulador de API do ReclameAqui**:
-    *   Mecanismo de busca assíncrona que simula o consumo de API Rest em tempo real para CNPJs/Nomes de empresas conhecidas no cenário brasileiro (ex: *Cemig, Copasa, Totvs, Stefanini, Localiza*), retornando a nota atual e o status de reputação corporativa (RA1000, Ótimo, Regular, etc.).
+*   **Integração Real & Simulação do ReclameAqui via API**:
+    *   **Integração com API Real**: Quando uma busca pública por nome/CNPJ não encontra registros na Base de Dados local, o sistema consulta em tempo real a reputação oficial no ReclameAqui utilizando o proxy de CORS AllOrigins para ler e mapear os parâmetros estruturados do Next.js (__NEXT_DATA__).
+    *   **Importação Administrativa**: Ao localizar uma empresa real no ReclameAqui, a dashboard pública exibe seu card com uma indicação visual ("VIA API RECLAMEAQUI"). Se o administrador estiver autenticado, é exibido o botão "Importar para Base" que abre o modal de cadastro pré-preenchido com o Nome, Reputação, Nota e Histórico retornados da API.
+    *   **Simulador Fallback**: Se o sistema estiver offline ou for pesquisado um nome contido no roteiro de testes (Cemig, Copasa, Totvs, Stefanini, Localiza), o formulário de consulta recorre à base mockada de simulação local, garantindo resiliência.
 *   **Filtros & Busca Avançada**:
     *   Barra de pesquisa instantânea para busca por CNPJ, Nome Fantasia ou Categoria.
     *   Dropdown de filtragem rápida pelo status de reputação do ReclameAqui.

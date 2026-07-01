@@ -12,6 +12,85 @@ const reclameAquiMockDatabase = {
     "16.670.085/0001-55": { name: "Localiza Rent a Car S.A.", status: "ra1000", score: 8.9 }
 };
 
+// Real ReclameAqui API Integration Helpers
+function mapReclameAquiStatus(raStatus) {
+    if (!raStatus) return 'semdados';
+    const s = raStatus.toLowerCase();
+    if (s.includes('ra1000')) return 'ra1000';
+    if (s.includes('great') || s.includes('otimo') || s.includes('ótimo')) return 'otimo';
+    if (s.includes('good') || s.includes('bom')) return 'bom';
+    if (s.includes('regular')) return 'regular';
+    if (s.includes('bad') || s.includes('ruim')) return 'ruim';
+    if (s.includes('not') || s.includes('recomendado')) return 'naorecomendado';
+    return 'semdados';
+}
+
+async function fetchRealReclameAquiData(query) {
+    const slug = query.trim().toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Remove accents
+        .replace(/[^a-z0-9\s-]/g, "")                   // Remove special chars
+        .replace(/\s+/g, "-")                           // Spaces to hyphens
+        .replace(/-+/g, "-");                           // Multiple hyphens to single
+    
+    // Use AllOrigins CORS proxy to scrape the company profile page on ReclameAqui
+    const url = `https://www.reclameaqui.com.br/empresa/${slug}/`;
+    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+    
+    try {
+        const response = await fetch(proxyUrl);
+        if (!response.ok) throw new Error("Erro de conexão");
+        const json = await response.json();
+        const html = json.contents;
+        
+        if (!html || html.includes("Página não encontrada") || html.includes("404") || html.includes("Oops!")) {
+            return null;
+        }
+        
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, "text/html");
+        const nextDataScript = doc.getElementById("__NEXT_DATA__");
+        
+        if (nextDataScript) {
+            const nextData = JSON.parse(nextDataScript.textContent);
+            const companyProps = nextData.props?.pageProps?.company || nextData.props?.pageProps?.initialState?.company;
+            if (companyProps) {
+                return {
+                    name: companyProps.name,
+                    status: mapReclameAquiStatus(companyProps.reputation?.reputationStatus),
+                    score: companyProps.reputation?.reputationScore || "N/A",
+                    description: `Fornecedor recuperado da plataforma ReclameAqui via API (ID: ${companyProps.id}).`
+                };
+            }
+        }
+        
+        // Regex parsing fallback
+        const scoreMatch = html.match(/class="[^"]*reputation-rating[^"]*">([\d.,]+)</);
+        const score = scoreMatch ? scoreMatch[1].replace(',', '.') : "N/A";
+        
+        const nameMatch = html.match(/<h1 class="[^"]*company-name[^"]*">([^<]+)</) || html.match(/<title>([^<]+) - Reclame Aqui/);
+        const name = nameMatch ? nameMatch[1].trim() : query;
+        
+        let status = "semdados";
+        if (html.includes("RA1000") || html.includes("ra1000")) status = "ra1000";
+        else if (html.includes("Ótimo") || html.includes("otimo")) status = "otimo";
+        else if (html.includes("Bom") || html.includes("bom")) status = "bom";
+        else if (html.includes("Regular") || html.includes("regular")) status = "regular";
+        else if (html.includes("Ruim") || html.includes("ruim")) status = "ruim";
+        else if (html.includes("Não Recomendado") || html.includes("nao-recomendado")) status = "naorecomendado";
+        
+        return {
+            name: name,
+            status: status,
+            score: score,
+            description: `Fornecedor recuperado da plataforma ReclameAqui via raspagem (AllOrigins).`
+        };
+    } catch (e) {
+        console.error("Fetch ReclameAqui API error:", e);
+        return null;
+    }
+}
+
+
 // Initial Suppliers to populate the system
 const initialSuppliers = [
     {
@@ -201,6 +280,51 @@ inputCnpj.addEventListener('input', (e) => {
 });
 
 // Render Suppliers
+// Helper to render filtered list items
+function renderFilteredSuppliersList(filtered) {
+    supplierGrid.innerHTML = filtered.map(sup => {
+        const stars = '⭐'.repeat(parseInt(sup.ratingInternal));
+        const badgeClass = `badge badge-${sup.raStatus}`;
+        const badgeText = sup.raStatus === 'ra1000' ? 'RA1000' : 
+                          sup.raStatus === 'semdados' ? 'Sem Dados' : 
+                          sup.raStatus;
+        
+        return `
+            <div class="supplier-card">
+                <div>
+                    <div class="card-header">
+                        <div class="supplier-info">
+                            <h3>${sup.name}</h3>
+                            <span class="cnpj">CNPJ: ${sup.cnpj}</span>
+                        </div>
+                        <span class="${badgeClass}">${badgeText}</span>
+                    </div>
+                    <div class="card-body">
+                        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
+                            <strong>Categoria:</strong> ${sup.category}
+                        </p>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary);">
+                            <strong>Avaliação Interna:</strong> ${stars}
+                        </p>
+                        <div class="reputation-details">
+                            <div class="rep-stat score-stat">
+                                <span class="rep-label">ReclameAqui</span>
+                                <span class="rep-value score">${sup.raScore || 'N/A'}</span>
+                            </div>
+                            <div class="rep-stat desc-stat">
+                                <span class="rep-label">Parecer</span>
+                                <span class="rep-desc-text">
+                                    ${sup.description || 'Sem observações.'}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
 function renderSuppliers() {
     const query = searchInput.value.toLowerCase();
     const filter = filterStatus.value;
@@ -219,55 +343,105 @@ function renderSuppliers() {
         return matchesQuery && matchesFilter;
     });
     
-    if (filtered.length === 0) {
+    if (filtered.length === 0 && query.trim().length > 2) {
+        // No local database records found, query ReclameAqui API!
+        supplierGrid.innerHTML = `
+            <div class="api-loading-state" style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: var(--text-secondary);">
+                <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 2rem; color: var(--accent); margin-bottom: 0.75rem;"></i>
+                <p style="font-size: 0.9rem;">Buscando '${searchInput.value}' na API real do ReclameAqui...</p>
+            </div>
+        `;
+        emptyState.style.display = 'none';
+        triggerReclameAquiApiSearch(searchInput.value);
+    } else if (filtered.length === 0) {
         supplierGrid.innerHTML = '';
         emptyState.style.display = 'block';
     } else {
         emptyState.style.display = 'none';
+        renderFilteredSuppliersList(filtered);
+    }
+}
+
+let apiSearchTimeoutId = null;
+let lastApiQuery = "";
+
+function triggerReclameAquiApiSearch(query) {
+    if (query === lastApiQuery) return;
+    
+    if (apiSearchTimeoutId) clearTimeout(apiSearchTimeoutId);
+    
+    apiSearchTimeoutId = setTimeout(async () => {
+        lastApiQuery = query;
+        const result = await fetchRealReclameAquiData(query);
         
-        supplierGrid.innerHTML = filtered.map(sup => {
-            const stars = '⭐'.repeat(parseInt(sup.ratingInternal));
-            const badgeClass = `badge badge-${sup.raStatus}`;
-            const badgeText = sup.raStatus === 'ra1000' ? 'RA1000' : 
-                              sup.raStatus === 'semdados' ? 'Sem Dados' : 
-                              sup.raStatus;
-            
-            return `
-                <div class="supplier-card">
-                    <div>
+        if (searchInput.value !== query) return;
+        
+        if (result) {
+            emptyState.style.display = 'none';
+            supplierGrid.innerHTML = `
+                <div class="supplier-card api-result-card" style="border-color: var(--accent); background: linear-gradient(135deg, rgba(6,182,212,0.02) 0%, rgba(0,0,0,0) 100%);">
+                    <div style="position: absolute; top: 0.5rem; left: 0.5rem; background-color: var(--accent); color: #000; font-size: 0.65rem; font-weight: bold; padding: 0.15rem 0.4rem; border-radius: 4px; display: flex; align-items: center; gap: 0.25rem; z-index: 5;">
+                        <i class="fa-solid fa-cloud"></i> VIA API RECLAMEAQUI
+                    </div>
+                    <div style="margin-top: 0.75rem;">
                         <div class="card-header">
                             <div class="supplier-info">
-                                <h3>${sup.name}</h3>
-                                <span class="cnpj">CNPJ: ${sup.cnpj}</span>
+                                <h3>${result.name}</h3>
+                                <span class="cnpj">CNPJ: Não cadastrado localmente</span>
                             </div>
-                            <span class="${badgeClass}">${badgeText}</span>
+                            <span class="badge badge-${result.status}">
+                                ${result.status === 'ra1000' ? 'RA1000' : result.status === 'semdados' ? 'Sem Dados' : result.status}
+                            </span>
                         </div>
                         <div class="card-body">
                             <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
-                                <strong>Categoria:</strong> ${sup.category}
+                                <strong>Categoria:</strong> Outros
                             </p>
                             <p style="font-size: 0.85rem; color: var(--text-secondary);">
-                                <strong>Avaliação Interna:</strong> ${stars}
+                                <strong>Avaliação Interna:</strong> N/A (Não cadastrado)
                             </p>
                             <div class="reputation-details">
                                 <div class="rep-stat score-stat">
                                     <span class="rep-label">ReclameAqui</span>
-                                    <span class="rep-value score">${sup.raScore || 'N/A'}</span>
+                                    <span class="rep-value score">${result.score}</span>
                                 </div>
                                 <div class="rep-stat desc-stat">
-                                    <span class="rep-label">Parecer</span>
-                                    <span class="rep-desc-text">
-                                        ${sup.description || 'Sem observações.'}
-                                    </span>
+                                    <span class="rep-label">Histórico</span>
+                                    <span class="rep-desc-text">${result.description}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    ${checkAdminAuth() ? `
+                    <div class="card-footer" style="margin-top: 1rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem; display: flex; justify-content: flex-end;">
+                        <button class="btn btn-primary btn-sm" onclick="importApiSupplier('${encodeURIComponent(JSON.stringify(result))}')" style="background-color: var(--accent); color: #000; font-size: 0.75rem; font-weight: bold; padding: 0.4rem 0.8rem;">
+                            <i class="fa-solid fa-download"></i> Importar para Base
+                        </button>
+                    </div>
+                    ` : ''}
                 </div>
             `;
-        }).join('');
-    }
+        } else {
+            supplierGrid.innerHTML = '';
+            emptyState.style.display = 'block';
+        }
+    }, 800);
 }
+
+window.importApiSupplier = function(encodedData) {
+    const data = JSON.parse(decodeURIComponent(encodedData));
+    closeAdminModal();
+    openModal('Cadastrar Fornecedor', {
+        id: '',
+        name: data.name,
+        cnpj: '',
+        category: 'Outros',
+        ratingInternal: '5',
+        raStatus: data.status,
+        raScore: data.score,
+        description: data.description
+    });
+};
 
 // Save to LocalStorage
 function saveSuppliers() {
@@ -369,17 +543,23 @@ btnFetchRa.addEventListener('click', async () => {
     btnFetchRa.disabled = true;
     btnFetchRa.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Consultando...`;
     
-    // Simulate network delay
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    // Query real ReclameAqui API first
+    let found = await fetchRealReclameAquiData(query);
     
-    const cleanQuery = query.toLowerCase().replace(/\D/g, '') || query.toLowerCase();
-    
-    // Search in our mock registry
-    let found = null;
-    for (const key in reclameAquiMockDatabase) {
-        if (cleanQuery.includes(key.replace(/\D/g, '')) || cleanQuery.includes(key)) {
-            found = reclameAquiMockDatabase[key];
-            break;
+    // Fall back to local mock registry
+    if (!found) {
+        const cleanQuery = query.toLowerCase().replace(/\D/g, '') || query.toLowerCase();
+        for (const key in reclameAquiMockDatabase) {
+            if (cleanQuery.includes(key.replace(/\D/g, '')) || cleanQuery.includes(key)) {
+                const mock = reclameAquiMockDatabase[key];
+                found = {
+                    name: mock.name,
+                    status: mock.status,
+                    score: mock.score,
+                    description: "Fornecedor localizado na base de simulação local."
+                };
+                break;
+            }
         }
     }
     
@@ -390,9 +570,9 @@ btnFetchRa.addEventListener('click', async () => {
         inputName.value = found.name;
         inputRaStatus.value = found.status;
         inputRaScore.value = found.score;
-        showToast(`Fornecedor '${found.name}' localizado no ReclameAqui!`, 'success');
+        inputDescription.value = found.description || '';
+        showToast(`Fornecedor '${found.name}' localizado!`, 'success');
     } else {
-        // Not found mock case
         inputRaStatus.value = 'semdados';
         inputRaScore.value = '0.0';
         showToast('Empresa não cadastrada ou sem índice de reputação ativa no ReclameAqui.', 'info');

@@ -32,17 +32,44 @@ async function fetchRealReclameAquiData(query) {
         .replace(/\s+/g, "-")                           // Spaces to hyphens
         .replace(/-+/g, "-");                           // Multiple hyphens to single
     
-    // Use AllOrigins CORS proxy to scrape the company profile page on ReclameAqui
-    const url = `https://www.reclameaqui.com.br/empresa/${slug}/`;
-    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+    const targetUrl = `https://www.reclameaqui.com.br/empresa/${slug}/`;
+    let html = null;
+    let fetchMethod = "";
+    
+    // Try Proxy 1: AllOrigins (JSON wrapped)
+    try {
+        const allOriginsUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
+        const res = await fetch(allOriginsUrl);
+        if (res.ok) {
+            const json = await res.json();
+            html = json.contents;
+            fetchMethod = "AllOrigins";
+        }
+    } catch (err) {
+        console.warn("Proxy 1 (AllOrigins) blocked or failed, retrying with Proxy 2...", err);
+    }
+    
+    // Try Proxy 2: CorsProxy.io (transparent HTML proxy)
+    if (!html) {
+        try {
+            const corsProxyUrl = `https://corsproxy.io/?url=${encodeURIComponent(targetUrl)}`;
+            const res = await fetch(corsProxyUrl);
+            if (res.ok) {
+                html = await res.text();
+                fetchMethod = "CorsProxy.io";
+            }
+        } catch (err) {
+            console.error("Proxy 2 (CorsProxy.io) also failed:", err);
+        }
+    }
+    
+    // If both failed, return null to trigger mock database fallback
+    if (!html) {
+        return null;
+    }
     
     try {
-        const response = await fetch(proxyUrl);
-        if (!response.ok) throw new Error("Erro de conexão");
-        const json = await response.json();
-        const html = json.contents;
-        
-        if (!html || html.includes("Página não encontrada") || html.includes("404") || html.includes("Oops!")) {
+        if (html.includes("Página não encontrada") || html.includes("404") || html.includes("Oops!")) {
             return null;
         }
         
@@ -58,7 +85,7 @@ async function fetchRealReclameAquiData(query) {
                     name: companyProps.name,
                     status: mapReclameAquiStatus(companyProps.reputation?.reputationStatus),
                     score: companyProps.reputation?.reputationScore || "N/A",
-                    description: `Fornecedor recuperado da plataforma ReclameAqui via API (ID: ${companyProps.id}).`
+                    description: `Fornecedor recuperado da plataforma ReclameAqui via API real (${fetchMethod}).`
                 };
             }
         }
@@ -82,10 +109,10 @@ async function fetchRealReclameAquiData(query) {
             name: name,
             status: status,
             score: score,
-            description: `Fornecedor recuperado da plataforma ReclameAqui via raspagem (AllOrigins).`
+            description: `Fornecedor recuperado da plataforma ReclameAqui via raspagem real (${fetchMethod}).`
         };
     } catch (e) {
-        console.error("Fetch ReclameAqui API error:", e);
+        console.error("Fetch ReclameAqui HTML parse error:", e);
         return null;
     }
 }

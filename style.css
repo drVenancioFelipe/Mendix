@@ -797,12 +797,51 @@ header {
     border-radius: 5px;
 }
 
-/* Admin Carousel Layout splits */
+/* Admin Layout splits */
 .admin-carousel-layout {
     display: grid;
-    grid-template-columns: 180px 1fr;
-    gap: 1.25rem;
+    grid-template-columns: 220px 1fr;
+    gap: 1.5rem;
     margin-top: 0.5rem;
+}
+
+.admin-db-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+.admin-whatsapp-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 0.5rem;
+    align-items: start;
+}
+
+/* Brand logo styling inside banner slides */
+.promo-banner-logo {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 0.35rem 0.6rem;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-height: 38px;
+    z-index: 10;
+}
+
+.promo-banner-logo img {
+    max-height: 24px;
+    width: auto;
+    display: block;
 }
 
 .carousel-list-container {
@@ -826,9 +865,11 @@ header {
     background-color: rgba(255, 255, 255, 0.06);
 }
 
-/* Responsive adjustment */
-@media (max-width: 576px) {
-    .admin-carousel-layout {
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .admin-carousel-layout,
+    .admin-db-layout,
+    .admin-whatsapp-layout {
         grid-template-columns: 1fr;
     }
 }

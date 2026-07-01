@@ -55,35 +55,40 @@ const defaultCarouselBanners = [
         desc: "Soluções especiais para projetos de sustentabilidade, energia solar e transição energética nos condomínios.",
         btnText: "Saiba Mais",
         btnLink: "#",
-        theme: "banner-theme-sf"
+        theme: "banner-theme-sf",
+        logoUrl: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2310b981'><path d='M17 8C8 10 5.9 16.1 5.1 19c-.1.3.1.6.4.5C8.9 18.1 15 16 17 8zm0 0c5-5 .2-6-.3-6s-4.5 3.1-4.7 6.1c2 0 4-.1 5-.1z'/></svg>"
     },
     {
         title: "Gestão de Condomínios",
         desc: "Apoio completo para projetos de infraestrutura, reformas, saneamento e melhoria urbana em condomínios residenciais.",
         btnText: "Ver Edital",
         btnLink: "#",
-        theme: "banner-theme-mint"
+        theme: "banner-theme-mint",
+        logoUrl: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233b82f6'><path d='M12 3L2 12h3v8h5v-6h4v6h5v-8h3L12 3z'/></svg>"
     },
     {
         title: "Inovação & Tecnologia",
         desc: "Sistemas ágeis para portaria inteligente, monitoramento por câmeras, controle de acesso e automação condominial.",
         btnText: "Ver Detalhes",
         btnLink: "#",
-        theme: "banner-theme-cosmic"
+        theme: "banner-theme-cosmic",
+        logoUrl: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2306b6d4'><path d='M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z'/></svg>"
     },
     {
         title: "Manutenção Preventiva",
         desc: "Facilidades para contratar manutenção de elevadores, pintura de fachadas, reformas estruturais e segurança contra incêndios.",
         btnText: "Solicitar Orçamento",
         btnLink: "#",
-        theme: "banner-theme-sf"
+        theme: "banner-theme-sf",
+        logoUrl: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fbbf24'><path d='M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.3C.5 6.7.9 9.8 2.9 11.8c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.4-2.4c.4-.4.4-1.1 0-1.5z'/></svg>"
     },
     {
         title: "Crédito Condominial",
         desc: "Reforce o caixa do seu condomínio com linhas de crédito flexíveis, taxas reduzidas e prazos de pagamento estendidos.",
         btnText: "Simular Crédito",
         btnLink: "#",
-        theme: "banner-theme-dark"
+        theme: "banner-theme-dark",
+        logoUrl: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23f59e0b'><path d='M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5 0.67 1.5 1.5-0.67 1.5-1.5 1.5z'/></svg>"
     }
 ];
 
@@ -144,6 +149,7 @@ const inputBannerDesc = document.getElementById('banner-desc');
 const inputBannerBtnText = document.getElementById('banner-btn-text');
 const inputBannerBtnLink = document.getElementById('banner-btn-link');
 const inputBannerStyle = document.getElementById('banner-style');
+const inputBannerLogoUrl = document.getElementById('banner-logo-url');
 
 const draggableAdList = document.getElementById('draggable-ad-list');
 const editAdIndex = document.getElementById('edit-ad-index');
@@ -545,6 +551,11 @@ function renderBanner() {
     carouselBanners.forEach((banner, index) => {
         slidesHtml += `
             <li class="carousel-slide ${banner.theme}" style="min-width: 100%; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; padding: 1rem 3.5rem 1.25rem 2rem; position: relative;">
+                ${banner.logoUrl ? `
+                <div class="promo-banner-logo">
+                    <img src="${banner.logoUrl}" alt="Logo">
+                </div>
+                ` : ''}
                 <div class="promo-banner-content">
                     <h2>${banner.title}</h2>
                     <p>${banner.desc}</p>
@@ -661,7 +672,8 @@ function saveActiveAdFieldsToTemp() {
             desc: inputBannerDesc.value.trim(),
             btnText: inputBannerBtnText.value.trim(),
             btnLink: inputBannerBtnLink.value.trim(),
-            theme: inputBannerStyle.value
+            theme: inputBannerStyle.value,
+            logoUrl: inputBannerLogoUrl.value.trim()
         };
     }
 }
@@ -675,6 +687,7 @@ function loadAdFieldsIntoEditor(index) {
         inputBannerBtnText.value = ad.btnText;
         inputBannerBtnLink.value = ad.btnLink;
         inputBannerStyle.value = ad.theme;
+        inputBannerLogoUrl.value = ad.logoUrl || '';
     }
 }
 

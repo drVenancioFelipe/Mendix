@@ -28,10 +28,10 @@ A interface foi projetada seguindo as melhores práticas de design moderno, foca
     *   **Persistência via Cookie**: O estado verificado é salvo em cookie do navegador por 24 horas, evitando interrupções em acessos recorrentes durante a mesma sessão de trabalho.
 *   **Painel de Administração por Abas (Admin)**:
     *   **Painel Administrativo Autenticado**: Acesso restrito ao painel de configurações via formulário modal de **Login e Senha** (Credenciais padrões: `admin` / `admin`).
-    *   **Navegação por Abas**: Organização das ferramentas administrativas em três abas principais:
-        *   **Publicidade & Banner**: Onde se configura a visibilidade e os conteúdos do **Carrossel de Banners** (5 anúncios). Possui uma interface interativa dividida em colunas que permite editar cada slide e **reordenar os assuntos arrastando os itens com o mouse (Drag and Drop)** com atualização em tempo real.
-        *   **Banco de Dados**: Onde ficam concentrados os botões protegidos de **Carga Inicial** e **Novo Fornecedor**.
-        *   **WhatsApp**: Onde o administrador configura e valida o número de celular que receberá as indicações (salvo no `localStorage`).
+    *   **Navegação por Abas**: Organização das ferramentas administrativas em três abas principais em um **layout expandido de alta resolução (850px)**:
+        *   **Publicidade & Banner**: Onde se configura a visibilidade, conteúdos e a **URL da Logo da Marca** de cada anúncio. Possui uma interface interativa de colunas (largura otimizada de 220px para a lista) que permite editar cada slide e **reordenar os assuntos arrastando os itens com o mouse (Drag and Drop)** com atualização em tempo real. Os banners suportam exibição de pequenas marcas/logotipos em um contêiner glassmorphic premium.
+        *   **Banco de Dados**: Organizado em duas colunas (Ações de Carga à esquerda e Lista de Fornecedores à direita), permitindo visualizar, criar, editar e excluir registros de fornecedores de forma ágil e centralizada.
+        *   **WhatsApp**: Dividido em duas colunas (Formulário de Configuração à esquerda e Painel de Instruções de funcionamento à direita) explicando o funcionamento do fluxo de indicação.
     *   **Sessão Temporária**: Utilização de `sessionStorage` para manter o administrador autenticado durante o uso, evitando solicitações repetitivas de credenciais.
     *   **Área de Exibição (Carrossel Dinâmico)**: Carrossel horizontal responsivo no topo da interface principal contendo 5 slides com transições automáticas a cada 5 segundos, indicadores de navegação (dots) interativos e botão de fechamento temporário.
 *   **Indicação via WhatsApp**:

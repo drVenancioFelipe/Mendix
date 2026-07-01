@@ -1,0 +1,8 @@
+{
+  "name": "sindicos-e-fornecedores",
+  "version": "1.0.0",
+  "description": "Módulo de Análise & Reputação de Fornecedores",
+  "scripts": {
+    "dev": "python -m http.server 5500"
+  }
+}

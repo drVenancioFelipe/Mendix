@@ -402,13 +402,12 @@ function getSupplierRatingStars(sup) {
     return `<span style="color: var(--warning); font-weight: bold; letter-spacing: 1px;">${starsStr}</span> <span style="font-size: 0.8rem; color: var(--text-secondary); font-weight: normal; margin-left: 0.25rem;">(${score.toFixed(1)})</span>`;
 }
 
-// Helper to mask CNPJ for public display
+// Helper to mask CNPJ for public display (only mask up to the slash)
 function maskCnpjPublic(cnpj) {
     if (!cnpj) return '';
-    const clean = cnpj.replace(/\D/g, '');
-    if (clean.length !== 14) return cnpj;
-    const branch = clean.substring(8, 12); // e.g. "0001"
-    return `XX.XXX.XXX/${branch}-XX`;
+    const parts = cnpj.split('/');
+    if (parts.length < 2) return cnpj; // Fallback if no slash present
+    return `XX.XXX.XXX/${parts[1]}`;
 }
 
 function renderFilteredSuppliersList(filtered) {

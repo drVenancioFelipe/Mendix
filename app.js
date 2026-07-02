@@ -247,7 +247,9 @@ const defaultCarouselBanners = [
         btnText: "Saiba Mais",
         btnLink: "#",
         theme: "banner-theme-sf",
-        logoUrl: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2310b981'><path d='M17 8C8 10 5.9 16.1 5.1 19c-.1.3.1.6.4.5C8.9 18.1 15 16 17 8zm0 0c5-5 .2-6-.3-6s-4.5 3.1-4.7 6.1c2 0 4-.1 5-.1z'/></svg>"
+        logoUrl: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2310b981'><path d='M17 8C8 10 5.9 16.1 5.1 19c-.1.3.1.6.4.5C8.9 18.1 15 16 17 8zm0 0c5-5 .2-6-.3-6s-4.5 3.1-4.7 6.1c2 0 4-.1 5-.1z'/></svg>",
+        startDate: "2026-06-01T00:00",
+        endDate: "2026-06-15T00:00"
     },
     {
         title: "Gestão de Condomínios",
@@ -255,7 +257,9 @@ const defaultCarouselBanners = [
         btnText: "Ver Edital",
         btnLink: "#",
         theme: "banner-theme-mint",
-        logoUrl: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233b82f6'><path d='M12 3L2 12h3v8h5v-6h4v6h5v-8h3L12 3z'/></svg>"
+        logoUrl: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233b82f6'><path d='M12 3L2 12h3v8h5v-6h4v6h5v-8h3L12 3z'/></svg>",
+        startDate: "2026-06-16T00:00",
+        endDate: "2026-06-30T00:00"
     },
     {
         title: "Inovação & Tecnologia",
@@ -263,7 +267,9 @@ const defaultCarouselBanners = [
         btnText: "Ver Detalhes",
         btnLink: "#",
         theme: "banner-theme-cosmic",
-        logoUrl: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2306b6d4'><path d='M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z'/></svg>"
+        logoUrl: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2306b6d4'><path d='M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z'/></svg>",
+        startDate: "2026-07-01T00:00",
+        endDate: "2026-07-15T00:00"
     },
     {
         title: "Manutenção Preventiva",
@@ -271,7 +277,9 @@ const defaultCarouselBanners = [
         btnText: "Solicitar Orçamento",
         btnLink: "#",
         theme: "banner-theme-sf",
-        logoUrl: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fbbf24'><path d='M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.3C.5 6.7.9 9.8 2.9 11.8c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.4-2.4c.4-.4.4-1.1 0-1.5z'/></svg>"
+        logoUrl: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fbbf24'><path d='M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.3C.5 6.7.9 9.8 2.9 11.8c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.4-2.4c.4-.4.4-1.1 0-1.5z'/></svg>",
+        startDate: "2026-07-16T00:00",
+        endDate: "2026-07-31T00:00"
     },
     {
         title: "Crédito Condominial",
@@ -279,7 +287,9 @@ const defaultCarouselBanners = [
         btnText: "Simular Crédito",
         btnLink: "#",
         theme: "banner-theme-dark",
-        logoUrl: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23f59e0b'><path d='M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5 0.67 1.5 1.5-0.67 1.5-1.5 1.5z'/></svg>"
+        logoUrl: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23f59e0b'><path d='M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5 0.67 1.5 1.5-0.67 1.5-1.5 1.5z'/></svg>",
+        startDate: "2026-08-01T00:00",
+        endDate: "2026-08-15T00:00"
     }
 ];
 
@@ -341,6 +351,8 @@ const inputBannerBtnText = document.getElementById('banner-btn-text');
 const inputBannerBtnLink = document.getElementById('banner-btn-link');
 const inputBannerStyle = document.getElementById('banner-style');
 const inputBannerLogoUrl = document.getElementById('banner-logo-url');
+const inputBannerStartDate = document.getElementById('banner-start-date');
+const inputBannerEndDate = document.getElementById('banner-end-date');
 
 const draggableAdList = document.getElementById('draggable-ad-list');
 const editAdIndex = document.getElementById('edit-ad-index');
@@ -860,7 +872,16 @@ function renderBanner() {
         carouselIntervalId = null;
     }
     
-    if (!bannerSettings.visible || carouselBanners.length === 0) {
+    // Filter active banners based on current time
+    const now = new Date();
+    const activeBanners = carouselBanners.filter(banner => {
+        if (!banner.startDate || !banner.endDate) return true;
+        const start = new Date(banner.startDate);
+        const end = new Date(banner.endDate);
+        return now >= start && now <= end;
+    });
+    
+    if (!bannerSettings.visible || activeBanners.length === 0) {
         promoBannerContainer.innerHTML = '';
         return;
     }
@@ -868,7 +889,7 @@ function renderBanner() {
     let slidesHtml = '';
     let dotsHtml = '';
     
-    carouselBanners.forEach((banner, index) => {
+    activeBanners.forEach((banner, index) => {
         slidesHtml += `
             <li class="carousel-slide ${banner.theme}" style="min-width: 100%; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; padding: 1rem 3.5rem 1.25rem 2rem; position: relative;">
                 ${banner.logoUrl ? `
@@ -901,7 +922,7 @@ function renderBanner() {
                 </ul>
             </div>
             
-            <div class="carousel-nav" id="carousel-nav-dots" style="position: absolute; bottom: 0.5rem; left: 50%; transform: translateX(-50%); display: flex; gap: 0.5rem; z-index: 10;">
+            <div class="carousel-nav" id="carousel-nav-dots" style="position: absolute; bottom: 0.5rem; left: 50%; transform: translateX(-50%); display: ${activeBanners.length > 1 ? 'flex' : 'none'}; gap: 0.5rem; z-index: 10;">
                 ${dotsHtml}
             </div>
         </div>
@@ -924,7 +945,7 @@ function renderBanner() {
     currentSlideIndex = 0;
     
     function goToSlide(index) {
-        if (index < 0 || index >= carouselBanners.length) return;
+        if (index < 0 || index >= activeBanners.length) return;
         currentSlideIndex = index;
         
         track.style.transform = `translateX(-${index * 100}%)`;
@@ -947,7 +968,7 @@ function renderBanner() {
     });
     
     function nextSlide() {
-        const nextIdx = (currentSlideIndex + 1) % carouselBanners.length;
+        const nextIdx = (currentSlideIndex + 1) % activeBanners.length;
         goToSlide(nextIdx);
     }
     
@@ -955,7 +976,9 @@ function renderBanner() {
         if (carouselIntervalId) {
             clearInterval(carouselIntervalId);
         }
-        carouselIntervalId = setInterval(nextSlide, 5000);
+        if (activeBanners.length > 1) {
+            carouselIntervalId = setInterval(nextSlide, 5000);
+        }
     }
     
     resetCarouselTimer();
@@ -993,7 +1016,9 @@ function saveActiveAdFieldsToTemp() {
             btnText: inputBannerBtnText.value.trim(),
             btnLink: inputBannerBtnLink.value.trim(),
             theme: inputBannerStyle.value,
-            logoUrl: inputBannerLogoUrl.value.trim()
+            logoUrl: inputBannerLogoUrl.value.trim(),
+            startDate: inputBannerStartDate.value,
+            endDate: inputBannerEndDate.value
         };
     }
 }
@@ -1008,6 +1033,8 @@ function loadAdFieldsIntoEditor(index) {
         inputBannerBtnLink.value = ad.btnLink;
         inputBannerStyle.value = ad.theme;
         inputBannerLogoUrl.value = ad.logoUrl || '';
+        inputBannerStartDate.value = ad.startDate || '';
+        inputBannerEndDate.value = ad.endDate || '';
     }
 }
 
@@ -1189,6 +1216,42 @@ adminForm.addEventListener('submit', (e) => {
     
     // Save current active editing fields to temp array first
     saveActiveAdFieldsToTemp();
+    
+    // 1. Validate that all 5 slides have start and end dates and start < end
+    for (let i = 0; i < tempCarouselBanners.length; i++) {
+        const ad = tempCarouselBanners[i];
+        if (!ad.startDate || !ad.endDate) {
+            showToast(`O Slide ${i + 1} ("${ad.title || 'Sem título'}") está com datas de exibição incompletas!`, 'danger');
+            return;
+        }
+        
+        const start = new Date(ad.startDate).getTime();
+        const end = new Date(ad.endDate).getTime();
+        
+        if (start >= end) {
+            showToast(`No Slide ${i + 1} ("${ad.title || 'Sem título'}"), a Data Final deve ser posterior à Data Inicial!`, 'danger');
+            return;
+        }
+    }
+    
+    // 2. Validate that there are no overlaps between any slides
+    for (let i = 0; i < tempCarouselBanners.length; i++) {
+        const adA = tempCarouselBanners[i];
+        const startA = new Date(adA.startDate).getTime();
+        const endA = new Date(adA.endDate).getTime();
+        
+        for (let j = i + 1; j < tempCarouselBanners.length; j++) {
+            const adB = tempCarouselBanners[j];
+            const startB = new Date(adB.startDate).getTime();
+            const endB = new Date(adB.endDate).getTime();
+            
+            // Interval overlap condition: startA < endB && startB < endA
+            if (startA < endB && startB < endA) {
+                showToast(`Conflito de datas: O Slide ${i + 1} ("${adA.title}") e o Slide ${j + 1} ("${adB.title}") possuem períodos de exibição sobrepostos!`, 'danger');
+                return;
+            }
+        }
+    }
     
     // Commit temp list to actual state
     carouselBanners = JSON.parse(JSON.stringify(tempCarouselBanners));

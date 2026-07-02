@@ -163,6 +163,9 @@
                 <button type="button" class="admin-tab-btn" data-target="tab-whatsapp">
                     <i class="fa-brands fa-whatsapp"></i> WhatsApp
                 </button>
+                <button type="button" class="admin-tab-btn" data-target="tab-reviews" id="admin-tab-reviews-btn">
+                    <i class="fa-solid fa-comments"></i> Avaliações <span class="badge-pending-count" id="pending-reviews-badge" style="display: none; background-color: var(--accent); color: #000; font-size: 0.7rem; font-weight: bold; padding: 0.1rem 0.35rem; border-radius: 10px; margin-left: 0.25rem;">0</span>
+                </button>
             </div>
             
             <!-- Tab Panel 1: Banner -->
@@ -324,6 +327,23 @@
                     </div>
                 </form>
             </div>
+
+            <!-- Tab Panel 4: Reviews Moderation -->
+            <div class="admin-tab-panel" id="tab-reviews" style="display: none;">
+                <div style="padding: 0.5rem 0;">
+                    <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-primary);">Moderação de Avaliações & Reclamações</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.4; margin-bottom: 1.25rem;">
+                        Aprove ou rejeite as reclamações enviadas pelos usuários públicos antes que elas sejam publicadas no perfil de cada fornecedor.
+                    </p>
+                    
+                    <div id="admin-reviews-list-container" style="max-height: 380px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 8px; padding: 0.5rem; display: flex; flex-direction: column; gap: 0.75rem; background-color: rgba(0,0,0,0.05);">
+                        <!-- Dynamic list of pending reviews -->
+                        <div style="text-align: center; color: var(--text-secondary); padding: 2rem;">
+                            Nenhuma avaliação pendente de aprovação.
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -409,6 +429,107 @@
                     <button type="submit" class="btn btn-primary" style="background-color: var(--success); color: white; font-weight: bold; border: none;">
                         <i class="fa-brands fa-whatsapp"></i> Enviar Mensagem
                     </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Visualização de Avaliações (IRS Hub) -->
+    <div class="modal-overlay" id="reviews-detail-modal">
+        <div class="modal-content" style="max-width: 820px; padding: 2rem;">
+            <div class="modal-header" style="border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; margin-bottom: 1.5rem; justify-content: space-between; align-items: center;">
+                <div>
+                    <h2 style="font-size: 1.35rem; font-weight: 700; color: var(--text-primary);" id="reviews-modal-supplier-name">Avaliações do Fornecedor</h2>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0; margin-top: 0.25rem;">Índice de Reputação dos Síndicos (IRS) baseado no feedback da comunidade</p>
+                </div>
+                <button class="modal-close" id="reviews-modal-close" style="font-size: 1.8rem;">&times;</button>
+            </div>
+            
+            <div class="reviews-modal-layout">
+                <!-- Left Side: IRS Summary Dashboard -->
+                <div class="irs-summary-card" style="border-right: 1px solid var(--border-color); padding-right: 2rem; display: flex; flex-direction: column; gap: 1.25rem;">
+                    <div style="text-align: center;">
+                        <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); font-weight: 600;">Reputação Interna</span>
+                        <div style="font-size: 3rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0;" id="irs-avg-score">5.0</div>
+                        <div id="irs-stars-container" style="color: var(--warning); font-size: 1.1rem; margin-bottom: 0.5rem;">⭐⭐⭐⭐⭐</div>
+                        <div id="irs-badge" class="irs-badge badge-excelente">Excelente</div>
+                    </div>
+                    
+                    <div style="background-color: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.75rem; text-align: center;">
+                        <div style="font-size: 1.25rem; font-weight: 700; color: var(--accent);" id="irs-recommendation-rate">100%</div>
+                        <span style="font-size: 0.75rem; color: var(--text-secondary);">dos síndicos recomendam este fornecedor</span>
+                    </div>
+                    
+                    <!-- Stars Distribution Bar Graph -->
+                    <div>
+                        <h4 style="font-size: 0.8rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--text-primary);">Distribuição de Notas</h4>
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem;" id="irs-distribution-container">
+                            <!-- JS will inject distribution bars -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Side: Scrollable Reviews List -->
+                <div style="display: flex; flex-direction: column; justify-content: space-between; height: 420px;">
+                    <div id="reviews-scroll-list" style="overflow-y: auto; flex-grow: 1; padding-right: 0.5rem; display: flex; flex-direction: column; gap: 1rem;">
+                        <!-- JS will inject list of reviews -->
+                    </div>
+                    
+                    <div style="margin-top: 1rem; border-top: 1px solid var(--border-color); padding-top: 1rem; display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 0.75rem; color: var(--text-secondary);" id="reviews-count-label">Exibindo 0 avaliações</span>
+                        <button type="button" class="btn btn-primary btn-sm" id="btn-open-add-review" style="background-color: var(--accent); color: #000; font-weight: bold; padding: 0.5rem 1rem;">
+                            <i class="fa-solid fa-pen"></i> Escrever Avaliação
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Formulário de Cadastro de Avaliação (Escrever Opinião) -->
+    <div class="modal-overlay" id="add-review-modal">
+        <div class="modal-content" style="max-width: 480px; padding: 2rem;">
+            <div class="modal-header" style="border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; margin-bottom: 1.25rem;">
+                <h2 style="font-size: 1.2rem; font-weight: 700;" id="add-review-title">Avaliar Fornecedor</h2>
+                <button class="modal-close" id="add-review-close">&times;</button>
+            </div>
+            
+            <form id="add-review-form">
+                <input type="hidden" id="review-supplier-id">
+                
+                <!-- Interactive Star Rating Selector -->
+                <div class="form-group" style="text-align: center; margin-bottom: 1.25rem;">
+                    <label style="margin-bottom: 0.5rem; display: block; font-size: 0.85rem; color: var(--text-secondary);">Sua Nota para o Fornecedor</label>
+                    <div class="star-rating-selector" id="star-selector" style="font-size: 2.2rem; display: flex; justify-content: center; gap: 0.5rem; color: var(--text-secondary); cursor: pointer;">
+                        <i class="fa-regular fa-star" data-value="1"></i>
+                        <i class="fa-regular fa-star" data-value="2"></i>
+                        <i class="fa-regular fa-star" data-value="3"></i>
+                        <i class="fa-regular fa-star" data-value="4"></i>
+                        <i class="fa-regular fa-star" data-value="5"></i>
+                    </div>
+                    <input type="hidden" id="review-rating-value" required value="">
+                </div>
+                
+                <div class="form-group">
+                    <label for="review-username">Seu Nome Completo</label>
+                    <input type="text" id="review-username" placeholder="Ex: João da Silva" required>
+                </div>
+                <div class="form-group">
+                    <label for="review-useremail">Seu E-mail Corporativo/Síndico</label>
+                    <input type="email" id="review-useremail" placeholder="Ex: joao@seucondominio.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="review-title">Título da Avaliação / Reclamação</label>
+                    <input type="text" id="review-title" placeholder="Resuma sua experiência..." required>
+                </div>
+                <div class="form-group">
+                    <label for="review-comment">Detalhamento (Opinião / Reclamação)</label>
+                    <textarea id="review-comment" rows="4" placeholder="Escreva aqui detalhes sobre o atendimento, prazos, qualidade dos insumos..." required style="resize: none;"></textarea>
+                </div>
+                
+                <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
+                    <button type="button" class="btn btn-secondary" id="btn-add-review-cancel">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" style="background-color: var(--accent); color: #000; font-weight: bold; border: none;">Enviar Avaliação</button>
                 </div>
             </form>
         </div>

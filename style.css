@@ -895,9 +895,186 @@ header {
 #admin-suppliers-list::-webkit-scrollbar-thumb:hover,
 .carousel-list-container::-webkit-scrollbar-thumb:hover {
     background: var(--accent);
+}/* Reviews System & IRS Hub Styling */
+.reviews-modal-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 2rem;
+    margin-top: 0.5rem;
+    align-items: start;
 }
 
+@media (max-width: 768px) {
+    .reviews-modal-layout {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    .irs-summary-card {
+        border-right: none !important;
+        border-bottom: 1px solid var(--border-color);
+        padding-right: 0 !important;
+        padding-bottom: 1.5rem !important;
+    }
+}
 
+.irs-badge {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
 
+.irs-badge.badge-excelente {
+    background: linear-gradient(135deg, #00f0ff, #00ff87);
+    color: #040810;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.35);
+}
 
+.irs-badge.badge-recomendado {
+    background-color: var(--success);
+    color: white;
+}
 
+.irs-badge.badge-regular {
+    background-color: var(--warning);
+    color: #040810;
+}
+
+.irs-badge.badge-naorecomendado {
+    background-color: var(--danger);
+    color: white;
+}
+
+.irs-badge.badge-semdados {
+    background-color: #4b5563;
+    color: white;
+}
+
+/* Distribution Bars */
+.irs-dist-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.irs-dist-bar-track {
+    flex-grow: 1;
+    height: 8px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.irs-dist-bar-fill {
+    height: 100%;
+    background-color: var(--accent);
+    border-radius: 4px;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Review Cards */
+.review-item-card {
+    background-color: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.review-item-card:hover {
+    border-color: rgba(255, 255, 255, 0.15);
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+.review-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    gap: 1rem;
+}
+
+.review-card-author {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.review-card-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.review-card-text {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+/* Star Selector Interactive Hover states */
+.star-rating-selector i.hovered,
+.star-rating-selector i.selected {
+    color: var(--warning);
+}
+
+.star-rating-selector i {
+    transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.star-rating-selector i:hover {
+    transform: scale(1.15);
+}
+
+/* Custom Scrollbars for reviews list */
+#reviews-scroll-list::-webkit-scrollbar,
+#admin-reviews-list-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+#reviews-scroll-list::-webkit-scrollbar-track,
+#admin-reviews-list-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 4px;
+}
+
+#reviews-scroll-list::-webkit-scrollbar-thumb,
+#admin-reviews-list-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+#reviews-scroll-list::-webkit-scrollbar-thumb:hover,
+#admin-reviews-list-container::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+}
+
+/* Admin pending review moderation item */
+.admin-pending-review-item {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.admin-pending-review-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 0.5rem;
+}

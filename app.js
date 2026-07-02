@@ -118,6 +118,91 @@ async function fetchRealReclameAquiData(query) {
 }
 
 
+// Mock reviews database to initially populate the system
+const defaultReviews = [
+    {
+        id: "rev1",
+        supplierId: "1", // Stefanini
+        userName: "Felipe Venâncio",
+        userEmail: "felipe@sindicos.com.br",
+        title: "Excelente parceiro de tecnologia",
+        comment: "Fizemos a migração dos sistemas da portaria com a Stefanini e o atendimento superou todas as expectativas. Resposta rápida e suporte técnico de alto nível.",
+        rating: 5,
+        status: "approved",
+        createdAt: "2026-06-25T14:30:00Z"
+    },
+    {
+        id: "rev2",
+        supplierId: "1", // Stefanini
+        userName: "Reginaldo Portaria",
+        userEmail: "reginaldo@condominio.com",
+        title: "Bom atendimento, mas valor elevado",
+        comment: "Os técnicos são experientes e resolveram nossos problemas de rede interna, mas o valor cobrado pela hora de suporte extra é acima da média.",
+        rating: 4,
+        status: "approved",
+        createdAt: "2026-06-28T10:15:00Z"
+    },
+    {
+        id: "rev3",
+        supplierId: "2", // Copasa
+        userName: "Síndica Amanda",
+        userEmail: "amanda.predial@gmail.com",
+        title: "Problemas recorrentes na leitura de consumo",
+        comment: "Temos hidrômetros individuais no condomínio e frequentemente ocorrem erros na leitura mensal da Copasa. Demoram muito para enviar equipe de retificação.",
+        rating: 2,
+        status: "approved",
+        createdAt: "2026-06-29T16:45:00Z"
+    },
+    {
+        id: "rev4",
+        supplierId: "3", // Totvs
+        userName: "Cláudio Adm",
+        userEmail: "claudio@totvs-parceiro.com",
+        title: "Sistema robusto e excelente suporte",
+        comment: "Usamos o ERP da Totvs para toda a gestão financeira da nossa administradora de condomínios. O sistema é extremamente robusto.",
+        rating: 5,
+        status: "approved",
+        createdAt: "2026-06-30T09:00:00Z"
+    },
+    {
+        id: "rev5",
+        supplierId: "2", // Copasa
+        userName: "Roberto Silva",
+        userEmail: "roberto@condominiobh.com.br",
+        title: "Suporte lento para vazamentos na rua",
+        comment: "Acionamos a Copasa por causa de um vazamento grave na calçada do condomínio. Demoraram mais de 48 horas para comparecer ao local, gerando desperdício.",
+        rating: 3,
+        status: "approved",
+        createdAt: "2026-07-01T11:20:00Z"
+    },
+    {
+        id: "rev6",
+        supplierId: "1", // Stefanini
+        userName: "Morador Insatisfeito",
+        userEmail: "morador@sindicos.com.br",
+        title: "Demora na resolução de ticket de portaria",
+        comment: "Estou aguardando a liberação de um cadastro no aplicativo há mais de uma semana. O suporte joga a culpa no condomínio e vice-versa.",
+        rating: 2,
+        status: "pending",
+        createdAt: "2026-07-02T08:10:00Z"
+    }
+];
+
+// Active reviews list
+let reviews = JSON.parse(localStorage.getItem('sf_supplier_reviews')) || [];
+
+// Save reviews to localStorage
+function saveReviews() {
+    localStorage.setItem('sf_supplier_reviews', JSON.stringify(reviews));
+}
+
+// Initializing reviews if empty
+if (reviews.length === 0) {
+    reviews = [...defaultReviews];
+    saveReviews();
+}
+
+
 // Initial Suppliers to populate the system
 const initialSuppliers = [
     {
@@ -308,16 +393,25 @@ inputCnpj.addEventListener('input', (e) => {
 
 // Render Suppliers
 // Helper to render filtered list items
+// Helper to render rating stars and computed average rating
+function getSupplierRatingStars(sup) {
+    const irs = calculateSupplierIrs(sup.id);
+    const score = irs.count > 0 ? irs.avg : parseFloat(sup.ratingInternal || 5);
+    const rounded = Math.round(score);
+    const starsStr = '★'.repeat(rounded) + '☆'.repeat(5 - rounded);
+    return `<span style="color: var(--warning); font-weight: bold; letter-spacing: 1px;">${starsStr}</span> <span style="font-size: 0.8rem; color: var(--text-secondary); font-weight: normal; margin-left: 0.25rem;">(${score.toFixed(1)})</span>`;
+}
+
 function renderFilteredSuppliersList(filtered) {
     supplierGrid.innerHTML = filtered.map(sup => {
-        const stars = '⭐'.repeat(parseInt(sup.ratingInternal));
         const badgeClass = `badge badge-${sup.raStatus}`;
         const badgeText = sup.raStatus === 'ra1000' ? 'RA1000' : 
                           sup.raStatus === 'semdados' ? 'Sem Dados' : 
                           sup.raStatus;
+        const irs = calculateSupplierIrs(sup.id);
         
         return `
-            <div class="supplier-card">
+            <div class="supplier-card" style="display: flex; flex-direction: column; justify-content: space-between;">
                 <div>
                     <div class="card-header">
                         <div class="supplier-info">
@@ -326,14 +420,17 @@ function renderFilteredSuppliersList(filtered) {
                         </div>
                         <span class="${badgeClass}">${badgeText}</span>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" style="padding-bottom: 0.25rem;">
                         <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
                             <strong>Categoria:</strong> ${sup.category}
                         </p>
-                        <p style="font-size: 0.85rem; color: var(--text-secondary);">
-                            <strong>Avaliação Interna:</strong> ${stars}
+                        <p style="font-size: 0.85rem; color: var(--text-secondary); display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+                            <span><strong>Avaliação Interna:</strong> ${getSupplierRatingStars(sup)}</span>
+                            <button type="button" onclick="openReviewsModal('${sup.id}')" style="background: none; border: none; color: var(--accent); font-size: 0.75rem; text-decoration: underline; padding: 0; cursor: pointer; font-weight: 500;">
+                                Opiniões (${irs.count})
+                            </button>
                         </p>
-                        <div class="reputation-details">
+                        <div class="reputation-details" style="margin-bottom: 0.75rem;">
                             <div class="rep-stat score-stat">
                                 <span class="rep-label">ReclameAqui</span>
                                 <span class="rep-value score">${sup.raScore || 'N/A'}</span>
@@ -346,6 +443,14 @@ function renderFilteredSuppliersList(filtered) {
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="card-footer-actions" style="margin-top: 0.75rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem; display: flex; gap: 0.5rem; justify-content: space-between; align-items: center;">
+                    <button class="btn btn-sm" onclick="openAddReviewModal('${sup.id}')" style="font-size: 0.75rem; padding: 0.4rem 0.8rem; border: 1px solid rgba(255,255,255,0.1); background-color: rgba(255,255,255,0.02); color: var(--text-primary); flex-grow: 1; justify-content: center; font-weight: 600;">
+                        <i class="fa-solid fa-star" style="color: var(--warning);"></i> Avaliar
+                    </button>
+                    <button class="btn btn-sm" onclick="openReviewsModal('${sup.id}')" style="font-size: 0.75rem; padding: 0.4rem 0.8rem; background-color: var(--accent); color: #000; flex-grow: 1; justify-content: center; font-weight: 700;">
+                        <i class="fa-solid fa-comments"></i> Ver Avaliações
+                    </button>
                 </div>
             </div>
         `;
@@ -994,6 +1099,8 @@ function openAdminModal(defaultTabId = 'tab-banner') {
     loadAdFieldsIntoEditor(0);
     
     renderAdminSuppliersList();
+    renderAdminReviewsList();
+    updatePendingReviewsBadge();
     
     inputAdminWhatsappNumber.value = whatsappSettings.number;
     
@@ -1162,6 +1269,376 @@ renderBanner();
 if (!localStorage.getItem('sf_carousel_banners')) {
     localStorage.setItem('sf_carousel_banners', JSON.stringify(carouselBanners));
 }
+
+// ==========================================
+// REVIEWS & IRS SYSTEM IMPLEMENTATION
+// ==========================================
+
+// Helper to calculate IRS metrics
+function calculateSupplierIrs(supplierId) {
+    const approvedReviews = reviews.filter(r => r.supplierId === supplierId && r.status === 'approved');
+    const count = approvedReviews.length;
+    
+    if (count === 0) {
+        return {
+            avg: 0.0,
+            badge: 'Sem Índice ⚪',
+            badgeClass: 'badge-semdados',
+            recommendationRate: 0,
+            count: 0,
+            distribution: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 }
+        };
+    }
+    
+    const sum = approvedReviews.reduce((acc, curr) => acc + curr.rating, 0);
+    const avg = sum / count;
+    
+    const recommendedCount = approvedReviews.filter(r => r.rating >= 3).length;
+    const recommendationRate = Math.round((recommendedCount / count) * 100);
+    
+    const distribution = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+    approvedReviews.forEach(r => {
+        if (distribution[r.rating] !== undefined) {
+            distribution[r.rating]++;
+        }
+    });
+    
+    for (const stars in distribution) {
+        distribution[stars] = Math.round((distribution[stars] / count) * 100);
+    }
+    
+    let badge = 'Regular';
+    let badgeClass = 'badge-regular';
+    if (avg >= 4.5) {
+        badge = 'Excelente 💎';
+        badgeClass = 'badge-excelente';
+    } else if (avg >= 3.5) {
+        badge = 'Recomendado ✅';
+        badgeClass = 'badge-recomendado';
+    } else if (avg >= 2.5) {
+        badge = 'Regular ⚠️';
+        badgeClass = 'badge-regular';
+    } else {
+        badge = 'Não Recomendado ❌';
+        badgeClass = 'badge-naorecomendado';
+    }
+    
+    return {
+        avg,
+        badge,
+        badgeClass,
+        recommendationRate,
+        count,
+        distribution
+    };
+}
+
+// Sync supplier star rating with average review rating
+function syncSupplierRatings() {
+    let updated = false;
+    suppliers.forEach(sup => {
+        const irs = calculateSupplierIrs(sup.id);
+        if (irs.count > 0) {
+            const newRating = Math.round(irs.avg).toString();
+            if (sup.ratingInternal !== newRating) {
+                sup.ratingInternal = newRating;
+                updated = true;
+            }
+        }
+    });
+    if (updated) {
+        saveSuppliers();
+    }
+}
+
+// Select reviews DOM Elements
+const reviewsDetailModal = document.getElementById('reviews-detail-modal');
+const reviewsModalClose = document.getElementById('reviews-modal-close');
+const addReviewModal = document.getElementById('add-review-modal');
+const addReviewClose = document.getElementById('add-review-close');
+const btnOpenAddReview = document.getElementById('btn-open-add-review');
+const btnAddReviewCancel = document.getElementById('btn-add-review-cancel');
+const addReviewForm = document.getElementById('add-review-form');
+
+const starSelector = document.getElementById('star-selector');
+const reviewRatingValue = document.getElementById('review-rating-value');
+const starIcons = starSelector.querySelectorAll('i');
+
+let selectedRating = 0;
+
+// Star Selector click and hover handlers
+starIcons.forEach(star => {
+    star.addEventListener('mouseover', () => {
+        const val = parseInt(star.getAttribute('data-value'));
+        highlightStars(val);
+    });
+    
+    star.addEventListener('mouseleave', () => {
+        highlightStars(selectedRating);
+    });
+    
+    star.addEventListener('click', () => {
+        selectedRating = parseInt(star.getAttribute('data-value'));
+        reviewRatingValue.value = selectedRating;
+        highlightStars(selectedRating);
+    });
+});
+
+function highlightStars(count) {
+    starIcons.forEach(star => {
+        const val = parseInt(star.getAttribute('data-value'));
+        if (val <= count) {
+            star.classList.remove('fa-regular');
+            star.classList.add('fa-solid', 'selected');
+        } else {
+            star.classList.remove('fa-solid', 'selected');
+            star.classList.add('fa-regular');
+        }
+    });
+}
+
+// Modal open/close listeners
+reviewsModalClose.addEventListener('click', () => reviewsDetailModal.classList.remove('active'));
+addReviewClose.addEventListener('click', () => addReviewModal.classList.remove('active'));
+btnAddReviewCancel.addEventListener('click', () => addReviewModal.classList.remove('active'));
+btnOpenAddReview.addEventListener('click', () => {
+    const supplierId = document.getElementById('review-supplier-id').value;
+    openAddReviewModal(supplierId);
+});
+
+// Open reviews details and IRS dashboard
+window.openReviewsModal = function(supplierId) {
+    const sup = suppliers.find(s => s.id === supplierId);
+    if (!sup) return;
+    
+    document.getElementById('reviews-modal-supplier-name').innerText = `Avaliações de: ${sup.name}`;
+    document.getElementById('review-supplier-id').value = supplierId;
+    
+    const irs = calculateSupplierIrs(supplierId);
+    
+    document.getElementById('irs-avg-score').innerText = irs.count > 0 ? irs.avg.toFixed(1) : 'N/A';
+    
+    const irsStarsContainer = document.getElementById('irs-stars-container');
+    const roundedStars = irs.count > 0 ? Math.round(irs.avg) : 0;
+    irsStarsContainer.innerText = '★'.repeat(roundedStars) + '☆'.repeat(5 - roundedStars);
+    
+    const badgeEl = document.getElementById('irs-badge');
+    badgeEl.innerText = irs.badge;
+    badgeEl.className = `irs-badge ${irs.badgeClass}`;
+    
+    document.getElementById('irs-recommendation-rate').innerText = irs.count > 0 ? `${irs.recommendationRate}%` : 'N/A';
+    
+    // Dist bars
+    const distContainer = document.getElementById('irs-distribution-container');
+    let distHtml = '';
+    for (let i = 5; i >= 1; i--) {
+        const pct = irs.distribution[i];
+        distHtml += `
+            <div class="irs-dist-bar-row">
+                <span style="width: 35px; text-align: right;">${i} ★</span>
+                <div class="irs-dist-bar-track">
+                    <div class="irs-dist-bar-fill" style="width: ${pct}%;"></div>
+                </div>
+                <span style="width: 30px; text-align: left;">${pct}%</span>
+            </div>
+        `;
+    }
+    distContainer.innerHTML = distHtml;
+    
+    // Load comments
+    const scrollList = document.getElementById('reviews-scroll-list');
+    const approvedReviews = reviews.filter(r => r.supplierId === supplierId && r.status === 'approved');
+    
+    document.getElementById('reviews-count-label').innerText = `Exibindo ${approvedReviews.length} avaliações`;
+    
+    if (approvedReviews.length === 0) {
+        scrollList.innerHTML = `
+            <div style="text-align: center; color: var(--text-secondary); padding: 3rem 1rem;">
+                <i class="fa-solid fa-face-meh" style="font-size: 2.5rem; margin-bottom: 0.75rem; color: var(--text-secondary); display: block;"></i>
+                <p style="font-size: 0.9rem;">Este fornecedor ainda não recebeu avaliações.</p>
+                <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">Seja o primeiro a avaliar clicando no botão abaixo!</p>
+            </div>
+        `;
+    } else {
+        scrollList.innerHTML = approvedReviews.map(r => {
+            const date = new Date(r.createdAt).toLocaleDateString('pt-BR');
+            const starsStr = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+            return `
+                <div class="review-item-card">
+                    <div class="review-card-header">
+                        <div>
+                            <h4 class="review-card-title">${r.title}</h4>
+                            <div class="review-card-author">
+                                <i class="fa-solid fa-user"></i> ${r.userName} • <i class="fa-solid fa-calendar"></i> ${date}
+                            </div>
+                        </div>
+                        <span style="color: var(--warning); font-size: 0.85rem; font-weight: bold; letter-spacing: 1px;">
+                            ${starsStr}
+                        </span>
+                    </div>
+                    <p class="review-card-text">${r.comment}</p>
+                </div>
+            `;
+        }).join('');
+    }
+    
+    reviewsDetailModal.classList.add('active');
+};
+
+// Open add review modal
+window.openAddReviewModal = function(supplierId) {
+    const sup = suppliers.find(s => s.id === supplierId);
+    if (!sup) return;
+    
+    reviewsDetailModal.classList.remove('active');
+    
+    document.getElementById('review-supplier-id').value = supplierId;
+    document.getElementById('add-review-title').innerText = `Avaliar: ${sup.name}`;
+    addReviewForm.reset();
+    
+    selectedRating = 0;
+    reviewRatingValue.value = "";
+    highlightStars(0);
+    
+    addReviewModal.classList.add('active');
+};
+
+// Handle review submit
+addReviewForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    if (!isCaptchaVerified()) {
+        addReviewModal.classList.remove('active');
+        captchaModal.classList.add('active');
+        showToast('Por favor, resolva o Captcha antes de submeter a avaliação.', 'warning');
+        return;
+    }
+    
+    const supplierId = document.getElementById('review-supplier-id').value;
+    const rating = parseInt(reviewRatingValue.value);
+    
+    if (!rating) {
+        showToast('Por favor, selecione uma nota de 1 a 5 estrelas.', 'warning');
+        return;
+    }
+    
+    const newReview = {
+        id: 'rev_' + Date.now().toString(),
+        supplierId: supplierId,
+        userName: document.getElementById('review-username').value.trim(),
+        userEmail: document.getElementById('review-useremail').value.trim(),
+        title: document.getElementById('review-title').value.trim(),
+        comment: document.getElementById('review-comment').value.trim(),
+        rating: rating,
+        status: 'pending',
+        createdAt: new Date().toISOString()
+    };
+    
+    reviews.push(newReview);
+    saveReviews();
+    
+    updatePendingReviewsBadge();
+    
+    addReviewModal.classList.remove('active');
+    showToast('Sua avaliação foi enviada para moderação da administração!', 'success');
+});
+
+// Admin Moderation Helpers
+function updatePendingReviewsBadge() {
+    const pendingCount = reviews.filter(r => r.status === 'pending').length;
+    const badge = document.getElementById('pending-reviews-badge');
+    if (badge) {
+        if (pendingCount > 0) {
+            badge.innerText = pendingCount;
+            badge.style.display = 'inline-block';
+        } else {
+            badge.style.display = 'none';
+        }
+    }
+}
+
+function renderAdminReviewsList() {
+    const container = document.getElementById('admin-reviews-list-container');
+    if (!container) return;
+    
+    const pendingReviews = reviews.filter(r => r.status === 'pending');
+    
+    if (pendingReviews.length === 0) {
+        container.innerHTML = `
+            <div style="text-align: center; color: var(--text-secondary); padding: 2rem;">
+                <i class="fa-solid fa-square-check" style="font-size: 2.2rem; color: var(--success); margin-bottom: 0.5rem; display: block;"></i>
+                Nenhuma avaliação pendente de moderação.
+            </div>
+        `;
+        return;
+    }
+    
+    container.innerHTML = pendingReviews.map(r => {
+        const sup = suppliers.find(s => s.id === r.supplierId);
+        const supplierName = sup ? sup.name : 'Fornecedor Desconhecido';
+        const date = new Date(r.createdAt).toLocaleDateString('pt-BR');
+        const starsStr = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+        
+        return `
+            <div class="admin-pending-review-item">
+                <div class="admin-pending-review-meta">
+                    <span>Para: <strong>${supplierName}</strong></span>
+                    <span>Enviado em: ${date}</span>
+                </div>
+                <div style="margin-top: 0.5rem;">
+                    <h4 style="font-size: 0.9rem; font-weight: bold; margin-bottom: 0.25rem; color: var(--text-primary);">${r.title}</h4>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4; margin-bottom: 0.75rem;">${r.comment}</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+                        <span style="font-size: 0.75rem; color: var(--text-secondary);">
+                            Por: ${r.userName} (${r.userEmail}) • <span style="color: var(--warning); font-weight: bold;">${starsStr}</span>
+                        </span>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button type="button" class="btn btn-sm" onclick="approveReview('${r.id}')" style="background-color: var(--success); color: white; padding: 0.35rem 0.7rem; font-size: 0.75rem; font-weight: bold; border-radius: 4px;">
+                                <i class="fa-solid fa-check"></i> Aprovar
+                            </button>
+                            <button type="button" class="btn btn-sm" onclick="rejectReview('${r.id}')" style="background-color: var(--danger); color: white; padding: 0.35rem 0.7rem; font-size: 0.75rem; font-weight: bold; border-radius: 4px;">
+                                <i class="fa-solid fa-xmark"></i> Rejeitar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+window.approveReview = function(reviewId) {
+    const rev = reviews.find(r => r.id === reviewId);
+    if (!rev) return;
+    
+    rev.status = 'approved';
+    saveReviews();
+    
+    syncSupplierRatings();
+    
+    updatePendingReviewsBadge();
+    renderAdminReviewsList();
+    renderSuppliers();
+    
+    showToast('Avaliação aprovada e publicada com sucesso!', 'success');
+};
+
+window.rejectReview = function(reviewId) {
+    if (!confirm('Deseja realmente rejeitar e excluir esta avaliação permanentemente?')) return;
+    
+    reviews = reviews.filter(r => r.id !== reviewId);
+    saveReviews();
+    
+    updatePendingReviewsBadge();
+    renderAdminReviewsList();
+    renderSuppliers();
+    
+    showToast('Avaliação rejeitada e removida com sucesso.', 'info');
+};
+
+// Initial triggers on load
+syncSupplierRatings();
+updatePendingReviewsBadge();
 
 
 

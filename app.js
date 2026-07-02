@@ -1234,25 +1234,6 @@ adminForm.addEventListener('submit', (e) => {
         }
     }
     
-    // 2. Validate that there are no overlaps between any slides
-    for (let i = 0; i < tempCarouselBanners.length; i++) {
-        const adA = tempCarouselBanners[i];
-        const startA = new Date(adA.startDate).getTime();
-        const endA = new Date(adA.endDate).getTime();
-        
-        for (let j = i + 1; j < tempCarouselBanners.length; j++) {
-            const adB = tempCarouselBanners[j];
-            const startB = new Date(adB.startDate).getTime();
-            const endB = new Date(adB.endDate).getTime();
-            
-            // Interval overlap condition: startA < endB && startB < endA
-            if (startA < endB && startB < endA) {
-                showToast(`Conflito de datas: O Slide ${i + 1} ("${adA.title}") e o Slide ${j + 1} ("${adB.title}") possuem períodos de exibição sobrepostos!`, 'danger');
-                return;
-            }
-        }
-    }
-    
     // Commit temp list to actual state
     carouselBanners = JSON.parse(JSON.stringify(tempCarouselBanners));
     localStorage.setItem('sf_carousel_banners', JSON.stringify(carouselBanners));

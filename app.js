@@ -892,13 +892,15 @@ function renderBanner() {
     activeBanners.forEach((banner, index) => {
         slidesHtml += `
             <li class="carousel-slide ${banner.theme}" style="min-width: 100%; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; padding: 1rem 3.5rem 1.25rem 2rem; position: relative;">
-                ${banner.logoUrl ? `
-                <div class="promo-banner-logo">
-                    <img src="${banner.logoUrl}" alt="Logo">
-                </div>
-                ` : ''}
                 <div class="promo-banner-content">
-                    <h2>${banner.title}</h2>
+                    <div class="promo-banner-title-row" style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.35rem; flex-wrap: wrap;">
+                        ${banner.logoUrl ? `
+                        <div class="promo-banner-logo-inline" style="background-color: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 0.25rem 0.5rem; border-radius: 4px; display: flex; align-items: center; justify-content: center; height: 26px; box-sizing: border-box; flex-shrink: 0;">
+                            <img src="${banner.logoUrl}" alt="Logo" style="max-height: 16px; width: auto; display: block;">
+                        </div>
+                        ` : ''}
+                        <h2 style="margin: 0; font-size: 1.25rem; font-weight: 700; color: white;">${banner.title}</h2>
+                    </div>
                     <p>${banner.desc}</p>
                 </div>
                 <div class="promo-banner-actions">

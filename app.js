@@ -402,6 +402,15 @@ function getSupplierRatingStars(sup) {
     return `<span style="color: var(--warning); font-weight: bold; letter-spacing: 1px;">${starsStr}</span> <span style="font-size: 0.8rem; color: var(--text-secondary); font-weight: normal; margin-left: 0.25rem;">(${score.toFixed(1)})</span>`;
 }
 
+// Helper to mask CNPJ for public display
+function maskCnpjPublic(cnpj) {
+    if (!cnpj) return '';
+    const clean = cnpj.replace(/\D/g, '');
+    if (clean.length !== 14) return cnpj;
+    const branch = clean.substring(8, 12); // e.g. "0001"
+    return `XX.XXX.XXX/${branch}-XX`;
+}
+
 function renderFilteredSuppliersList(filtered) {
     supplierGrid.innerHTML = filtered.map(sup => {
         const badgeClass = `badge badge-${sup.raStatus}`;
@@ -416,7 +425,7 @@ function renderFilteredSuppliersList(filtered) {
                     <div class="card-header">
                         <div class="supplier-info">
                             <h3>${sup.name}</h3>
-                            <span class="cnpj">CNPJ: ${sup.cnpj}</span>
+                            <span class="cnpj">CNPJ: ${maskCnpjPublic(sup.cnpj)}</span>
                         </div>
                         <span class="${badgeClass}">${badgeText}</span>
                     </div>

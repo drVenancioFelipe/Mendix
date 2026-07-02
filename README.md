@@ -29,7 +29,7 @@ A interface foi projetada seguindo as melhores práticas de design moderno, foca
     *   Estilo visual moderno (estilo reCAPTCHA/hCaptcha) com feedback visual de carregamento e sucesso.
     *   **Persistência via Cookie**: O estado verificado é salvo em cookie do navegador por 24 horas, evitando interrupções em acessos recorrentes durante a mesma sessão de trabalho.
 *   **Painel de Administração por Abas (Admin)**:
-    *   **Painel Administrativo Autenticado**: Acesso restrito ao painel de configurações via formulário modal de **Login e Senha** (Credenciais padrões: `admin` / `admin`).
+    *   **Painel Administrativo Autenticado**: Acesso restrito ao painel de configurações via formulário modal de **Login e Senha** (Credenciais padrões: `admin` / `W!qHowG7`).
     *   **Navegação por Abas**: Organização das ferramentas administrativas em três abas principais em um **layout expandido de alta resolução (850px)**:
         *   **Publicidade & Banner**: Onde se configura a visibilidade, conteúdos e a **URL da Logo da Marca** de cada anúncio. Possui uma interface interativa de colunas (largura otimizada de 220px para a lista) que permite editar cada slide e **reordenar os assuntos arrastando os itens com o mouse (Drag and Drop)** com atualização em tempo real. Os banners suportam exibição de pequenas marcas/logotipos em um contêiner glassmorphic premium.
         *   **Banco de Dados**: Organizado em duas colunas (Ações de Carga à esquerda e Lista de Fornecedores à direita), permitindo visualizar, criar, editar e excluir registros de fornecedores de forma ágil e centralizada.

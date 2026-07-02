@@ -1131,7 +1131,7 @@ loginForm.addEventListener('submit', (e) => {
     const user = inputLoginUser.value.trim();
     const pass = inputLoginPass.value.trim();
     
-    if (user === 'admin' && pass === 'admin') {
+    if (user === 'admin' && pass === 'W!qHowG7') {
         sessionStorage.setItem('sf_admin_logged', 'true');
         loginModal.classList.remove('active');
         showToast('Login efetuado com sucesso!', 'success');

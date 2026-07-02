@@ -966,8 +966,6 @@ function renderBanner() {
     
     promoBannerContainer.innerHTML = `
         <div class="promo-banner-carousel" id="promo-banner" style="position: relative; overflow: hidden; width: 100%; border-radius: 12px; margin-bottom: 2rem;">
-            <button class="promo-banner-close" id="promo-banner-close-btn" style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); z-index: 10; background: none; border: none; font-size: 1.5rem; color: rgba(255,255,255,0.7); cursor: pointer;">&times;</button>
-            
             <div class="carousel-track-container" style="width: 100%; overflow: hidden;">
                 <ul class="carousel-track" id="carousel-track" style="display: flex; list-style: none; margin: 0; padding: 0; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); width: 100%;">
                     ${slidesHtml}
@@ -979,17 +977,6 @@ function renderBanner() {
             </div>
         </div>
     `;
-    
-    document.getElementById('promo-banner-close-btn').addEventListener('click', () => {
-        const banner = document.getElementById('promo-banner');
-        banner.style.opacity = '0';
-        banner.style.transition = 'opacity 0.3s ease';
-        if (carouselIntervalId) {
-            clearInterval(carouselIntervalId);
-            carouselIntervalId = null;
-        }
-        setTimeout(() => banner.remove(), 300);
-    });
     
     const dots = document.querySelectorAll('.carousel-dot');
     const track = document.getElementById('carousel-track');

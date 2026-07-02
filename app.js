@@ -290,6 +290,56 @@ const defaultCarouselBanners = [
         logoUrl: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23f59e0b'><path d='M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5 0.67 1.5 1.5-0.67 1.5-1.5 1.5z'/></svg>",
         startDate: "2026-08-01T00:00",
         endDate: "2026-08-15T00:00"
+    },
+    {
+        title: "Limpeza & Conservação",
+        desc: "Serviços especializados de limpeza predial, conservação de áreas comuns, jardinagem e controle de pragas.",
+        btnText: "Cotar Serviços",
+        btnLink: "#",
+        theme: "banner-theme-mint",
+        logoUrl: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2310b981'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z'/></svg>",
+        startDate: "2026-08-16T00:00",
+        endDate: "2026-08-31T00:00"
+    },
+    {
+        title: "Segurança Condominial",
+        desc: "Projetos de segurança integrados, monitoramento 24 horas, portaria remota e rondas de vigilância qualificadas.",
+        btnText: "Solicitar Análise",
+        btnLink: "#",
+        theme: "banner-theme-cosmic",
+        logoUrl: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ef4444'><path d='M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 6c1.4 0 2.5 1.1 2.5 2.5S13.4 12 12 12s-2.5-1.1-2.5-2.5S10.6 7 12 7zm0 13c-2.7 0-5.12-1.46-6.41-3.66C5.66 14.86 8.5 14 12 14s6.34.86 6.41 2.34C17.12 18.54 14.7 20 12 20z'/></svg>",
+        startDate: "2026-09-01T00:00",
+        endDate: "2026-09-15T00:00"
+    },
+    {
+        title: "Reformas e Pintura",
+        desc: "Pintura de fachadas com rapel industrial, restauração de pastilhas, impermeabilização de lajes e reformas em geral.",
+        btnText: "Fazer Orçamento",
+        btnLink: "#",
+        theme: "banner-theme-sf",
+        logoUrl: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23d97706'><path d='M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2zm0-4H7V7h10v2zm0 8H7v-2h10v2z'/></svg>",
+        startDate: "2026-09-16T00:00",
+        endDate: "2026-09-30T00:00"
+    },
+    {
+        title: "Auditoria de Contas",
+        desc: "Auditoria preventiva e investigativa de pastas de prestação de contas de gestões anteriores e atuais do condomínio.",
+        btnText: "Falar com Auditor",
+        btnLink: "#",
+        theme: "banner-theme-dark",
+        logoUrl: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236b7280'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z'/></svg>",
+        startDate: "2026-10-01T00:00",
+        endDate: "2026-10-15T00:00"
+    },
+    {
+        title: "Energia Solar",
+        desc: "Reduza a conta de luz das áreas comuns instalando usinas solares fotovoltaicas com investimento zero do condomínio.",
+        btnText: "Simular Economia",
+        btnLink: "#",
+        theme: "banner-theme-mint",
+        logoUrl: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23eab308'><path d='M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z'/></svg>",
+        startDate: "2026-10-16T00:00",
+        endDate: "2026-10-31T00:00"
     }
 ];
 
@@ -1320,7 +1370,12 @@ whatsappForm.addEventListener('submit', (e) => {
 // Render the banner initially on page load
 renderBanner();
 
-if (!localStorage.getItem('sf_carousel_banners')) {
+if (!localStorage.getItem('sf_carousel_banners') || carouselBanners.length < 10) {
+    if (carouselBanners.length < 10) {
+        for (let i = carouselBanners.length; i < 10; i++) {
+            carouselBanners.push(defaultCarouselBanners[i]);
+        }
+    }
     localStorage.setItem('sf_carousel_banners', JSON.stringify(carouselBanners));
 }
 

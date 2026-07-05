@@ -1078,3 +1078,120 @@ header {
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     padding-bottom: 0.5rem;
 }
+
+/* ==========================================
+   MOBILE & SMARTPHONE RESPONSIVE CORRECTIONS
+   ========================================== */
+@media (max-width: 768px) {
+    /* Container breathing space */
+    .container {
+        padding: 1rem;
+    }
+
+    /* Stacked Header Layout */
+    header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1.25rem;
+        padding-bottom: 1.25rem;
+        margin-bottom: 1.25rem;
+    }
+    .logo-section {
+        text-align: center;
+    }
+    .logo-section p {
+        margin-top: 0.15rem;
+    }
+    .header-actions {
+        width: 100%;
+    }
+    .header-actions button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Search & Filter Layout */
+    .controls-card {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    #filter-status {
+        width: 100% !important;
+        box-sizing: border-box;
+    }
+
+    /* Modal overlay scroll behavior on overflow */
+    .modal-overlay {
+        align-items: flex-start;
+        overflow-y: auto;
+        padding: 1rem 0;
+    }
+    .modal-content {
+        padding: 1.25rem;
+        border-radius: 12px;
+        margin: 0 auto;
+    }
+
+    /* Horizontal scrollable tab buttons on mobile */
+    .admin-tabs-nav {
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 0.5rem;
+        gap: 0.25rem;
+    }
+    .admin-tab-btn {
+        flex-shrink: 0;
+        padding: 0.5rem 0.8rem;
+        font-size: 0.8rem;
+    }
+
+    /* Draggable Banners editor height */
+    .carousel-list-container {
+        max-height: 200px;
+    }
+    
+    /* Database List Container height */
+    #admin-suppliers-list {
+        max-height: 250px;
+    }
+
+    /* Reviews scroll list height */
+    #reviews-scroll-list {
+        max-height: 250px;
+    }
+    
+    /* Forms structure inside modal panels */
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0.75rem !important;
+    }
+    .api-fetch-btn {
+        margin-top: 0.5rem;
+    }
+    
+    /* Banner details text sizes */
+    .promo-banner-content h2 {
+        font-size: 1.1rem;
+    }
+    .promo-banner-content p {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Grid system on tiny screens */
+    .supplier-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    /* Toast spacing */
+    .toast-container {
+        bottom: 1rem;
+        right: 1rem;
+        left: 1rem;
+    }
+}

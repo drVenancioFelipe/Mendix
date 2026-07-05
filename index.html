@@ -264,11 +264,17 @@
                         <div class="db-actions-container">
                             <div style="background-color: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); padding: 1.1rem; border-radius: 8px; display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1rem;">
                                 <div>
-                                    <h4 style="font-size: 0.85rem; font-weight: 600; margin-bottom: 0.2rem; color: var(--text-primary);">Carga Inicial de Demonstração</h4>
-                                    <p style="font-size: 0.7rem; color: var(--text-secondary); margin: 0; line-height: 1.35;">Popula o grid com fornecedores pré-cadastrados (Cemig, Totvs, Copasa) para testes rápidos.</p>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem;">
+                                        <h4 style="font-size: 0.85rem; font-weight: 600; color: var(--text-primary); margin: 0;">Carga em Lote (Bulk Insert)</h4>
+                                        <button type="button" id="btn-bulk-help" style="background: none; border: none; color: var(--accent); cursor: pointer; padding: 0; font-size: 0.85rem;" title="Ver padrão de arquivo JSON">
+                                            <i class="fa-solid fa-circle-question"></i> Padrão JSON
+                                        </button>
+                                    </div>
+                                    <p style="font-size: 0.7rem; color: var(--text-secondary); margin: 0; line-height: 1.35;">Selecione um arquivo JSON formatado seguindo o padrão de esquema para carregar múltiplos fornecedores.</p>
                                 </div>
-                                <button class="btn btn-secondary" id="btn-load-mock" style="width: 100%; justify-content: center; padding: 0.5rem 1rem;">
-                                    <i class="fa-solid fa-cloud-arrow-down"></i> Resetar & Carregar
+                                <input type="file" id="bulk-upload-input" accept=".json" style="display: none;">
+                                <button type="button" class="btn btn-secondary" id="btn-load-mock" style="width: 100%; justify-content: center; padding: 0.5rem 1rem; border-color: var(--accent); color: var(--accent); background-color: rgba(0, 230, 255, 0.03);">
+                                    <i class="fa-solid fa-file-import"></i> Upload Bulk JSON
                                 </button>
                             </div>
                             
@@ -539,6 +545,62 @@
                     <button type="submit" class="btn btn-primary" style="background-color: var(--accent); color: #000; font-weight: bold; border: none;">Enviar Avaliação</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- Bulk Upload JSON Help Modal -->
+    <div class="modal-overlay" id="bulk-upload-help-modal">
+        <div class="modal-content" style="max-width: 550px;">
+            <div class="modal-header">
+                <h2>Padrão de Bulk Upload (JSON)</h2>
+                <button class="modal-close" id="bulk-upload-help-close">&times;</button>
+            </div>
+            <div style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.4; display: flex; flex-direction: column; gap: 0.75rem;">
+                <p>
+                    O arquivo JSON deve conter uma <strong>lista (array)</strong> de objetos. O esquema de atributos aceito é idêntico ao formulário de criação de fornecedores:
+                </p>
+                <ul style="padding-left: 1.25rem; display: flex; flex-direction: column; gap: 0.25rem;">
+                    <li><code>name</code> (String, Obrigatório): Razão Social ou Nome Fantasia.</li>
+                    <li><code>cnpj</code> (String, Obrigatório): CNPJ do fornecedor (formato 00.000.000/0000-00).</li>
+                    <li><code>category</code> (String, Obrigatório): Deve ser um dos seguintes valores: <code>Tecnologia</code>, <code>Seguranca</code>, <code>Limpeza e Conservação</code>, <code>Consultoria</code>, <code>Construção Civil</code> ou <code>Outros</code>.</li>
+                    <li><code>ratingInternal</code> (String, Obrigatório): Classificação interna (número de <code>1</code> a <code>5</code> em formato de texto).</li>
+                    <li><code>raStatus</code> (String, Obrigatório): Status ReclameAqui. Valores: <code>ra1000</code>, <code>otimo</code>, <code>bom</code>, <code>regular</code>, <code>ruim</code>, <code>naorecomendado</code> ou <code>semdados</code>.</li>
+                    <li><code>raScore</code> (String, Opcional): Pontuação do ReclameAqui (ex: <code>"7.8"</code>). Padrão se omitido: <code>"0.0"</code>.</li>
+                    <li><code>description</code> (String, Opcional): Observações técnicas e parecer.</li>
+                </ul>
+                
+                <div style="margin-top: 0.5rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+                        <span style="font-size: 0.75rem; font-weight: 600; color: var(--text-primary); text-transform: uppercase;">Exemplo de Arquivo Válido</span>
+                        <button type="button" class="btn btn-sm" id="btn-copy-bulk-example" style="font-size: 0.7rem; padding: 0.25rem 0.5rem; background-color: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--accent);">
+                            <i class="fa-solid fa-copy"></i> Copiar Código
+                        </button>
+                    </div>
+                    <pre class="json-code-box"><code id="bulk-json-example-code">[
+  {
+    "cnpj": "58.069.352/0001-97",
+    "name": "Stefanini Consultoria Lote",
+    "category": "Tecnologia",
+    "ratingInternal": "4",
+    "raStatus": "bom",
+    "raScore": "7.8",
+    "description": "Carga efetuada via Bulk Insert JSON com sucesso."
+  },
+  {
+    "cnpj": "17.155.730/0001-64",
+    "name": "Localiza Fleet Lote",
+    "category": "Outros",
+    "ratingInternal": "5",
+    "raStatus": "ra1000",
+    "raScore": "9.0",
+    "description": "Excelente avaliação no ReclameAqui."
+  }
+]</code></pre>
+                </div>
+            </div>
+            <div style="display: flex; justify-content: flex-end; margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
+                <button type="button" class="btn btn-secondary" id="btn-bulk-help-ok" style="background-color: var(--accent); color: #000; font-weight: bold; border: none; padding: 0.5rem 1.25rem;">Entendido</button>
+            </div>
         </div>
     </div>
 

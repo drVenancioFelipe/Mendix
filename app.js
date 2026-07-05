@@ -653,14 +653,148 @@ function saveSuppliers() {
 }
 
 // Load Mock Initial Data
+// Trigger File Selector on Upload Button Click
 btnLoadMock.addEventListener('click', () => {
-    if (suppliers.length > 0) {
-        if (!confirm('Deseja sobrescrever a lista atual com os fornecedores padrão?')) return;
-    }
-    suppliers = [...initialSuppliers];
-    saveSuppliers();
-    showToast('Fornecedores de demonstração carregados com sucesso!', 'success');
+    document.getElementById('bulk-upload-input').click();
 });
+
+// Bulk Upload Event Handler & Controls
+const bulkUploadInput = document.getElementById('bulk-upload-input');
+const btnBulkHelp = document.getElementById('btn-bulk-help');
+const bulkUploadHelpModal = document.getElementById('bulk-upload-help-modal');
+const bulkUploadHelpClose = document.getElementById('bulk-upload-help-close');
+const btnBulkHelpOk = document.getElementById('btn-bulk-help-ok');
+const btnCopyBulkExample = document.getElementById('btn-copy-bulk-example');
+
+// Help Modal controls
+btnBulkHelp.addEventListener('click', () => bulkUploadHelpModal.classList.add('active'));
+bulkUploadHelpClose.addEventListener('click', () => bulkUploadHelpModal.classList.remove('active'));
+btnBulkHelpOk.addEventListener('click', () => bulkUploadHelpModal.classList.remove('active'));
+
+btnCopyBulkExample.addEventListener('click', () => {
+    const code = document.getElementById('bulk-json-example-code').innerText;
+    navigator.clipboard.writeText(code).then(() => {
+        showToast('Código de exemplo copiado com sucesso!', 'success');
+    }).catch(err => {
+        showToast('Erro ao copiar código.', 'danger');
+    });
+});
+
+bulkUploadInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+        try {
+            const data = JSON.parse(evt.target.result);
+            
+            // Validation
+            if (!Array.isArray(data)) {
+                showToast('Formato inválido: O arquivo JSON deve ser uma lista (array) de objetos.', 'danger');
+                return;
+            }
+            
+            if (data.length === 0) {
+                showToast('O arquivo JSON está vazio.', 'warning');
+                return;
+            }
+            
+            const allowedCategories = ['Tecnologia', 'Seguranca', 'Limpeza e Conservação', 'Consultoria', 'Construção Civil', 'Outros'];
+            const allowedSels = ['ra1000', 'otimo', 'bom', 'regular', 'ruim', 'naorecomendado', 'semdados'];
+            
+            let successCount = 0;
+            let skippedCount = 0;
+            let errorMsg = '';
+            
+            for (let i = 0; i < data.length; i++) {
+                const item = data[i];
+                
+                // Check mandatory fields
+                if (!item.name || !item.cnpj || !item.category || !item.ratingInternal || !item.raStatus) {
+                    errorMsg = `Erro na linha ${i + 1}: Atributos obrigatórios (name, cnpj, category, ratingInternal, raStatus) ausentes.`;
+                    break;
+                }
+                
+                // Validate CNPJ format roughly (minimum digits)
+                const cleanCnpj = item.cnpj.replace(/\D/g, '');
+                if (cleanCnpj.length !== 14) {
+                    errorMsg = `Erro na linha ${i + 1} (${item.name}): CNPJ inválido (deve conter 14 dígitos).`;
+                    break;
+                }
+                
+                // Validate Category
+                if (!allowedCategories.includes(item.category)) {
+                    errorMsg = `Erro na linha ${i + 1} (${item.name}): Categoria "${item.category}" inválida. Use um dos valores permitidos.`;
+                    break;
+                }
+                
+                // Validate Internal Rating
+                const rating = parseInt(item.ratingInternal);
+                if (isNaN(rating) || rating < 1 || rating > 5) {
+                    errorMsg = `Erro na linha ${i + 1} (${item.name}): Avaliação Interna "${item.ratingInternal}" deve ser de 1 a 5.`;
+                    break;
+                }
+                
+                // Validate RA Status
+                const raStat = item.raStatus.toLowerCase().replace(/\s/g, '');
+                if (!allowedSels.includes(raStat)) {
+                    errorMsg = `Erro na linha ${i + 1} (${item.name}): Status do ReclameAqui "${item.raStatus}" inválido.`;
+                    break;
+                }
+            }
+            
+            if (errorMsg) {
+                showToast(errorMsg, 'danger');
+                bulkUploadInput.value = ''; // Reset input
+                return;
+            }
+            
+            // Execute Bulk Insert (Append)
+            data.forEach(item => {
+                const formattedCnpj = formatCnpj(item.cnpj);
+                
+                // Check for duplicates
+                const duplicateExists = suppliers.some(s => s.cnpj === formattedCnpj);
+                if (duplicateExists) {
+                    skippedCount++;
+                } else {
+                    const newSupplier = {
+                        id: 'sup_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
+                        cnpj: formattedCnpj,
+                        name: item.name.trim(),
+                        category: item.category,
+                        ratingInternal: item.ratingInternal.toString(),
+                        raStatus: item.raStatus.toLowerCase().replace(/\s/g, ''),
+                        raScore: item.raScore ? item.raScore.toString() : '0.0',
+                        description: item.description ? item.description.trim() : ''
+                    };
+                    suppliers.push(newSupplier);
+                    successCount++;
+                }
+            });
+            
+            saveSuppliers();
+            renderSuppliers();
+            renderAdminSuppliersList();
+            
+            showToast(`Carga em lote concluída! ${successCount} adicionados, ${skippedCount} duplicados ignorados.`, 'success');
+            
+        } catch (err) {
+            showToast('Erro de leitura: Arquivo JSON mal formatado.', 'danger');
+        }
+        
+        bulkUploadInput.value = ''; // Reset input
+    };
+    reader.readAsText(file);
+});
+
+// Helper to format CNPJ if it is not formatted
+function formatCnpj(cnpj) {
+    const clean = cnpj.replace(/\D/g, '');
+    if (clean.length !== 14) return cnpj;
+    return clean.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
+}
 
 // Admin Panel Suppliers List Renderer
 function renderAdminSuppliersList() {

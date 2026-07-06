@@ -1179,6 +1179,22 @@ header {
     .promo-banner-content p {
         font-size: 0.8rem;
     }
+
+    /* Mobile Carousel slide stacking */
+    .carousel-slide {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        padding: 1.25rem 1.25rem 2.25rem 1.25rem !important; /* padding-bottom slightly higher to avoid dots overlap */
+    }
+    .carousel-slide .promo-banner-actions {
+        width: 100%;
+        margin-top: 0.75rem;
+    }
+    .carousel-slide .promo-banner-btn {
+        width: 100%;
+        text-align: center;
+        box-sizing: border-box;
+    }
 }
 
 @media (max-width: 480px) {

@@ -1050,6 +1050,20 @@ if (suppliers.length === 0) {
 let carouselIntervalId = null;
 let currentSlideIndex = 0;
 
+// Safely parse date strings for strict mobile browsers (e.g. Safari iOS)
+function parseSafeDate(dateStr) {
+    if (!dateStr) return null;
+    let d = new Date(dateStr);
+    if (!isNaN(d.getTime())) return d;
+    
+    // Fallback: replace dash with slashes and 'T' with space
+    const formatted = dateStr.replace(/-/g, '/').replace('T', ' ');
+    d = new Date(formatted);
+    if (!isNaN(d.getTime())) return d;
+    
+    return null;
+}
+
 function renderBanner() {
     if (carouselIntervalId) {
         clearInterval(carouselIntervalId);
@@ -1060,8 +1074,9 @@ function renderBanner() {
     const now = new Date();
     const activeBanners = carouselBanners.filter(banner => {
         if (!banner.startDate || !banner.endDate) return true;
-        const start = new Date(banner.startDate);
-        const end = new Date(banner.endDate);
+        const start = parseSafeDate(banner.startDate);
+        const end = parseSafeDate(banner.endDate);
+        if (!start || !end) return true; // Fallback to display if parsing fails
         return now >= start && now <= end;
     });
     
@@ -1075,7 +1090,7 @@ function renderBanner() {
     
     activeBanners.forEach((banner, index) => {
         slidesHtml += `
-            <li class="carousel-slide ${banner.theme}" style="min-width: 100%; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; padding: 1rem 3.5rem 1.25rem 2rem; position: relative;">
+            <li class="carousel-slide ${banner.theme}" style="min-width: 100%; flex-shrink: 0; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; padding: 1rem 3.5rem 1.25rem 2rem; position: relative;">
                 <div class="promo-banner-content">
                     <div class="promo-banner-title-row" style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.35rem; flex-wrap: wrap;">
                         ${banner.logoUrl ? `

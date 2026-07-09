@@ -1,6 +1,6 @@
-# 🏢 Síndicos e Fornecedores - Sistema de Avaliação de Fornecedores
+# 🏢 CondoUai - Sistema de Avaliação de Fornecedores
 
-Este repositório contém a especificação técnica e um protótipo funcional do **Sistema de Gestão e Reputação de Fornecedores**, denominado **Síndicos e Fornecedores**, desenvolvido em alinhamento com a iniciativa de contratação de plataforma low-code (Mendix) no ecossistema **Microsoft Azure**.
+Este repositório contém a especificação técnica e um protótipo funcional do **Sistema de Gestão e Reputação de Fornecedores**, denominado **CondoUai**, desenvolvido em alinhamento com a iniciativa de contratação de plataforma low-code (Mendix) no ecossistema **Microsoft Azure**.
 
 Como o Mendix é uma plataforma low-code com IDE gráfica proprietária e arquivos de modelo binários (`.mpr`), este repositório serve como base técnica híbrida contendo:
 1.  **Protótipo Frontend Interativo (`HTML5/CSS3/VanillaJS`)**: Demonstração de UX/UI ágil de alta fidelidade e simulação de consumo da API do ReclameAqui.

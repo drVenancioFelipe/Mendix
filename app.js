@@ -1364,6 +1364,7 @@ function openAdminModal(defaultTabId = 'tab-banner') {
 
 function closeAdminModal() {
     adminModal.classList.remove('active');
+    exitAdminRoute();
 }
 
 // Authentication Logic for Admin Panel
@@ -1399,6 +1400,7 @@ loginForm.addEventListener('submit', (e) => {
 // Cancel Login
 btnLoginCancel.addEventListener('click', () => {
     loginModal.classList.remove('active');
+    exitAdminRoute();
 });
 
 // Admin Panel Tab Navigation Logic
@@ -1425,7 +1427,9 @@ tabButtons.forEach(btn => {
 });
 
 // Event Listeners for Admin panel
-btnAdminPanel.addEventListener('click', openAdminPanelFlow);
+if (btnAdminPanel) {
+    btnAdminPanel.addEventListener('click', openAdminPanelFlow);
+}
 adminModalClose.addEventListener('click', closeAdminModal);
 document.querySelectorAll('.btn-admin-cancel-btn').forEach(btn => {
     btn.addEventListener('click', closeAdminModal);
@@ -1915,6 +1919,26 @@ window.rejectReview = function(reviewId) {
 // Initial triggers on load
 syncSupplierRatings();
 updatePendingReviewsBadge();
+
+// Hash Routing System for CondoUai Admin
+function exitAdminRoute() {
+    if (window.location.hash === '#/admin') {
+        history.pushState("", document.title, window.location.pathname + window.location.search);
+        handleRouting();
+    }
+}
+
+function handleRouting() {
+    if (window.location.hash === '#/admin') {
+        openAdminPanelFlow();
+    } else {
+        adminModal.classList.remove('active');
+        loginModal.classList.remove('active');
+    }
+}
+
+window.addEventListener('hashchange', handleRouting);
+window.addEventListener('DOMContentLoaded', handleRouting);
 
 
 

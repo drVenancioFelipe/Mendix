@@ -1225,3 +1225,100 @@ header {
     color: #a78bfa;
     margin: 0;
 }
+
+/* Professional fixed-layout scrolling for Admin Modal */
+#admin-modal .modal-content {
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* prevent the main modal from showing double scrollbars */
+    box-sizing: border-box;
+}
+
+#admin-modal .modal-header {
+    flex-shrink: 0;
+}
+
+#admin-modal .admin-tabs-nav {
+    flex-shrink: 0;
+}
+
+/* Make each tab panel a flex container */
+#admin-modal .admin-tab-panel {
+    flex: 1;
+    overflow: hidden;
+    display: none;
+    flex-direction: column;
+}
+
+#admin-modal .admin-tab-panel.active {
+    display: flex;
+}
+
+/* Tab 1: Publicidade & Banner Form */
+#admin-form {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+.admin-carousel-layout {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 0.25rem;
+}
+
+.admin-form-footer {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+    padding-top: 1rem;
+    background-color: var(--bg-secondary);
+}
+
+/* Tab 2: Database Panel */
+#tab-suppliers {
+    height: 100%;
+}
+
+.admin-db-layout {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 0.25rem;
+}
+
+/* Tab 3: WhatsApp Settings Form */
+#admin-whatsapp-form {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+.admin-whatsapp-layout {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 0.25rem;
+}
+
+/* Tab 4: Reviews panel */
+#tab-reviews {
+    height: 100%;
+}
+
+#tab-reviews > div {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+#tab-reviews > div > div:first-of-type {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 0.25rem;
+}

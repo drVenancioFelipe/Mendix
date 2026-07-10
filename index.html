@@ -171,6 +171,11 @@
             <!-- Tab Panel 1: Banner -->
             <div class="admin-tab-panel active" id="tab-banner">
                 <form id="admin-form">
+                    <div class="admin-form-footer" style="margin-top: 0; margin-bottom: 1rem; border-top: none; border-bottom: 1px solid var(--border-color); padding-top: 0; padding-bottom: 1rem;">
+                        <button type="button" class="btn btn-secondary btn-admin-cancel-btn">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" style="background-color: var(--warning); color: #000; font-weight: bold;">Salvar Parâmetros</button>
+                    </div>
+                    
                     <div class="form-group" style="margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
                         <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; text-transform: none; color: var(--text-primary); font-size: 0.95rem; font-weight: bold;">
                             <input type="checkbox" id="banner-visible" style="width: auto; margin-right: 0.5rem;">
@@ -244,16 +249,16 @@
                         </div>
                     </div>
  
-                    <div class="admin-form-footer">
-                        <button type="button" class="btn btn-secondary btn-admin-cancel-btn">Cancelar</button>
-                        <button type="submit" class="btn btn-primary" style="background-color: var(--warning); color: #000; font-weight: bold;">Salvar Parâmetros</button>
-                    </div>
                 </form>
             </div>
             
             <!-- Tab Panel 2: Suppliers Database -->
             <div class="admin-tab-panel" id="tab-suppliers" style="display: none;">
-                <div style="padding: 0.5rem 0;">
+                <div class="admin-form-footer" style="margin-top: 0; margin-bottom: 1rem; border-top: none; border-bottom: 1px solid var(--border-color); padding-top: 0; padding-bottom: 1rem;">
+                    <button type="button" class="btn btn-secondary btn-admin-cancel-btn">Fechar Painel</button>
+                </div>
+                
+                <div class="admin-tab-content-wrapper">
                     <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-primary);">Ações & Controle do Banco de Dados</h3>
                     <p style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.4; margin-bottom: 1.25rem;">
                         Controles para carregar a base de demonstração padrão ou gerenciar os registros da esteira de reputação do CondoUai.
@@ -298,16 +303,16 @@
                         </div>
                     </div>
                 </div>
-                
-                <div class="admin-form-footer">
-                    <button type="button" class="btn btn-secondary btn-admin-cancel-btn">Fechar Painel</button>
-                </div>
             </div>
  
             <!-- Tab Panel 3: WhatsApp Settings -->
             <div class="admin-tab-panel" id="tab-whatsapp" style="display: none;">
                 <form id="admin-whatsapp-form">
-                    <div style="padding: 0.5rem 0;">
+                    <div class="admin-form-footer" style="margin-top: 0; margin-bottom: 1rem; border-top: none; border-bottom: 1px solid var(--border-color); padding-top: 0; padding-bottom: 1rem;">
+                        <button type="button" class="btn btn-secondary btn-admin-cancel-btn">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" style="background-color: var(--warning); color: #000; font-weight: bold;">Salvar WhatsApp</button>
+                    </div>
+                    <div class="admin-tab-content-wrapper">
                         <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-primary);">Configuração do WhatsApp de Contato</h3>
                         <p style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.4; margin-bottom: 1.25rem;">
                             Defina o número de telefone que receberá as indicações de fornecedores enviadas pelos usuários da plataforma.
@@ -337,17 +342,16 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="admin-form-footer">
-                        <button type="button" class="btn btn-secondary btn-admin-cancel-btn">Cancelar</button>
-                        <button type="submit" class="btn btn-primary" style="background-color: var(--warning); color: #000; font-weight: bold;">Salvar WhatsApp</button>
-                    </div>
                 </form>
             </div>
 
             <!-- Tab Panel 4: Reviews Moderation -->
             <div class="admin-tab-panel" id="tab-reviews" style="display: none;">
-                <div style="padding: 0.5rem 0;">
+                <div class="admin-form-footer" style="margin-top: 0; margin-bottom: 1rem; border-top: none; border-bottom: 1px solid var(--border-color); padding-top: 0; padding-bottom: 1rem;">
+                    <button type="button" class="btn btn-secondary btn-admin-cancel-btn">Fechar Painel</button>
+                </div>
+                
+                <div class="admin-tab-content-wrapper">
                     <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-primary);">Moderação de Avaliações & Reclamações</h3>
                     <p style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.4; margin-bottom: 1.25rem;">
                         Aprove ou rejeite as reclamações enviadas pelos usuários públicos antes que elas sejam publicadas no perfil de cada fornecedor.
@@ -358,10 +362,6 @@
                         <div style="text-align: center; color: var(--text-secondary); padding: 2rem;">
                             Nenhuma avaliação pendente de aprovação.
                         </div>
-                    </div>
-                    
-                    <div class="admin-form-footer">
-                        <button type="button" class="btn btn-secondary btn-admin-cancel-btn">Fechar Painel</button>
                     </div>
                 </div>
             </div>

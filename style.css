@@ -1301,7 +1301,8 @@ header {
 #admin-whatsapp-form {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    flex: 1;
+    min-height: 0;
     overflow: hidden;
 }
 
@@ -1316,17 +1317,19 @@ header {
     height: 100%;
 }
 
-#tab-reviews > div {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    overflow: hidden;
+#admin-reviews-list-container {
+    flex: 1 !important;
+    max-height: none !important;
 }
 
-#tab-reviews > div > div:first-of-type {
+/* Common stretchable wrapper for tab panels */
+.admin-tab-content-wrapper {
     flex: 1;
-    overflow-y: auto;
-    padding-right: 0.25rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+    padding: 0.5rem 0;
 }
 
 /* Keep editor fields compact and side-by-side even on mobile */

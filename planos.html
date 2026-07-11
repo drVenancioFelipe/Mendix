@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CondoUai - Planos e Anúncios para Fornecedores</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo-section">
+                <h1>CondoUai</h1>
+                <p>Planos & Anúncios para Fornecedores</p>
+            </div>
+            <nav class="header-nav">
+                <a href="index.html" class="btn btn-secondary" style="border-color: var(--accent); color: var(--accent); background-color: rgba(0, 230, 255, 0.05); font-weight: 600;">
+                    <i class="fa-solid fa-house"></i> Voltar à Home
+                </a>
+            </nav>
+        </header>
+
+        <!-- Plans Hero Section -->
+        <div class="plans-hero">
+            <h2>Feche mais negócios com condomínios hoje</h2>
+            <p>Conectamos sua empresa a síndicos e administradoras que estão ativamente buscando cotações e orçamentos.</p>
+            <a href="#plans-comparison" class="btn btn-primary" style="background-color: var(--success); color: white; border: none; padding: 0.9rem 2.2rem; font-weight: bold; border-radius: 8px; font-size: 1rem; text-decoration: none; display: inline-block; cursor: pointer; transition: transform 0.2s ease;">
+                Ver Planos Disponíveis
+            </a>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="plans-stats">
+            <div class="stat-card">
+                <i class="fa-solid fa-users-line"></i>
+                <div class="stat-info">
+                    <h4>+100k</h4>
+                    <p>Síndicos ativos</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fa-solid fa-handshake"></i>
+                <div class="stat-info">
+                    <h4>+15k</h4>
+                    <p>Fornecedores parceiros</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fa-solid fa-chart-line"></i>
+                <div class="stat-info">
+                    <h4>+2.9M</h4>
+                    <p>Acessos mensais</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fa-solid fa-envelope-open-text"></i>
+                <div class="stat-info">
+                    <h4>+50k</h4>
+                    <p>Cotações mensais</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- How it works -->
+        <div class="how-it-works-section">
+            <h3>Como o CondoUai funciona para sua empresa?</h3>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-num">1</div>
+                    <h4>Cadastre seu perfil</h4>
+                    <p>Selecione as categorias de serviço que sua empresa atende e configure suas regiões de atuação.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">2</div>
+                    <h4>Receba oportunidades</h4>
+                    <p>Síndicos e gestores solicitam orçamentos. Notificamos você sobre as demandas qualificadas de acordo com seu perfil.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">3</div>
+                    <h4>Negocie e feche!</h4>
+                    <p>Utilize seus CondoCréditos para visualizar o contato direto do síndico, envie sua proposta e faça a venda.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pricing Section -->
+        <div class="pricing-container" id="plans-comparison">
+            <h3>Escolha o plano ideal para sua empresa</h3>
+            <p style="color: var(--text-secondary); text-align: center; margin-bottom: 2rem; font-size: 0.95rem;">
+                Economize até 20% selecionando a assinatura anual!
+            </p>
+            
+            <div class="billing-switch">
+                <button class="billing-btn active" id="billing-monthly">Mensal</button>
+                <button class="billing-btn" id="billing-yearly">Anual (Desconto)</button>
+            </div>
+
+            <div class="plans-grid">
+                <!-- Bronze -->
+                <div class="plan-card">
+                    <div class="plan-header">
+                        <h4>Bronze</h4>
+                        <p class="plan-desc">Para empresas que estão começando nas cotações online.</p>
+                        <div class="plan-price">
+                            <span class="price-symbol">R$</span>
+                            <span class="price-value" id="price-bronze">99</span>
+                            <span class="price-period">/mês</span>
+                        </div>
+                        <span class="billing-info" id="billing-info-bronze">Cobrado mensalmente</span>
+                    </div>
+                    <div class="plan-body">
+                        <h5>100 CondoCréditos/mês</h5>
+                        <ul>
+                            <li><i class="fa-solid fa-check"></i> Visualização de contatos</li>
+                            <li><i class="fa-solid fa-check"></i> 5% OFF em créditos avulsos</li>
+                            <li><i class="fa-solid fa-check"></i> 1 Categoria de serviço</li>
+                            <li class="disabled"><i class="fa-solid fa-xmark"></i> Selo de Destaque nas buscas</li>
+                            <li class="disabled"><i class="fa-solid fa-xmark"></i> Suporte prioritário via WhatsApp</li>
+                        </ul>
+                        <button class="btn-plan-select">Contratar Bronze</button>
+                    </div>
+                </div>
+
+                <!-- Prata -->
+                <div class="plan-card featured">
+                    <div class="plan-badge">Mais Popular</div>
+                    <div class="plan-header">
+                        <h4>Prata</h4>
+                        <p class="plan-desc">Para empresas que buscam crescimento constante e mais oportunidades.</p>
+                        <div class="plan-price">
+                            <span class="price-symbol">R$</span>
+                            <span class="price-value" id="price-prata">199</span>
+                            <span class="price-period">/mês</span>
+                        </div>
+                        <span class="billing-info" id="billing-info-prata">Cobrado mensalmente</span>
+                    </div>
+                    <div class="plan-body">
+                        <h5>250 CondoCréditos/mês</h5>
+                        <ul>
+                            <li><i class="fa-solid fa-check"></i> Visualização de contatos</li>
+                            <li><i class="fa-solid fa-check"></i> 10% OFF em créditos avulsos</li>
+                            <li><i class="fa-solid fa-check"></i> Até 3 Categorias de serviço</li>
+                            <li><i class="fa-solid fa-check"></i> Destaque Médio (Selo Prata)</li>
+                            <li><i class="fa-solid fa-check"></i> Suporte prioritário via WhatsApp</li>
+                        </ul>
+                        <button class="btn-plan-select" style="background-color: var(--accent); color: #000; font-weight: bold; border: none;">Contratar Prata</button>
+                    </div>
+                </div>
+
+                <!-- Ouro -->
+                <div class="plan-card">
+                    <div class="plan-header">
+                        <h4>Ouro</h4>
+                        <p class="plan-desc">Ideal para líderes de mercado que buscam visibilidade total e suporte VIP.</p>
+                        <div class="plan-price">
+                            <span class="price-symbol">R$</span>
+                            <span class="price-value" id="price-ouro">499</span>
+                            <span class="price-period">/mês</span>
+                        </div>
+                        <span class="billing-info" id="billing-info-ouro">Cobrado mensalmente</span>
+                    </div>
+                    <div class="plan-body">
+                        <h5>600 CondoCréditos/mês</h5>
+                        <ul>
+                            <li><i class="fa-solid fa-check"></i> Visualização de contatos</li>
+                            <li><i class="fa-solid fa-check"></i> 15% OFF em créditos avulsos</li>
+                            <li><i class="fa-solid fa-check"></i> Categorias ilimitadas</li>
+                            <li><i class="fa-solid fa-check"></i> Destaque Máximo (Selo Ouro)</li>
+                            <li><i class="fa-solid fa-check"></i> Notificação imediata de demandas</li>
+                            <li><i class="fa-solid fa-check"></i> Gerente de conta dedicado</li>
+                        </ul>
+                        <button class="btn-plan-select">Contratar Ouro</button>
+                    </div>
+                </div>
+
+                <!-- Diamante -->
+                <div class="plan-card">
+                    <div class="plan-header">
+                        <h4>Diamante</h4>
+                        <p class="plan-desc">Presença corporativa premium com marketing integrado e anúncios exclusivos.</p>
+                        <div class="plan-price">
+                            <span class="price-value-consult">Sob Consulta</span>
+                        </div>
+                        <span class="billing-info">Investimento corporativo</span>
+                    </div>
+                    <div class="plan-body">
+                        <h5>Créditos Ilimitados</h5>
+                        <ul>
+                            <li><i class="fa-solid fa-check"></i> Destaque absoluto no topo</li>
+                            <li><i class="fa-solid fa-check"></i> 1 Banner rotativo incluso</li>
+                            <li><i class="fa-solid fa-check"></i> Campanhas de e-mail marketing</li>
+                            <li><i class="fa-solid fa-check"></i> Sem limite de categorias/regiões</li>
+                            <li><i class="fa-solid fa-check"></i> Assessoria de vendas trimestral</li>
+                        </ul>
+                        <button class="btn-plan-select" style="border-color: var(--warning); color: var(--warning); background: none;">Falar com Consultor</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="faq-container">
+            <h3>Dúvidas Frequentes</h3>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Como funcionam os CondoCréditos?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Cada lead ou pedido de cotação recebido possui um custo em CondoCréditos para a liberação dos contatos diretos (telefone/e-mail/WhatsApp) do síndico. Seus créditos mensais servem para investir nos pedidos que mais lhe interessarem. Se os créditos acabarem, você pode comprar recargas avulsas com o desconto do seu plano.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Qual a diferença entre os planos?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>As diferenças principais estão na quantidade de CondoCréditos mensais inclusos, nos descontos para recargas simples, no limite de categorias de serviços cadastradas e na priorização/destaque que sua empresa recebe nas listagens de busca de fornecedores.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>A CondoUai cobra comissão sobre as vendas?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Não! Toda a negociação e fechamento de contrato ocorrem diretamente entre você e o condomínio. Nós apenas conectamos as partes, sem reter nenhuma porcentagem sobre o valor do serviço fechado.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Posso alterar ou cancelar meu plano quando quiser?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Sim! Não há fidelidade nos planos mensais, você pode cancelar a assinatura ou fazer o upgrade/downgrade diretamente pelo painel administrativo a qualquer momento.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 2rem; text-align: center; color: var(--text-secondary); font-size: 0.85rem; padding-bottom: 2rem;">
+            <p>&copy; 2026 CondoUai. Todos os direitos reservados. Conectando condomínios aos melhores fornecedores.</p>
+        </footer>
+    </div>
+
+    <!-- JavaScript to Handle Toggle and FAQ Interactions -->
+    <script>
+        // Pricing Toggle
+        const btnMonthly = document.getElementById('billing-monthly');
+        const btnYearly = document.getElementById('billing-yearly');
+        
+        const priceBronze = document.getElementById('price-bronze');
+        const pricePrata = document.getElementById('price-prata');
+        const priceOuro = document.getElementById('price-ouro');
+
+        const infoBronze = document.getElementById('billing-info-bronze');
+        const infoPrata = document.getElementById('billing-info-prata');
+        const infoOuro = document.getElementById('billing-info-ouro');
+
+        btnMonthly.addEventListener('click', () => {
+            btnMonthly.classList.add('active');
+            btnYearly.classList.remove('active');
+            
+            priceBronze.textContent = '99';
+            pricePrata.textContent = '199';
+            priceOuro.textContent = '499';
+
+            infoBronze.textContent = 'Cobrado mensalmente';
+            infoPrata.textContent = 'Cobrado mensalmente';
+            infoOuro.textContent = 'Cobrado mensalmente';
+        });
+
+        btnYearly.addEventListener('click', () => {
+            btnYearly.classList.add('active');
+            btnMonthly.classList.remove('active');
+            
+            priceBronze.textContent = '89';
+            pricePrata.textContent = '169';
+            priceOuro.textContent = '399';
+
+            infoBronze.textContent = 'Faturado anualmente (R$ 1.068/ano)';
+            infoPrata.textContent = 'Faturado anualmente (R$ 2.028/ano)';
+            infoOuro.textContent = 'Faturado anualmente (R$ 4.788/ano)';
+        });
+
+        // FAQ Accordion Toggle
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                
+                // Close all FAQ items
+                faqItems.forEach(i => i.classList.remove('active'));
+                
+                // If not active before, toggle active
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

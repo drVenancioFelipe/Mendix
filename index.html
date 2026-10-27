@@ -557,6 +557,65 @@
         </div>
     </div>
 
+    <!-- =============================================
+         Modal OTP — Verificação de E-mail
+         ============================================= -->
+    <div class="modal-overlay" id="otp-modal">
+        <div class="modal-box" style="max-width: 420px;">
+            <div class="modal-header" style="margin-bottom: 1.5rem;">
+                <div>
+                    <h2 style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary);">
+                        <i class="fa-solid fa-envelope-circle-check" style="color: var(--accent); margin-right: 0.5rem;"></i>
+                        Confirme seu e-mail
+                    </h2>
+                    <p id="otp-modal-desc" style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.5;"></p>
+                </div>
+            </div>
+
+            <!-- Input dos 6 dígitos -->
+            <div style="display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 1.25rem;" id="otp-digit-container">
+                <input class="otp-digit" type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
+                <input class="otp-digit" type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
+                <input class="otp-digit" type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
+                <input class="otp-digit" type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
+                <input class="otp-digit" type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
+                <input class="otp-digit" type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
+            </div>
+
+            <!-- Countdown timer -->
+            <div style="text-align: center; margin-bottom: 1.5rem;">
+                <span id="otp-timer" style="font-size: 0.85rem; color: var(--text-secondary);">
+                    <i class="fa-regular fa-clock"></i> Expira em <strong id="otp-countdown" style="color: var(--warning);">5:00</strong>
+                </span>
+            </div>
+
+            <!-- Mensagem de erro -->
+            <div id="otp-error-msg" style="display: none; background-color: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 1rem;">
+                <p style="margin: 0; font-size: 0.85rem; color: #f87171; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <span id="otp-error-text"></span>
+                </p>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <!-- Verificar -->
+                <button type="button" id="btn-verify-otp" class="btn btn-primary" style="background-color: var(--accent); color: #000; font-weight: 700; border: none; width: 100%; padding: 0.85rem; font-size: 1rem;">
+                    <i class="fa-solid fa-shield-check"></i> Verificar e Enviar Avaliação
+                </button>
+
+                <!-- Reenviar -->
+                <button type="button" id="btn-resend-otp" class="btn btn-secondary" style="width: 100%; opacity: 0.5; cursor: not-allowed;" disabled>
+                    <i class="fa-solid fa-rotate-right"></i> Reenviar código
+                </button>
+
+                <!-- Cancelar -->
+                <button type="button" id="btn-cancel-otp" class="btn btn-secondary" style="width: 100%; background: none;">
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Bulk Upload JSON Help Modal -->
     <div class="modal-overlay" id="bulk-upload-help-modal">
         <div class="modal-content" style="max-width: 550px;">

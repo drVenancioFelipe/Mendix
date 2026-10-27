@@ -1783,44 +1783,242 @@ window.openAddReviewModal = function(supplierId) {
     addReviewModal.classList.add('active');
 };
 
-// Handle review submit
-addReviewForm.addEventListener('submit', (e) => {
+// ============================================================
+//  OTP - Email Verification Flow
+// ============================================================
+
+const OTP_WORKER_URL = 'https://condouai-otp-worker.drvenanciofelipe.workers.dev';
+
+let _pendingReviewData = null;
+let _otpCountdownInterval = null;
+let _otpSecondsLeft = 300;
+
+const otpModal     = document.getElementById('otp-modal');
+const otpDigits    = Array.from(document.querySelectorAll('.otp-digit'));
+const btnVerifyOtp = document.getElementById('btn-verify-otp');
+const btnResendOtp = document.getElementById('btn-resend-otp');
+const btnCancelOtp = document.getElementById('btn-cancel-otp');
+const otpCountdown = document.getElementById('otp-countdown');
+const otpErrorMsg  = document.getElementById('otp-error-msg');
+const otpErrorText = document.getElementById('otp-error-text');
+const otpModalDesc = document.getElementById('otp-modal-desc');
+
+function formatTime(seconds) {
+    const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+    const s = (seconds % 60).toString().padStart(2, '0');
+    return m + ':' + s;
+}
+
+function startOtpCountdown() {
+    clearInterval(_otpCountdownInterval);
+    _otpSecondsLeft = 300;
+    otpCountdown.style.color = 'var(--warning)';
+    otpCountdown.innerText = formatTime(_otpSecondsLeft);
+
+    _otpCountdownInterval = setInterval(() => {
+        _otpSecondsLeft--;
+        otpCountdown.innerText = formatTime(_otpSecondsLeft);
+        if (_otpSecondsLeft <= 60) otpCountdown.style.color = 'var(--danger)';
+        if (_otpSecondsLeft <= 0) {
+            clearInterval(_otpCountdownInterval);
+            otpCountdown.innerText = 'Expirado';
+            btnVerifyOtp.disabled = true;
+            btnResendOtp.disabled = false;
+            btnResendOtp.style.opacity = '1';
+            btnResendOtp.style.cursor = 'pointer';
+            showOtpError('O codigo expirou. Clique em Reenviar codigo para receber um novo.');
+        }
+    }, 1000);
+
+    btnResendOtp.disabled = true;
+    btnResendOtp.style.opacity = '0.5';
+    btnResendOtp.style.cursor = 'not-allowed';
+    setTimeout(() => {
+        if (_otpSecondsLeft > 0) {
+            btnResendOtp.disabled = false;
+            btnResendOtp.style.opacity = '1';
+            btnResendOtp.style.cursor = 'pointer';
+        }
+    }, 60000);
+}
+
+function openOtpModal(email) {
+    otpDigits.forEach(function(d) { d.value = ''; d.classList.remove('filled', 'error'); });
+    otpErrorMsg.style.display = 'none';
+    btnVerifyOtp.disabled = false;
+    const parts = email.split('@');
+    const masked = parts[0][0] + '***@' + parts[1];
+    otpModalDesc.innerHTML = 'Enviamos um codigo de 6 digitos para <strong style="color:var(--text-primary)">' + masked + '</strong>. Digite-o abaixo para confirmar sua avaliacao.';
+    startOtpCountdown();
+    otpModal.classList.add('active');
+    setTimeout(function() { otpDigits[0].focus(); }, 100);
+}
+
+function showOtpError(msg) {
+    otpErrorText.innerText = msg;
+    otpErrorMsg.style.display = 'block';
+    otpDigits.forEach(function(d) { d.classList.add('error'); });
+    setTimeout(function() { otpDigits.forEach(function(d) { d.classList.remove('error'); }); }, 600);
+}
+
+otpDigits.forEach(function(digit, idx) {
+    digit.addEventListener('input', function() {
+        digit.value = digit.value.replace(/\D/g, '');
+        if (digit.value) {
+            digit.classList.add('filled');
+            if (idx < otpDigits.length - 1) otpDigits[idx + 1].focus();
+        } else {
+            digit.classList.remove('filled');
+        }
+    });
+
+    digit.addEventListener('keydown', function(e) {
+        if (e.key === 'Backspace' && !digit.value && idx > 0) {
+            otpDigits[idx - 1].focus();
+            otpDigits[idx - 1].value = '';
+            otpDigits[idx - 1].classList.remove('filled');
+        }
+    });
+
+    digit.addEventListener('paste', function(e) {
+        e.preventDefault();
+        const text = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '').slice(0, 6);
+        text.split('').forEach(function(char, i) {
+            if (otpDigits[i]) { otpDigits[i].value = char; otpDigits[i].classList.add('filled'); }
+        });
+        const nextEmpty = otpDigits.findIndex(function(d) { return !d.value; });
+        if (nextEmpty !== -1) otpDigits[nextEmpty].focus();
+        else otpDigits[otpDigits.length - 1].focus();
+    });
+});
+
+btnCancelOtp.addEventListener('click', function() {
+    clearInterval(_otpCountdownInterval);
+    _pendingReviewData = null;
+    otpModal.classList.remove('active');
+    showToast('Envio de avaliacao cancelado.', 'warning');
+});
+
+btnResendOtp.addEventListener('click', async function() {
+    if (!_pendingReviewData) return;
+    btnResendOtp.disabled = true;
+    btnResendOtp.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando...';
+    otpErrorMsg.style.display = 'none';
+    otpDigits.forEach(function(d) { d.value = ''; d.classList.remove('filled', 'error'); });
+
+    try {
+        const res = await fetch(OTP_WORKER_URL + '/send-otp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: _pendingReviewData.userEmail, userName: _pendingReviewData.userName })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Erro ao reenviar.');
+        startOtpCountdown();
+        showToast('Novo codigo enviado para o seu e-mail!', 'success');
+        setTimeout(function() { otpDigits[0].focus(); }, 100);
+    } catch (err) {
+        showOtpError(err.message || 'Falha ao reenviar. Tente novamente.');
+        btnResendOtp.disabled = false;
+    }
+    btnResendOtp.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Reenviar codigo';
+});
+
+btnVerifyOtp.addEventListener('click', async function() {
+    const code = otpDigits.map(function(d) { return d.value; }).join('');
+    if (code.length < 6) { showOtpError('Digite todos os 6 digitos do codigo.'); return; }
+    if (!_pendingReviewData) return;
+
+    btnVerifyOtp.disabled = true;
+    btnVerifyOtp.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verificando...';
+    otpErrorMsg.style.display = 'none';
+
+    try {
+        const res = await fetch(OTP_WORKER_URL + '/verify-otp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: _pendingReviewData.userEmail, otp: code })
+        });
+        const data = await res.json();
+
+        if (!data.valid) {
+            showOtpError(data.error || 'Codigo invalido.');
+            btnVerifyOtp.disabled = false;
+            btnVerifyOtp.innerHTML = '<i class="fa-solid fa-shield-check"></i> Verificar e Enviar Avaliacao';
+            return;
+        }
+
+        clearInterval(_otpCountdownInterval);
+        reviews.push(_pendingReviewData);
+        saveReviews();
+        updatePendingReviewsBadge();
+        _pendingReviewData = null;
+        otpModal.classList.remove('active');
+        showToast('E-mail verificado! Sua avaliacao foi enviada para moderacao.', 'success');
+
+    } catch (err) {
+        showOtpError('Erro de conexao. Verifique sua internet e tente novamente.');
+        btnVerifyOtp.disabled = false;
+        btnVerifyOtp.innerHTML = '<i class="fa-solid fa-shield-check"></i> Verificar e Enviar Avaliacao';
+    }
+});
+
+// Handle review submit - agora dispara OTP
+addReviewForm.addEventListener('submit', async function(e) {
     e.preventDefault();
-    
+
     if (!isCaptchaVerified()) {
         addReviewModal.classList.remove('active');
         captchaModal.classList.add('active');
-        showToast('Por favor, resolva o Captcha antes de submeter a avaliação.', 'warning');
+        showToast('Por favor, resolva o Captcha antes de submeter a avaliacao.', 'warning');
         return;
     }
-    
+
     const supplierId = document.getElementById('review-supplier-id').value;
     const rating = parseInt(reviewRatingValue.value);
-    
+
     if (!rating) {
         showToast('Por favor, selecione uma nota de 1 a 5 estrelas.', 'warning');
         return;
     }
-    
-    const newReview = {
+
+    const userName  = document.getElementById('review-username').value.trim();
+    const userEmail = document.getElementById('review-useremail').value.trim();
+
+    _pendingReviewData = {
         id: 'rev_' + Date.now().toString(),
         supplierId: supplierId,
-        userName: document.getElementById('review-username').value.trim(),
-        userEmail: document.getElementById('review-useremail').value.trim(),
-        title: document.getElementById('review-title').value.trim(),
+        userName: userName,
+        userEmail: userEmail,
+        title:   document.getElementById('review-title').value.trim(),
         comment: document.getElementById('review-comment').value.trim(),
         rating: rating,
         status: 'pending',
         createdAt: new Date().toISOString()
     };
-    
-    reviews.push(newReview);
-    saveReviews();
-    
-    updatePendingReviewsBadge();
-    
-    addReviewModal.classList.remove('active');
-    showToast('Sua avaliação foi enviada para moderação da administração!', 'success');
+
+    const submitBtn = addReviewForm.querySelector('button[type="submit"]');
+    const originalLabel = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando codigo...';
+
+    try {
+        const res = await fetch(OTP_WORKER_URL + '/send-otp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: userEmail, userName: userName })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Falha ao enviar codigo.');
+        addReviewModal.classList.remove('active');
+        openOtpModal(userEmail);
+    } catch (err) {
+        showToast('Erro: ' + err.message, 'error');
+        _pendingReviewData = null;
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalLabel;
+    }
 });
 
 // Admin Moderation Helpers
